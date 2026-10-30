@@ -23,7 +23,7 @@ const PATTERNS: [FrozenKind, RegExp][] = [
   ["citation", /\[\d+(?:\s*[,-]\s*\d+)*\]|\((?:[A-Z][\p{L}'-]+(?: et al\.)?(?:,? (?:and|&) [A-Z][\p{L}'-]+)?),? \d{4}[a-z]?(?:[,;] (?:p{1,2}\. ?)?\d+(?:-\d+)?)?\)|\b[A-Z][\p{L}'-]+(?: et al\.)? \(\d{4}[a-z]?\)/gu],
   ["placeholder", /\[[^[\]\n]{1,120}\]/g],
   ["date", new RegExp(`\\b(?:${DAY},? )?${MONTH}\\.? \\d{1,2}(?:st|nd|rd|th)?(?:,? \\d{4})?\\b|\\b\\d{1,2}(?:st|nd|rd|th)? (?:of )?${MONTH} \\d{4}\\b|\\b${MONTH} \\d{4}\\b|\\b\\d{4}-\\d{2}-\\d{2}\\b|\\b\\d{1,2}/\\d{1,2}/\\d{2,4}\\b|\\b${DAY}s?\\b`, "g")],
-  ["number", /(?:[$€£¥]\s?)?\b\d{1,3}(?:,\d{3})+(?:\.\d+)?(?:%|\b)|(?:[$€£¥]\s?)?\b\d+(?:\.\d+)?(?::\d{2})?(?:\s?(?:%|percent\b|[ap]\.?m\.?|k\b|[KMB]\b))?|\b\d+(?:st|nd|rd|th)\b/g],
+  ["number", /(?:[$€£¥]\s?)?\b\d{1,3}(?:,\d{3})+(?:\.\d+)?(?:%|\b)|(?:[$€£¥]\s?)?\b\d+(?:\.\d+)?(?::\d{2})?(?:\s?(?:%|percent\b|[ap]\.?m\.?|k\b|[KMB]\b|(?:thousand|million|billion|trillion)\b))?|\b\d+(?:st|nd|rd|th)\b/g],
 ];
 
 // Words that are capitalized at sentence start but are not names.
@@ -55,12 +55,13 @@ function nameSpans(text: string): Frozen[] {
         i++;
         continue;
       }
-      // Grow a run: Cap (connector Cap)*
+      // Grow a run: Cap (connector Cap)*, never across punctuation.
+      const spaced = (a: number) => /^\s+$/.test(s.text.slice(toks[a].index! + toks[a][0].length, toks[a + 1].index!));
       let j = i;
-      while (j + 1 < toks.length) {
+      while (j + 1 < toks.length && spaced(j)) {
         const nxt = clean(toks[j + 1][0]);
         if (cap.test(nxt) && nxt !== "I") j++;
-        else if (CONNECTORS.has(nxt.toLowerCase()) && j + 2 < toks.length && cap.test(clean(toks[j + 2][0]))) j += 2;
+        else if (CONNECTORS.has(nxt.toLowerCase()) && j + 2 < toks.length && spaced(j + 1) && cap.test(clean(toks[j + 2][0]))) j += 2;
         else break;
       }
       let first = i;

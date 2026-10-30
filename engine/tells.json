@@ -152,7 +152,7 @@
       "id": "opening-stock", "category": "openings", "label": "Stock opening",
       "hint": "Open with the specific point, not a scene-setter.",
       "kind": "regex",
-      "pattern": "\\b(?:in today'?s (?:fast-paced|digital|modern|ever-changing|rapidly changing|interconnected|competitive) (?:world|age|landscape|economy)|in (?:an|this|the) (?:era|age) (?:of|where)|in the (?:ever-evolving|rapidly evolving|ever-changing) (?:world|landscape|field) of|have you ever wondered|imagine a world|picture this|when it comes to|let'?s (?:dive|delve|explore|break (?:it|this) down|take a (?:closer )?look|unpack)|whether you'?re (?:a|an) [^,.]{1,40},? or (?:a|an)\\b)",
+      "pattern": "\\b(?:in today'?s (?:[\\w-]+ ){0,3}?(?:world|age|era|landscape|economy|marketplace|market|environment|climate|society)\\b|in (?:an|this|the) (?:era|age) (?:of|where)|in the (?:ever-evolving|rapidly evolving|ever-changing) (?:world|landscape|field) of|have you ever wondered|imagine a world|picture this|when it comes to|let'?s (?:dive|delve|explore|break (?:it|this) down|take a (?:closer )?look|unpack)|whether you'?re (?:a|an) [^,.]{1,40},? or (?:a|an)\\b)",
       "flags": "gi", "weight": 1.5, "sources": ["tropes", "gptzero", "plusai"]
     },
     {
