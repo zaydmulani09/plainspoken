@@ -1,0 +1,280 @@
+{
+  "version": "2026-10-30",
+  "about": "Deterministic AI-tell catalog used by the linter. Each tell lists the sources it came from. 'read' says whether the page was read in full or only seen through a search result summary. Weights are hand-set: 2 = strong structural tell, 1 = clear tell, 0.5 = weak tell that is common in human writing too. No tell is proof of AI authorship.",
+  "sources": {
+    "wiki": { "title": "Wikipedia: Signs of AI writing (WikiProject AI Cleanup)", "url": "https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing", "accessed": "2026-10-30", "read": "page fetched; includes model-era word lists through mid-2026" },
+    "tropes": { "title": "tropes.fyi directory of AI writing tropes", "url": "https://tropes.fyi/directory", "accessed": "2026-10-30", "read": "page fetched" },
+    "gptzero": { "title": "GPTZero: most common AI vocabulary", "url": "https://gptzero.me/news/most-common-ai-vocabulary/", "accessed": "2026-10-30", "read": "page fetched; article dated 2024-10-07" },
+    "juzek2026": { "title": "Juzek, AI-Associated Lexical Shifts Across 34 Languages (arXiv 2605.25358)", "url": "https://arxiv.org/abs/2605.25358", "accessed": "2026-10-30", "read": "abstract fetched; 'emphasize'-type verbs overused in 24 of 34 languages" },
+    "gcai": { "title": "GC AI: the contrastive negation pattern", "url": "https://gc.ai/blog/ai-writing-pattern-to-know-contrastive-negation", "accessed": "2026-10-30", "read": "search result summary" },
+    "aitoolly2026": { "title": "The rise of 'it's not just this, it's that' (coverage of Barron's and Pangram findings, April 2026)", "url": "https://aitoolly.com/ai-news/article/2026-04-21-the-rise-of-repetitive-ai-syntax-how-the-its-not-just-this-its-that-construction-signals-synthetic-c", "accessed": "2026-10-30", "read": "search result summary" },
+    "techcrunch": { "title": "TechCrunch: the best guide to spotting AI writing comes from Wikipedia", "url": "https://techcrunch.com/2025/11/20/the-best-guide-to-spotting-ai-writing-comes-from-wikipedia/", "accessed": "2026-10-30", "read": "search result summary" },
+    "popularai2026": { "title": "Popular AI: how I know you used AI to write that in 2026", "url": "https://www.popularai.org/p/how-i-know-you-used-ai-to-write-that", "accessed": "2026-10-30", "read": "search result summary" },
+    "plusai": { "title": "Plus AI: the most overused ChatGPT words", "url": "https://plusai.com/blog/the-most-overused-chatgpt-words", "accessed": "2026-10-30", "read": "search result summary" },
+    "gregory": { "title": "Gregory Agency: an updated look at AI tells ('stark')", "url": "https://gregoryagency.com/news-insights/updated-look-at-ai-tells/", "accessed": "2026-10-30", "read": "search result summary" },
+    "harshaneel": { "title": "harshaneel/humanize ai-check skill (burstiness, hedge density, transition fingerprint, announcement colons)", "url": "https://github.com/harshaneel/humanize", "accessed": "2026-10-30", "read": "SKILL.md files read" },
+    "mrshibly": { "title": "mrshibly/humanizer (pattern list and AI vocabulary resource)", "url": "https://github.com/mrshibly/humanizer", "accessed": "2026-10-30", "read": "SKILL.md and resources/ai_vocabulary.md read" }
+  },
+  "omitted": "Wikipedia's mid-2026 list also names 'challenge', 'clearer', 'matters', 'practical' and 'steady'. They are left out here because they are too common in ordinary human writing to score without flooding false positives.",
+  "tells": [
+    {
+      "id": "contrast-not-just-but", "category": "contrast", "label": "Not just X, but Y",
+      "hint": "Say the point directly instead of setting up a contrast.",
+      "kind": "regex", "pattern": "\\bnot (?:just|only|merely|simply)\\b[^.!?\\n]{1,80}?(?:\\bbut\\b|[,;.]\\s*(?:it|this|that|they|we|you)(?:'s|\u2019s| is| are|'re|\u2019re| was)\\b)",
+      "flags": "gi", "weight": 2, "sources": ["wiki", "aitoolly2026", "gcai", "tropes"]
+    },
+    {
+      "id": "contrast-its-not-its", "category": "contrast", "label": "It's not X, it's Y",
+      "hint": "Lead with what it is. Drop the 'not X' setup.",
+      "kind": "regex", "pattern": "\\b(?:it|this|that|these|they|we|you|he|she)(?:'s not|\u2019s not| is not| isn't| isn\u2019t| are not| aren't| aren\u2019t|'re not|\u2019re not| was not| wasn't| wasn\u2019t)\\b[^.!?\\n]{1,60}?[,;:.]\\s*(?:but\\s+)?(?:it|this|that|they|we|you|he|she)(?:'s|\u2019s| is| are|'re|\u2019re| was)\\b",
+      "flags": "gi", "weight": 2, "sources": ["wiki", "tropes", "gcai", "aitoolly2026"]
+    },
+    {
+      "id": "contrast-isnt-about", "category": "contrast", "label": "Isn't about X, it's about Y",
+      "hint": "State what it is about.",
+      "kind": "regex", "pattern": "\\b(?:isn't|isn\u2019t|is not|wasn't|wasn\u2019t|was not|aren't|aren\u2019t|are not)\\s+(?:just\\s+|only\\s+|really\\s+)?about\\b[^.!?\\n]{1,60}?[,;.]\\s*(?:it'?s|it\u2019s|it is|it was|they'?re|but)\\b",
+      "flags": "gi", "weight": 2, "sources": ["harshaneel", "tropes"]
+    },
+    {
+      "id": "contrast-less-more", "category": "contrast", "label": "Less about X, more about Y",
+      "hint": "Say what it is about.",
+      "kind": "regex", "pattern": "\\bless about\\b[^.!?\\n]{1,60}\\bmore about\\b",
+      "flags": "gi", "weight": 2, "sources": ["tropes"]
+    },
+    {
+      "id": "contrast-not-not-just", "category": "contrast", "label": "Not X. Not Y. Just Z.",
+      "hint": "Remove the staged negations.",
+      "kind": "regex", "pattern": "(?:^|[.!?]\\s+)(?:not|no)\\s[^.!?,\\n]{1,40}[.,]\\s+(?:not|no)\\s[^.!?,\\n]{1,40}[.,]\\s+",
+      "flags": "gi", "weight": 2, "sources": ["tropes", "wiki"]
+    },
+    {
+      "id": "contrast-real-question", "category": "contrast", "label": "The real question isn't",
+      "hint": "Ask or answer the question itself.",
+      "kind": "regex", "pattern": "\\bthe (?:real )?(?:question|issue|point|problem) (?:isn't|isn\u2019t|is not)\\b",
+      "flags": "gi", "weight": 1.5, "sources": ["tropes"]
+    },
+    {
+      "id": "triad-abstract", "category": "triads", "label": "Group of three",
+      "hint": "Keep the items that carry meaning. Use two, or one, when the third is filler.",
+      "kind": "special", "special": "triad", "weight": 1, "sources": ["wiki", "tropes", "harshaneel"]
+    },
+    {
+      "id": "triad-fragments", "category": "triads", "label": "Three punchy fragments in a row",
+      "hint": "Join the fragments into a sentence.",
+      "kind": "special", "special": "fragmentRun", "weight": 1.5, "sources": ["tropes"]
+    },
+    {
+      "id": "vocab-strong", "category": "vocabulary", "label": "Stock AI word",
+      "hint": "Use the plain word you would say out loud.",
+      "kind": "terms", "weight": 1, "sources": ["wiki", "gptzero", "plusai", "tropes", "mrshibly", "juzek2026"],
+      "terms": [
+        "delv(?:e|es|ed|ing)", "tapestr(?:y|ies)", "testaments?", "underscor(?:e|es|ed|ing)", "pivotal", "multifaceted",
+        "intricate(?:ly)?", "intricac(?:y|ies)", "meticulous(?:ly)?", "vibrant", "realms?", "embark(?:s|ed|ing)?",
+        "showcas(?:e|es|ed|ing)", "bolster(?:s|ed|ing)?", "garner(?:s|ed|ing)?", "interplay", "beacons?",
+        "ever-evolving", "game-chang(?:er|ers|ing)", "seamless(?:ly)?", "synerg(?:y|ies|istic)", "holistic(?:ally)?",
+        "paradigms?", "unwavering", "plethora", "myriad", "transformative", "enduring", "indelible", "nestled",
+        "groundbreaking", "commendable", "noteworthy", "unparalleled", "unleash(?:es|ed|ing)?",
+        "foster(?:s|ed|ing)?", "resonat(?:e|es|ed|ing) with", "align(?:s|ed)? with", "emphasiz(?:e|es|ed|ing)",
+        "highlighting", "boasts?", "rich (?:cultural )?heritage", "valuable insights?",
+        "aims? to explore", "notable (?:works|figures) include"
+      ]
+    },
+    {
+      "id": "vocab-common", "category": "vocabulary", "label": "Overused AI word",
+      "hint": "Fine once in a while. Swap it for a plainer word if it is doing no work.",
+      "kind": "terms", "weight": 0.6, "sources": ["wiki", "gptzero", "plusai", "gregory", "mrshibly"],
+      "terms": [
+        "landscapes?", "enhanc(?:e|es|ed|ing|ement|ements)", "crucial(?:ly)?", "journeys?", "passion(?:s|ate|ately)?",
+        "leverag(?:e|es|ed|ing)", "robust(?:ly|ness)?", "elevat(?:e|es|ed|ing)", "unlock(?:s|ed|ing)?",
+        "empower(?:s|ed|ing|ment)?", "harness(?:es|ed|ing)?", "streamlin(?:e|es|ed|ing)", "comprehensive(?:ly)?",
+        "invaluable", "profound(?:ly)?", "cutting-edge", "dynamic", "facilitat(?:e|es|ed|ing)", "utiliz(?:e|es|ed|ing|ation)",
+        "cornerstones?", "catalysts?", "stark(?:ly)?", "nuanced", "navigat(?:e|es|ed|ing)", "embrac(?:e|es|ed|ing)",
+        "thriv(?:e|es|ed|ing)", "dive (?:into|deeper)", "deep dive", "insightful", "endeavou?rs?", "dependable",
+        "echoed", "prioritiz(?:e|es|ed|ing)", "universally", "remarked", "surpassing", "tragically", "impacting"
+      ]
+    },
+    {
+      "id": "vocab-adverb", "category": "vocabulary", "label": "Significance adverb",
+      "hint": "Cut the adverb and let the plain statement stand.",
+      "kind": "terms", "weight": 0.5, "sources": ["tropes", "wiki", "popularai2026"],
+      "terms": ["quietly", "deeply", "fundamentally", "truly", "genuinely", "remarkably", "incredibly", "undeniably", "arguably", "notably", "importantly"]
+    },
+    {
+      "id": "connector-opener", "category": "connectors", "label": "Formal connector",
+      "hint": "Drop the connector or use 'and', 'but', 'so', or nothing.",
+      "kind": "regex", "scope": "sentenceStart",
+      "pattern": "(?:Furthermore|Moreover|Additionally|In addition|Consequently|Thus|Hence|Nevertheless|Nonetheless|Notably|Importantly|Ultimately|Overall|Indeed|Subsequently|Accordingly|Conversely|Likewise|Similarly)\\b,?",
+      "flags": "i", "weight": 1, "sources": ["wiki", "harshaneel", "plusai"]
+    },
+    {
+      "id": "connector-phrase", "category": "connectors", "label": "Filler transition",
+      "hint": "Delete it and start with the point.",
+      "kind": "regex",
+      "pattern": "\\b(?:it is important to (?:note|remember|recognize)|it'?s important to (?:note|remember|recognize)|it is worth (?:noting|mentioning)|it'?s worth (?:noting|mentioning)|needless to say|it goes without saying|as (?:previously|mentioned) (?:mentioned|earlier|above)|with that (?:being )?said|that being said|having said that|in light of this|in this regard|it should be noted)\\b",
+      "flags": "gi", "weight": 1, "sources": ["wiki", "tropes", "harshaneel"]
+    },
+    {
+      "id": "lesson-stated", "category": "lessons", "label": "Stated lesson",
+      "hint": "Trust the reader. Cut the moral or fold it into the facts.",
+      "kind": "regex",
+      "pattern": "\\b(?:the (?:real |key |biggest |main )?(?:lesson|takeaway|moral)(?: here)? is|(?:this|that|it) (?:experience )?(?:taught|teaches|showed|reminded|reminds) me (?:that|how|the)|I (?:learned|realized|came to understand) that|what (?:really |truly )?matters (?:most )?is|at the end of the day|it'?s (?:clear|evident|undeniable) that)\\b",
+      "flags": "gi", "weight": 1.5, "sources": ["harshaneel", "tropes"]
+    },
+    {
+      "id": "lesson-summary", "category": "lessons", "label": "Tidy summary",
+      "hint": "End on the last real point instead of summarizing.",
+      "kind": "regex",
+      "pattern": "\\b(?:in conclusion|in summary|to sum (?:it )?up|to summarize|in short|simply put|put simply|in essence|in a nutshell|all in all)\\b",
+      "flags": "gi", "weight": 1.5, "sources": ["wiki", "tropes", "harshaneel"]
+    },
+    {
+      "id": "lesson-ing-tail", "category": "lessons", "label": "Significance tail (-ing)",
+      "hint": "End the sentence at the fact. Cut the clause that explains why it matters.",
+      "kind": "regex",
+      "pattern": ",\\s(?:highlighting|underscoring|emphasizing|showcasing|reflecting|symbolizing|ensuring|fostering|cultivating|demonstrating|illustrating|reinforcing|solidifying|cementing|paving the way|setting the stage|marking a|contributing to)\\b",
+      "flags": "gi", "weight": 1.5, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "lesson-this-highlights", "category": "lessons", "label": "This highlights the importance",
+      "hint": "Say what follows from it, concretely, or cut it.",
+      "kind": "regex",
+      "pattern": "\\b(?:this|that|which|it) (?:highlights|underscores|demonstrates|illustrates|emphasizes|reinforces|reflects|speaks to|shows) (?:the (?:importance|need|value|power|significance)|how (?:important|crucial|vital))\\b",
+      "flags": "gi", "weight": 1.5, "sources": ["wiki", "harshaneel"]
+    },
+    {
+      "id": "announce-reveal", "category": "lessons", "label": "Announce-then-reveal",
+      "hint": "Skip the drumroll. Say the thing.",
+      "kind": "regex",
+      "pattern": "(?:\\b(?:here'?s|here\u2019s) (?:the (?:thing|kicker|catch|deal|truth)|why|what)\\b|\\bthe (?:key|real|short|simple|honest) (?:answer|insight|takeaway|truth|point)\\s*:|\\b(?:the|and the|so the) (?:result|answer|catch|kicker|truth|reality|twist|secret|fix|solution)\\?)",
+      "flags": "gi", "weight": 1.5, "sources": ["tropes", "harshaneel"]
+    },
+    {
+      "id": "opening-stock", "category": "openings", "label": "Stock opening",
+      "hint": "Open with the specific point, not a scene-setter.",
+      "kind": "regex",
+      "pattern": "\\b(?:in today'?s (?:fast-paced|digital|modern|ever-changing|rapidly changing|interconnected|competitive) (?:world|age|landscape|economy)|in (?:an|this|the) (?:era|age) (?:of|where)|in the (?:ever-evolving|rapidly evolving|ever-changing) (?:world|landscape|field) of|have you ever wondered|imagine a world|picture this|when it comes to|let'?s (?:dive|delve|explore|break (?:it|this) down|take a (?:closer )?look|unpack)|whether you'?re (?:a|an) [^,.]{1,40},? or (?:a|an)\\b)",
+      "flags": "gi", "weight": 1.5, "sources": ["tropes", "gptzero", "plusai"]
+    },
+    {
+      "id": "ending-stock", "category": "openings", "label": "Stock ending",
+      "hint": "Stop when the content stops.",
+      "kind": "regex",
+      "pattern": "\\b(?:I hope this helps|feel free to (?:reach out|ask|contact)|let me know if you (?:have|need)|happy to help|only time will tell|the possibilities are endless|the future (?:is|looks) bright|the sky'?s the limit|stay tuned|great question|as of my (?:last|latest) (?:update|knowledge))\\b",
+      "flags": "gi", "weight": 2, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "dash", "category": "dashes", "label": "Em or en dash",
+      "hint": "Use a comma, a period, parentheses, or a colon.",
+      "kind": "regex", "pattern": "[\\u{2012}-\\u{2015}]|\\s--\\s|\\w--\\w",
+      "flags": "gu", "weight": 1, "sources": ["wiki", "tropes", "harshaneel"]
+    },
+    {
+      "id": "false-range", "category": "ranges", "label": "False 'from X to Y' range",
+      "hint": "List the real items, or name the one that matters.",
+      "kind": "special", "special": "fromTo", "weight": 1.5, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "format-bold", "category": "formatting", "label": "Bold inside prose",
+      "hint": "Let sentences carry emphasis.",
+      "kind": "regex", "pattern": "\\*\\*[^*\\n]{1,80}\\*\\*|__[^_\\n]{1,80}__",
+      "flags": "g", "weight": 0.5, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "format-bold-bullet", "category": "formatting", "label": "Bold-first bullet",
+      "hint": "Write the list as sentences, or keep plain bullets.",
+      "kind": "regex", "pattern": "^\\s*(?:[-*\u2022]|\\d+[.)])\\s+\\*\\*[^*\\n]+\\*\\*",
+      "flags": "gm", "weight": 1, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "format-heading", "category": "formatting", "label": "Heading in short prose",
+      "hint": "Short pieces rarely need headings.",
+      "kind": "special", "special": "headingInShortText", "weight": 1, "sources": ["wiki"]
+    },
+    {
+      "id": "format-symbols", "category": "formatting", "label": "Emoji or arrow decoration",
+      "hint": "Use words.",
+      "kind": "regex", "pattern": "[\u2192\u2190\u21d2\u2794\u27a1\u2705\u274c\u2728\u2b50]|[\\u{1F300}-\\u{1FAFF}]",
+      "flags": "gu", "weight": 1, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "rhythm-sentence-cv", "category": "rhythm", "label": "Uniform sentence length",
+      "hint": "Mix short sentences with longer ones.",
+      "kind": "metric", "metric": "sentenceLengthCV", "below": 0.42, "floor": 0.2, "minCount": 5,
+      "weight": 3, "sources": ["harshaneel", "wiki"]
+    },
+    {
+      "id": "rhythm-openers", "category": "rhythm", "label": "Repeated sentence openers",
+      "hint": "Start sentences in different ways.",
+      "kind": "special", "special": "openers", "weight": 1, "sources": ["tropes", "harshaneel"]
+    },
+    {
+      "id": "rhythm-paragraph-cv", "category": "rhythm", "label": "Uniform paragraph length",
+      "hint": "Let paragraphs be as long as their content.",
+      "kind": "metric", "metric": "paragraphLengthCV", "below": 0.25, "floor": 0.08, "minCount": 3,
+      "weight": 2, "sources": ["wiki", "harshaneel"]
+    },
+    {
+      "id": "hedge-density", "category": "hedges", "label": "Hedge density",
+      "hint": "Commit where you are sure. Hedge only real uncertainty.",
+      "kind": "metric", "metric": "hedgeDensity", "above": 2.0, "ceiling": 5.0, "minCount": 1,
+      "weight": 2, "sources": ["harshaneel"],
+      "terms": ["perhaps", "possibly", "potentially", "arguably", "generally", "typically", "somewhat", "relatively", "seemingly", "tends? to", "it seems", "in (?:many|some) cases", "to (?:some|a certain) extent", "it can be argued", "one might (?:argue|say|think)", "may", "might", "could"]
+    },
+    {
+      "id": "hedge-double", "category": "hedges", "label": "Stacked hedge",
+      "hint": "One hedge is enough.",
+      "kind": "regex", "pattern": "\\b(?:may|might|could|can) (?:potentially|possibly|perhaps)\\b|\\b(?:potentially|possibly) (?:could|might|may)\\b",
+      "flags": "gi", "weight": 1, "sources": ["harshaneel"]
+    },
+    {
+      "id": "grandiose", "category": "grandiose", "label": "Grandiose claim",
+      "hint": "Say what actually changed, with a detail, or tone it down.",
+      "kind": "terms", "concreteBonus": 0.5, "weight": 1, "sources": ["wiki", "tropes"],
+      "terms": [
+        "revolutioniz(?:e|es|ed|ing)", "reshap(?:e|es|ed|ing)", "redefin(?:e|es|ed|ing)", "paradigm shift", "change the world",
+        "changed everything", "endless possibilities", "limitless", "unprecedented", "a new era", "next level",
+        "unlock (?:your|the|its|their) (?:full )?potential", "at the forefront", "world-class", "state-of-the-art",
+        "pivotal moment", "indelible mark", "(?:stands|serves) as a (?:testament|reminder|beacon)",
+        "fundamentally (?:change|changes|changed|transform|transforms|transformed|alter|alters|altered)",
+        "making a (?:real |lasting |meaningful )?(?:difference|impact)", "(?:profound|significant|lasting|meaningful) impact",
+        "plays? an? (?:crucial|vital|pivotal|key|significant|important|central|integral) role", "a (?:crucial|vital|pivotal|key) role in shaping"
+      ]
+    },
+    {
+      "id": "copula-avoid", "category": "grandiose", "label": "'Serves as' instead of 'is'",
+      "hint": "Use 'is'.",
+      "kind": "regex", "pattern": "\\b(?:serves|served|stands|stood|functions|acts) as (?:a|an|the)\\b",
+      "flags": "gi", "weight": 1, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "vague-attribution", "category": "grandiose", "label": "Vague attribution",
+      "hint": "Name the source, or state it as your own view.",
+      "kind": "regex", "pattern": "\\b(?:experts|researchers|studies|research|scientists|critics|observers|industry reports|many people|some people)\\s+(?:say|says|suggest|suggests|show|shows|argue|argues|agree|believe|note|have found|indicate|indicates)\\b",
+      "flags": "gi", "weight": 1, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "despite-challenges", "category": "grandiose", "label": "Despite these challenges",
+      "hint": "Say what the problem is and what was done about it.",
+      "kind": "regex", "pattern": "\\bdespite (?:these|its|their|the|such|all the|any) (?:challenges|obstacles|hurdles|setbacks)\\b",
+      "flags": "gi", "weight": 1.5, "sources": ["wiki", "tropes"]
+    },
+    {
+      "id": "think-of-it", "category": "grandiose", "label": "Think of it as",
+      "hint": "Explain it directly.",
+      "kind": "regex", "pattern": "\\bthink of (?:it|this|that) (?:as|like)\\b",
+      "flags": "gi", "weight": 1, "sources": ["tropes"]
+    },
+    {
+      "id": "array-of", "category": "vocabulary", "label": "Diverse array of",
+      "hint": "Name the items, or say 'many'.",
+      "kind": "regex", "pattern": "\\b(?:a|an) (?:rich|diverse|vast|wide|broad) (?:array|tapestry|range|variety|spectrum) of\\b",
+      "flags": "gi", "weight": 1, "sources": ["wiki"]
+    },
+    {
+      "id": "navigate-complexities", "category": "vocabulary", "label": "Navigate the complexities",
+      "hint": "Say what the person actually does.",
+      "kind": "regex", "pattern": "\\bnavigat(?:e|es|ed|ing) (?:the )?(?:complexities|challenges|landscape|intricacies|nuances|world)\\b",
+      "flags": "gi", "weight": 1.5, "sources": ["wiki", "mrshibly"]
+    }
+  ]
+}
