@@ -1,0 +1,341 @@
+{
+  "note": "Eval sources. Non-ASCII characters are JSON escapes.",
+  "sources": [
+    {
+      "id": "g01-blog-writing-things-down",
+      "genre": "blog post",
+      "tone": "casual",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a blog post introduction arguing that small teams should write things down. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "There is a persistent myth in the startup world that documentation is the enemy of speed. We are told to move fast, break things, and rely on the implicit knowledge shared over daily standups and casual hallway conversations. For a tiny team, this approach feels natural. You know everyone\u2019s strengths, you remember what was done last quarter, and you assume that if something happens, everyone will just know. But this comfort is dangerous. When information lives only in heads, it is fragile. It disappears when a key person takes a vacation, gets sick, or moves on to their next opportunity. It vanishes when a new hire joins and struggles to contribute because they cannot find the context for recent decisions. Writing things down is not about bureaucracy. It is about building a shared reality that outlasts any single individual. It transforms individual memory into collective institutional memory, ensuring that your company\u2019s trajectory remains clear, consistent, and accessible to everyone who needs it."
+    },
+    {
+      "id": "g02-linkedin-failed-launch",
+      "genre": "social post",
+      "tone": "professional",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a LinkedIn post about lessons learned from a failed product launch. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Launching a product that didn\u2019t meet expectations was a humbling experience, but it turned into a powerful learning curve. First, I realized the importance of validating assumptions early; we relied heavily on internal enthusiasm without enough real\u2011world user feedback, which led to misaligned features. Second, cross\u2011functional communication proved critical\u2014siloes between product, engineering, and marketing caused delays and mixed messaging that confused early adopters. Third, we underestimated the need for a phased rollout; a soft launch would have let us iterate based on actual usage data rather than guessing. Finally, we learned that post\u2011launch metrics must be tracked obsessively, not just sales numbers but also engagement, churn, and support tickets, to catch problems before they snowball. While the launch didn\u2019t succeed, the insights gained have reshaped our development process, making us more customer\u2011centric, data\u2011driven, and collaborative. Failure, when dissected honestly, can become the foundation for future success."
+    },
+    {
+      "id": "g03-college-changed-mind",
+      "genre": "college short answer",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a college application short answer about a time you changed your mind. Use [bracketed placeholders] for any personal details such as names, places, and dates. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "During my sophomore year of high school, I enrolled in a required AP Biology class, convinced it would be a straightforward, low\u2011effort course. Midway through the semester, the teacher introduced a project on genetic engineering that required extensive research, collaboration, and creative problem\u2011solving. I initially resisted the extra workload, fearing it would jeopardize my GPA. However, after a discussion with my science club advisor, I realized the project aligned with my growing interest in biotechnology and offered a tangible way to apply classroom concepts. I shifted my mindset from avoidance to proactive engagement, dedicating weekends to literature reviews and coordinating with peers. The project culminated in a presentation that earned top honors at the regional science fair. This experience taught me that changing my mind\u2014embracing challenge rather than shying away\u2014can unlock unexpected growth and success."
+    },
+    {
+      "id": "g04-product-bottle",
+      "genre": "product copy",
+      "tone": "casual",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write a product description for a stainless steel water bottle that keeps drinks cold for 24 hours and costs $34. About 120 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Stop letting lukewarm water ruin your morning. Our premium stainless steel bottle is engineered with double-wall vacuum insulation to keep your beverages ice-cold for a full twenty-four hours. Whether you are tackling an intense gym session, heading into a long day at the office, or embarking on a weekend hike, your drink stays refreshingly chilled until the last drop. Crafted from high-grade, food-safe stainless steel, this bottle is built to withstand daily wear and tear without compromising taste or durability. The sleek, fingerprint-resistant finish complements any lifestyle, while the leak-proof lid ensures your bag stays dry. At just thirty-four dollars, you are investing in a reliable companion that refuses to compromise on performance. Ditch the single-use plastics and embrace a sustainable, stylish solution that keeps you hydrated and cool all day long."
+    },
+    {
+      "id": "g05-email-expenses",
+      "genre": "work email",
+      "tone": "professional",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write an email to employees announcing a new expense policy that starts March 1 and requires receipts for anything over $75. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Dear Team,\n\nI\u2019m writing to let you know about an update to our expense policy that will take effect on March\u202f1. Going forward, any expense exceeding $75 will require a receipt for reimbursement. This change is intended to streamline our accounting processes and ensure greater accuracy in our financial reporting. When you submit a claim, please attach a clear, legible copy of the receipt\u2014whether scanned, photographed, or electronic\u2014and include a brief description of the purpose of the expense. Claims for amounts at or below $75 will continue to be processed without a receipt, as long as they are accompanied by a short justification.\n\nWe understand that this may require a slight adjustment to your routine, and we appreciate your cooperation. If you have any questions or need assistance with the new submission requirements, please reach out to the Finance team at finance@company.com. Thank you for your attention and continued commitment to keeping our operations running smoothly."
+    },
+    {
+      "id": "g06-reddit-cooking",
+      "genre": "forum post",
+      "tone": "casual",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write a Reddit post giving advice to college students who want to learn to cook. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "If you\u2019re a college student looking to learn how to cook, start by treating it like a skill you\u2019re building over time rather than a race to the perfect dish. Pick a few staple ingredients\u2014rice, pasta, a handful of veggies, beans, and a protein source\u2014and learn basic techniques such as saut\u00e9ing, boiling, and seasoning. Use the campus kitchen or a dorm kitchenette; even a single pot or pan can do wonders. Watch short, clear videos on YouTube or follow simple recipe blogs that break steps into bite\u2011sized chunks. Practice makes perfect, so don\u2019t be afraid to mess up\u2014each flop teaches you what not to do. Keep a small spice rack with salt, pepper, garlic powder, and maybe one or two dried herbs; they\u2019ll add instant flavor without clutter. Finally, set aside a consistent block of time, like a 30\u2011minute session on a weekday, to experiment and refine your dishes. With patience and persistence, you\u2019ll soon find cooking becoming a reliable, enjoyable part of your routine."
+    },
+    {
+      "id": "g07-cover-letter-analyst",
+      "genre": "cover letter",
+      "tone": "professional",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write one cover letter paragraph for a data analyst applying to a hospital, mentioning SQL and Tableau. About 130 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "I am excited to apply for the Data Analyst position at your hospital, as my passion for healthcare intersects perfectly with my technical skills. With a strong background in leveraging data to drive operational efficiency, I have extensively used SQL to query complex medical databases, ensuring accurate extraction of patient outcomes and resource utilization metrics. I then transformed this raw information into intuitive, actionable insights using Tableau dashboards that helped previous teams identify trends in patient wait times and readmission rates. I am eager to bring this same rigor and clarity to your organization, helping stakeholders make informed decisions that enhance patient care and streamline hospital workflows. My ability to bridge technical data processes with strategic healthcare goals makes me a strong fit for your team, and I look forward to the opportunity to contribute meaningfully to your mission."
+    },
+    {
+      "id": "g08-report-support",
+      "genre": "business report",
+      "tone": "professional",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write a quarterly customer support summary: median first response time fell from 9 hours to 4 hours and satisfaction reached 87%. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "This quarter our support team made notable strides in speed and satisfaction. The median first\u2011response time dropped dramatically, falling from nine hours at the start of the period to just four hours by the end. Faster replies have helped customers get the answers they need more promptly, reducing the time they spend waiting for assistance. In parallel, overall satisfaction climbed to 87\u202fpercent, reflecting the positive impact of quicker, more effective interactions. The improvement in response time was driven by a combination of better staffing schedules, refined routing rules, and the introduction of a new knowledge\u2011base that equips agents with ready\u2011to\u2011use solutions. Meanwhile, the rise in satisfaction scores is tied to consistent follow\u2011through, clearer communication, and a stronger focus on resolving issues on the first contact. These results underscore the value of ongoing process enhancements and reinforce our commitment to delivering responsive, high\u2011quality support to every customer."
+    },
+    {
+      "id": "g09-essay-libraries",
+      "genre": "essay",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write an essay paragraph about the role of public libraries in modern communities. About 170 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Public libraries today serve as vital community hubs that extend far beyond their traditional role as book repositories. They offer free access to a wide array of digital resources, including e\u2011books, audiobooks, streaming services, and online databases, thereby bridging the digital divide and empowering residents with tools for lifelong learning. Many libraries host workshops and classes on practical topics such as coding, financial literacy, and language learning, which help individuals acquire skills that enhance employability and personal growth. By providing quiet study spaces, collaborative workrooms, and high\u2011speed internet, libraries support students, freelancers, and small business owners alike, fostering a sense of belonging and encouraging intellectual curiosity. Cultural programs\u2014author talks, art exhibits, and community celebrations\u2014turn libraries into inclusive cultural centers that celebrate diversity and promote civic engagement. In times of crisis, libraries often become emergency resource centers, offering shelter, food distribution, and information on relief services. Thus, modern public libraries function as democratic spaces where knowledge, creativity, and community resilience converge, underscoring their indispensable role in building vibrant, connected societies."
+    },
+    {
+      "id": "g10-travel-lisbon",
+      "genre": "travel blog",
+      "tone": "casual",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a travel blog paragraph about a weekend in Lisbon. About 160 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "The moment our flight touched down in Lisbon, the city\u2019s unique rhythm began to pull us in. We spent our first evening wandering the steep, cobblestone streets of Alfama, where the warm glow of streetlamps spilled onto centuries-old facades. The air was thick with the scent of fresh pastries and salt from the nearby Tagus River. On Saturday morning, we took the vibrant 28 tram, rattling through the city\u2019s core and stopping at miradouros that offered breathtaking panoramic views. Each viewpoint revealed a new layer of red-tiled roofs cascading down towards the water. We paused in Chiado for espresso and sweet past\u00e9is de nata, their pastry shells shattering perfectly against the creamy custard. Sunday brought a slower pace as we strolled along the LX Factory waterfront, browsing indie bookshops and enjoying casual lunches. The weekend ended not with a rush, but with a lingering sense of peace, leaving us with a heart full of memories and a promise to return before the next season arrives."
+    },
+    {
+      "id": "g11-release-notes",
+      "genre": "release notes",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a release notes paragraph for version 3.2 of a notes app, which adds offline mode and dark mode. About 110 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Version 3.2 brings two highly requested features that dramatically improve the way you work with your notes. Offline mode now lets you create, edit, and organize entries without an internet connection, and everything syncs automatically the next time you\u2019re online, ensuring your data is always up\u2011to\u2011date. In addition, a sleek dark mode has been added, offering a low\u2011light friendly interface that reduces eye strain and conserves battery life on OLED screens. Both features are fully integrated across all platforms, so you can switch seamlessly between devices while keeping your workflow consistent. As always, performance optimizations and minor bug fixes accompany the update, delivering a smoother, more reliable experience overall."
+    },
+    {
+      "id": "g12-nursing-statement",
+      "genre": "personal statement",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a personal statement paragraph about why the writer wants to study nursing. Use [bracketed placeholders] for personal details. About 170 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "From a young age, I have been drawn to the compassionate nature of nursing, believing that caring for others is both a privilege and a responsibility. My volunteer experience at [local hospital] exposed me to the profound impact that skilled, empathetic nurses have on patients\u2019 recovery journeys, and it cemented my resolve to pursue this path. I am fascinated by the blend of science, communication, and problem\u2011solving that nursing demands, and I thrive in environments where I can apply evidence\u2011based knowledge while maintaining a human touch. In my role as a caregiver for my [family member], I witnessed first\u2011hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations. I am eager to study nursing at [university], where the curriculum\u2019s emphasis on clinical practice and interprofessional collaboration aligns with my goal of becoming a well\u2011rounded clinician. Ultimately, I want to contribute to a healthcare system that values holistic, patient\u2011centered care, and I am committed to lifelong learning and advocacy for those in need."
+    },
+    {
+      "id": "g13-newsletter-garden",
+      "genre": "newsletter",
+      "tone": "casual",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write the opening of a monthly newsletter with gardening tips for October. About 140 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "The air has finally turned crisp, and the garden is preparing for its rest. October marks the transition from vibrant growth to dormancy, a time to reflect on the season\u2019s bounty and prepare the soil for spring. Now is the perfect moment to tackle those autumn cleanups. Clear away spent annuals to prevent disease overwintering, but leave some seed heads standing for birds and beneficial insects. Be sure to divide overgrown perennials like hostas and daylilies while the soil is still workable. This is also the ideal window for planting spring bulbs. Tuck those tulip and daffodil crows into the earth before the ground freezes, ensuring a spectacular explosion of color when the snow melts. Don\u2019t forget to mulch your beds to protect roots from frost heave. Take a moment to enjoy the rusty hues of the falling leaves; they are the garden\u2019s final, elegant performance before the winter sleep."
+    },
+    {
+      "id": "g14-academic-sleep",
+      "genre": "academic",
+      "tone": "academic",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write an academic paragraph on how sleep affects memory consolidation. Do not cite specific studies. About 160 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Sleep plays a pivotal role in the consolidation of memories, transforming fragile, newly acquired information into stable, long\u2011term representations. During sleep, especially in the slow\u2011wave and rapid\u2011eye\u2011movement stages, neuronal activity patterns that were established during wakeful learning are reactivated, allowing synaptic connections to be selectively strengthened or weakened. This reactivation facilitates the integration of new memories with existing knowledge networks, enhancing retrieval accuracy and reducing interference. Moreover, the neurochemical environment of sleep\u2014characterized by reduced acetylcholine and elevated noradrenaline\u2014creates optimal conditions for protein synthesis and structural remodeling at the synapse, processes essential for durable memory traces. The temporal sequencing of sleep stages further refines consolidation, with slow\u2011wave sleep predominantly supporting declarative memories and REM sleep contributing to procedural and emotional memory integration. Consequently, disruptions to sleep architecture impair these mechanisms, leading to diminished learning efficiency and poorer recall, underscoring sleep\u2019s indispensable contribution to cognitive performance."
+    },
+    {
+      "id": "g15-apology-shipping",
+      "genre": "customer email",
+      "tone": "professional",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write a customer apology email about a delayed shipment of order #48213. About 130 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Dear Valued Customer,\n\nI sincerely apologize for the delay in shipping your order #48213. We understand how important it is for you to receive your items on time, and we regret that we have fallen short of that expectation.\n\nOur team is currently working to resolve the issue and expedite the delivery. We expect your package to arrive within the next 48 hours. As a token of our appreciation for your patience, we would like to offer you a 10% discount on your next purchase. Please use the code THANKS10 at checkout.\n\nThank you for your understanding and continued support. If you have any further questions, feel free to reply to this email or call our customer service line at 1\u2011800\u2011555\u20111234.\n\nSincerely,\n\n[Your Name]  \nCustomer Service Team"
+    },
+    {
+      "id": "g16-graduation-speech",
+      "genre": "speech",
+      "tone": "casual",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write an excerpt from a high school graduation speech. About 160 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Four years ago, we sat in these same seats, nervous and eager, wondering if we belonged here. Today, we stand together, not just as students, but as a family forged through late-night study sessions, shared laughter in the cafeteria, and the quiet comfort of knowing someone truly understands your struggles. We have grown in ways we never anticipated, learning that failure is not the end but a necessary step toward wisdom. The world outside these walls is vast and often intimidating, but you do not have to face it alone. Look to your left and right; these are your allies, your friends, and your future partners in navigating life\u2019s complexities. Carry with you the kindness we showed one another and the resilience we built together. As you walk out of these doors, remember that your journey is just beginning. Be brave, be curious, and be kind. We will miss you dearly, but we are even more proud of who you have become. Congratulations, Class of 2024. Go out there and make a difference."
+    },
+    {
+      "id": "g17-review-ramen",
+      "genre": "review",
+      "tone": "casual",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write a restaurant review of a small ramen shop. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "The tiny ramen shop tucked behind the laundromat feels like a secret worth sharing. The moment you step inside, the aroma of simmering pork broth hits you, warm and inviting, while the modest wooden counter and a handful of stools create an intimate, unpretentious vibe. I ordered the shoyu ramen, and the broth was a masterclass in balance\u2014salty, slightly sweet, and layered with a subtle hint of caramelized onions. The noodles were perfectly chewy, holding onto the soup without turning mushy, and the topping of tender chashu, soft\u2011boiled egg, and a sprinkling of fresh scallions added texture and color. Service was swift and friendly; the chef even gave a quick tip on how to sip the broth before slurping. Prices are modest, making it an easy go\u2011to for a comforting bowl after a long day. This modest spot proves that great ramen doesn\u2019t need a flashy setting, just dedication and flavor."
+    },
+    {
+      "id": "g18-book-review",
+      "genre": "review",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write a book review paragraph about a mystery novel. Refer to the book only as [Title] and the author only as [Author]. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "The suspense in [Title] is a masterclass in subtlety, with [Author] weaving a web of intrigue that keeps readers guessing until the very end. From the opening pages, the protagonist\u2019s seemingly ordinary life is disrupted by a mysterious disappearance, setting the stage for a series of clues that appear both mundane and cryptic. [Author] excels at crafting atmospheric scenes that feel both intimate and expansive, using the setting as a character in its own right. The pacing is deliberate yet relentless, with each chapter revealing just enough to propel the plot forward while leaving ample room for speculation. Dialogue is sharp and purposeful, and the secondary characters are richly drawn, each harboring secrets that deepen the mystery. By the conclusion, the narrative resolves with a twist that is both surprising and inevitable, affirming [Author]\u2019s skill in balancing tension and payoff. This novel is a compelling addition to any mystery enthusiast\u2019s collection."
+    },
+    {
+      "id": "g19-explainer-api",
+      "genre": "explainer",
+      "tone": "neutral",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Explain what an API is to a complete beginner. About 160 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "An API, or Application Programming Interface, acts as a bridge that allows different software programs to communicate with each other. Think of it like a waiter in a restaurant. You, the customer, want specific food items, but you do not go into the kitchen to cook them yourself. Instead, you tell the waiter what you want. The waiter takes your order to the kitchen, where they prepare the meal. Then, the waiter brings the finished dish back to your table. In this scenario, you are one piece of software, the kitchen is another software system, and the waiter is the API. It handles the request, retrieves the data or service you need, and delivers it to you without you needing to know the complex details of how the kitchen operates. This separation keeps systems organized and secure. When you check the weather on your phone, an API fetches that data from a weather service and displays it for you. This seamless interaction happens millions of times daily, powering apps, websites, and smart devices. By standardizing how these requests and responses are handled, APIs make modern digital life possible and efficient for everyone."
+    },
+    {
+      "id": "g20-grant-garden",
+      "genre": "grant proposal",
+      "tone": "professional",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a grant proposal summary for a community garden project requesting $12,000. About 160 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "The proposed community garden will transform an under\u2011utilized lot in the heart of our neighborhood into a vibrant, sustainable space where residents of all ages can grow fresh produce, learn horticultural skills, and strengthen social ties. Over a twelve\u2011month period we will prepare the soil, install raised beds, a rain\u2011water harvesting system, compost bins, and a small greenhouse to extend the growing season. Workshops on organic gardening, nutrition, and environmental stewardship will be offered monthly, encouraging participation from schools, senior centers, and local nonprofits. The $12,000 request will cover site preparation ($3,200), materials for beds, irrigation, and tools ($4,500), greenhouse construction and compost infrastructure ($2,300), educational program supplies ($1,000), and a part\u2011time garden coordinator ($1,000) to manage volunteers and coordinate events. By creating a resilient, community\u2011owned food source, the garden will improve food security, promote healthy lifestyles, and foster a sense of ownership and pride among residents, laying the groundwork for long\u2011term ecological and social benefits."
+    },
+    {
+      "id": "g21-hr-hybrid",
+      "genre": "announcement",
+      "tone": "professional",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write an HR announcement about a new hybrid work schedule with three office days a week. About 140 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "We are excited to announce a new hybrid work schedule that balances in\u2011office collaboration with the flexibility of remote work. Starting next month, each employee will be required to work from the office three days a week. The specific days will be determined by your team lead, but we encourage a consistent schedule that aligns with project milestones and team meetings. On the remaining two days, you may work remotely, provided you are available for virtual communication during core business hours. This hybrid model supports our commitment to teamwork, innovation, and work\u2011life balance. All employees will receive guidance on setting up a productive home workspace and will have access to the necessary technology and support. We will review the schedule after six months and welcome feedback to ensure it meets everyone\u2019s needs. Thank you for your cooperation and dedication as we continue to evolve our workplace culture."
+    },
+    {
+      "id": "g22-podcast-freelance",
+      "genre": "podcast description",
+      "tone": "casual",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write a podcast episode description about personal finance for freelancers. About 120 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Uncertain income is the biggest hurdle for many freelancers, yet it does not have to mean financial chaos. In this episode, we break down practical strategies for managing cash flow when your earnings fluctuate month to month. We discuss how to build a realistic budget that accounts for lean months, the importance of setting aside taxes from day one, and why an emergency fund is your best friend. You will learn how to separate personal and business accounts to keep your finances clear and stress-free. Whether you are just starting your freelance journey or have been independent for years, these actionable tips will help you gain control over your money and build long-term financial security on your own terms. Tune in for straightforward advice that cuts through the noise and focuses on what actually works for self-employed professionals."
+    },
+    {
+      "id": "g23-marathon-post",
+      "genre": "social post",
+      "tone": "casual",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write a personal social media post about finishing a first marathon. About 120 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "I can\u2019t believe it\u2019s over\u2014I just crossed the finish line of my first marathon! The early morning chill, the steady rhythm of my shoes on the pavement, and the countless miles of training all flashed by in a single surge of adrenaline. When I saw the crowd cheering at mile 20, I felt a mix of exhaustion and pure exhilaration, and the final stretch felt like a dream I didn\u2019t want to end. Crossing that tape was more than a personal triumph; it was a reminder that dedication, patience, and a little bit of stubbornness can turn an impossible goal into a reality. Thank you to everyone who cheered, encouraged, and believed in me\u2014you made every step worth it. On to the next challenge!"
+    },
+    {
+      "id": "g24-history-printing",
+      "genre": "history essay",
+      "tone": "academic",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a professional writer who produces polished, engaging content. [user] Write a history essay paragraph about the impact of the printing press. About 170 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "The invention of the printing press by Johannes Gutenberg in the mid\u2011fourteenth century revolutionized the flow of information and catalyzed profound social, cultural, and political transformations across Europe and beyond. By enabling the mass production of books, pamphlets, and newspapers, the press broke the monopoly of manuscript copying held by monasteries and guilds, dramatically reducing the cost and time required to produce written material. This democratization of knowledge accelerated the spread of literacy, allowing a broader segment of the population to engage with scientific ideas, religious texts, and literary works. The rapid dissemination of the Bible in vernacular languages, for example, not only challenged the Catholic Church\u2019s interpretive authority but also fueled the Reformation, illustrating how printed words could mobilize collective dissent. In the scientific realm, the press facilitated the swift exchange of discoveries, exemplified by the widespread circulation of Copernicus\u2019s *De revolutionibus* and later, Newton\u2019s *Principia*, which helped standardize scientific discourse. Moreover, the press\u2019s role in disseminating political pamphlets and news reports fostered an informed public sphere, laying the groundwork for modern democratic practices. Thus, Gutenberg\u2019s invention did not merely transform printing; it reshaped the very structure of knowledge, power, and society."
+    },
+    {
+      "id": "g25-postmortem-cert",
+      "genre": "internal memo",
+      "tone": "professional",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write a postmortem summary of a 2-hour outage on June 12 caused by an expired TLS certificate. About 160 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "On June 12, our platform experienced a two-hour outage affecting all users. The root cause was an expired TLS certificate that prevented secure connections from being established. Our monitoring systems detected the spike in failed handshakes, and the incident response team immediately investigated. We quickly identified that the certificate had lapsed due to a gap in our automated renewal process.\n\nTo resolve the issue, the infrastructure team issued a new certificate and deployed it across all load balancers. Verification confirmed that services were fully operational within forty-five minutes of the fix being applied. The remaining time was spent monitoring system stability and communicating status updates to our customer base.\n\nWhile the service disruption was brief, it highlighted a critical vulnerability in our certificate management workflow. We have since implemented stricter automated checks and added redundant alerts to ensure any upcoming expiration triggers immediate action. Additionally, we have updated our runbooks to include faster verification steps for certificate deployments. We apologize for the inconvenience and are committed to strengthening our infrastructure to prevent similar issues in the future."
+    },
+    {
+      "id": "g26-thanks-mentor",
+      "genre": "personal note",
+      "tone": "casual",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write a thank-you note to a mentor who helped the writer get their first job. About 110 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Thank you for believing in me when I was still figuring out my path. Your guidance, patience, and honest feedback turned countless doubts into confidence, and it was your encouragement that helped me land my first job. I still remember our late\u2011night brainstorming sessions, the r\u00e9sum\u00e9 tweaks, and the mock interviews that made me feel prepared and poised. Your willingness to share your own experiences\u2014and to listen without judgment\u2014made all the difference. I\u2019m grateful for the doors you opened, the lessons you taught, and the example you set as a leader and a friend. I hope to pay it forward and help others the way you helped me."
+    },
+    {
+      "id": "g27-fitness-strength",
+      "genre": "article",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You write clear, friendly content for a general audience. [user] Write the introduction to an article on the benefits of strength training after 40. About 150 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "When you hit your forties, many of us start to notice subtle changes\u2014slower recovery, a dip in energy, or that stubborn belly fat that seems to resist every diet. It\u2019s easy to blame hormones or a busy schedule, but the truth is that our bodies still have plenty of potential if we give them the right stimulus. Strength training\u2014lifting weights, using resistance bands, or even body\u2011weight exercises\u2014offers a powerful antidote to the age\u2011related decline in muscle mass and bone density. By challenging the muscles, you not only sculpt a more toned physique but also boost metabolism, improve joint stability, and reduce the risk of chronic conditions. The best part is that you can start with simple movements and gradually increase intensity, making it accessible for anyone over 40. Embracing resistance training isn\u2019t just about looking good; it\u2019s about feeling stronger, healthier, and more confident every day."
+    },
+    {
+      "id": "g28-scholarship-challenge",
+      "genre": "scholarship essay",
+      "tone": "neutral",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write a scholarship essay paragraph about overcoming a challenge. Use [bracketed placeholders] for personal details. About 170 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Navigating the complexities of [specific challenge, e.g., a severe chronic illness or a family financial crisis] initially felt like an insurmountable wall, shifting my perspective on what it means to succeed. Before this experience, I believed that stability was a prerequisite for growth, but living through [brief description of the hardship] forced me to redefine my priorities and resilience. I learned that adversity is not merely an obstacle to be avoided, but a crucible that forges character. During the months of [specific time frame or event], I had to abandon my previous routine and find new ways to manage [specific responsibility, e.g., schoolwork and caregiving]. This required immense discipline and adaptability, pushing me to develop a structured system for balancing my academic goals with my personal duties. I discovered that my ability to remain calm under pressure and communicate effectively with mentors and peers became my greatest assets. This journey did not just survive; it transformed me into a more empathetic and determined individual. Now, I approach every challenge with the confidence that I can adapt, learn, and thrive, regardless of the circumstances. This resilience is not just a personal trait but a tool I hope to use in my future career to support others facing similar hardships, proving that my background is a source of strength rather than a limitation."
+    },
+    {
+      "id": "g29-faq-password",
+      "genre": "help article",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write an FAQ answer explaining how to reset a password on a company portal. About 100 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "To reset your password on the company portal, start by navigating to the login page and clicking the \u201cForgot Password?\u201d link located beneath the sign\u2011in fields. Enter the email address associated with your account and submit the form. An automated message will be sent to that address containing a secure reset link; open the email and click the link within the allotted time frame, typically fifteen minutes. You will be taken to a page where you can type a new password, confirm it, and optionally answer a security question. After saving the changes, return to the login screen and sign in with your new credentials. If you do not receive the email, check your spam folder or contact IT support for assistance."
+    },
+    {
+      "id": "g30-opinion-remote",
+      "genre": "opinion",
+      "tone": "neutral",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "prompt": "[system] You are a helpful assistant. [user] Write an opinion paragraph on remote work versus working in an office. About 160 words. Plain text paragraphs only: no title, no headings, no markdown, no bullet points.",
+      "text": "Remote work offers a level of flexibility that traditional office settings simply cannot match. Employees can structure their days around personal commitments, reduce commuting stress, and often experience a better work\u2011life balance. The ability to work from anywhere also opens up talent pools beyond geographic constraints, allowing companies to hire the best candidates regardless of location. However, the lack of face\u2011to\u2011face interaction can hinder spontaneous collaboration and make it harder to build a cohesive company culture. In an office, the physical proximity encourages quick brainstorming sessions, clearer communication, and stronger team bonds. The shared environment also provides clearer boundaries between work and home life, which can boost focus and productivity for some individuals. Ultimately, the best approach blends the strengths of both models: leveraging remote work\u2019s flexibility while maintaining regular in\u2011person gatherings to preserve connection, collaboration, and a unified organizational identity."
+    },
+    {
+      "id": "c01-email-onboarding",
+      "genre": "work email",
+      "tone": "professional",
+      "prompt": "Write a welcome email to a new hire in typical AI-assistant style, about 130 words.",
+      "text": "Hi Jordan,\n\nWelcome to the team! We're thrilled to have you on board and can't wait to see the unique perspective you'll bring to our growing organization. Your first week is designed to help you hit the ground running \u2014 from meeting key stakeholders to getting familiar with our tools and processes.\n\nOn Monday, you'll start with a comprehensive orientation session at 9:30 a.m., followed by lunch with your onboarding buddy, Maria Lopez. Throughout the week, you'll also have the opportunity to shadow team members, explore our documentation, and set up your development environment.\n\nPlease don't hesitate to reach out if you have any questions along the way. We're here to support you every step of the journey. Once again, welcome aboard!\n\nBest regards,\nSam",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c02-essay-social-media",
+      "genre": "essay",
+      "tone": "neutral",
+      "prompt": "Write an essay paragraph on social media and teenagers in typical AI-assistant style, about 150 words.",
+      "text": "In today's digital age, social media has become an integral part of teenagers' lives, shaping how they communicate, learn, and see themselves. Platforms like Instagram and TikTok offer a powerful space for creativity and connection, allowing young people to share their voices with the world. However, it's important to recognize that these benefits come with significant challenges. Constant exposure to curated images can foster unrealistic expectations, fueling anxiety and low self-esteem. Moreover, the endless scroll is designed to capture attention, often at the expense of sleep and face-to-face relationships. Ultimately, social media is not inherently good or bad \u2014 it is a tool whose impact depends on how it is used. By fostering digital literacy and encouraging healthy boundaries, parents and educators can help teenagers navigate this complex landscape and harness its potential for good.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c03-product-headphones",
+      "genre": "product copy",
+      "tone": "casual",
+      "prompt": "Write product copy for wireless headphones in typical AI-assistant style, about 110 words.",
+      "text": "Elevate your listening experience with the AuraSound X2 wireless headphones. Designed for those who demand more from their music, the X2 delivers rich, immersive sound that brings every note to life. With up to 40 hours of battery life, you can enjoy your favorite playlists from sunrise to sunset and beyond. Advanced noise cancellation lets you escape the chaos of your daily commute, while plush memory-foam ear cushions ensure all-day comfort. Whether you're working, traveling, or simply unwinding, the X2 seamlessly adapts to your lifestyle. It's not just a pair of headphones \u2014 it's your gateway to a world of sound. Experience the difference today.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c04-reddit-job-advice",
+      "genre": "forum post",
+      "tone": "casual",
+      "prompt": "Write a Reddit reply giving advice on a first job in typical AI-assistant style, about 140 words.",
+      "text": "Great question, and congrats on landing your first job! Starting a new role can feel overwhelming, but here are a few things that really helped me navigate those early months.\n\nFirst, don't be afraid to ask questions. Nobody expects you to know everything on day one, and asking thoughtful questions actually shows that you're engaged and eager to learn. Second, take notes religiously. You'll be absorbing a ton of information, and having a reference will save you countless headaches down the road. Third, focus on building genuine relationships with your coworkers. Those connections will be invaluable throughout your career.\n\nUltimately, remember that everyone was new once. Be patient with yourself, stay curious, and embrace the learning process. You've got this!",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c05-report-sales",
+      "genre": "business report",
+      "tone": "professional",
+      "prompt": "Write a short sales report summary in typical AI-assistant style with specific numbers, about 130 words.",
+      "text": "The third quarter marked a pivotal period of growth for the Northeast region. Total revenue reached $4.2 million, representing a 12% increase compared to the same period last year. This impressive performance was driven by several key factors, including the successful launch of our premium subscription tier, enhanced customer retention efforts, and a strategic expansion into two new markets.\n\nNotably, customer churn decreased from 8.1% to 6.4%, underscoring the effectiveness of our renewed focus on customer success. However, it is worth noting that acquisition costs rose by 9%, highlighting the need for more efficient marketing strategies moving forward. Overall, the results demonstrate strong momentum and position the region well for continued success in the fourth quarter.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c06-college-why-major",
+      "genre": "college short answer",
+      "tone": "neutral",
+      "prompt": "Write a college short answer about why the student wants to study computer science, typical AI style, using [placeholders] for personal details, about 150 words.",
+      "text": "Ever since I wrote my first line of code in [grade or age], I have been fascinated by the power of technology to transform the world around us. What began as a simple curiosity quickly blossomed into a deep passion for problem-solving and innovation. Through [specific project or class], I discovered that computer science is not just about writing code; it is about creating meaningful solutions that make a real difference in people's lives.\n\nAt [University Name], I am eager to delve deeper into fields like artificial intelligence and human-computer interaction. I am particularly drawn to [specific program or professor], which aligns perfectly with my goal of building accessible technology. Ultimately, I believe that studying computer science will empower me to turn my passion into purpose and contribute to a brighter, more connected future.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c07-blog-productivity",
+      "genre": "blog post",
+      "tone": "casual",
+      "prompt": "Write a productivity blog intro in typical AI-assistant style, about 140 words.",
+      "text": "Have you ever wondered why some people seem to get so much done while others struggle to keep up? The secret isn't working longer hours \u2014 it's working smarter. In this fast-paced world, productivity has become more than just a buzzword; it's an essential skill for success in both our personal and professional lives.\n\nThe good news is that boosting your productivity doesn't require a complete overhaul of your routine. Small, intentional changes can have a profound impact on how you manage your time and energy. From prioritizing your most important tasks to minimizing distractions and building sustainable habits, there are countless strategies you can implement today.\n\nIn this post, we'll explore five proven techniques that can help you unlock your full potential and reclaim control of your day.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c08-history-railroads",
+      "genre": "history essay",
+      "tone": "academic",
+      "prompt": "Write an academic-style paragraph about the transcontinental railroad in typical AI-assistant style, about 150 words.",
+      "text": "The completion of the first transcontinental railroad in 1869 stands as a testament to American ambition and ingenuity. Connecting the eastern rail network to the Pacific coast, the railroad dramatically reduced travel time across the continent from months to roughly a week. This monumental achievement not only facilitated the movement of goods and people but also played a crucial role in shaping the economic landscape of the nation. However, it is essential to acknowledge that this progress came at a profound human cost. Thousands of Chinese immigrants endured grueling conditions and discrimination while building the Central Pacific line, and the railroad accelerated the displacement of Native American communities. Thus, the legacy of the transcontinental railroad is a complex tapestry of innovation, exploitation, and transformation that continues to shape our understanding of the period.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c09-linkedin-promotion",
+      "genre": "social post",
+      "tone": "professional",
+      "prompt": "Write a LinkedIn post announcing a promotion in typical AI-assistant style, about 120 words.",
+      "text": "I'm thrilled to share that I've been promoted to Senior Product Manager at Brightline Health!\n\nThis journey has been nothing short of transformative. Over the past three years, I've had the privilege of working alongside an incredibly talented team, tackling complex challenges and delivering products that truly make a difference in patients' lives.\n\nNone of this would have been possible without the unwavering support of my mentors, colleagues, and friends. A special thank you to Dana Whitfield for believing in me and pushing me to grow every single day.\n\nAs I step into this new role, I'm excited to continue driving innovation, fostering collaboration, and building solutions that matter. Here's to the next chapter!\n\n#Leadership #ProductManagement #Growth",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c10-explainer-compound",
+      "genre": "explainer",
+      "tone": "neutral",
+      "prompt": "Explain compound interest to a beginner in typical AI-assistant style, about 140 words.",
+      "text": "Compound interest is one of the most powerful concepts in personal finance, and understanding it can transform the way you think about saving. At its core, compound interest means earning interest not only on your original deposit but also on the interest you've already earned. Over time, this creates a snowball effect that can significantly accelerate the growth of your money.\n\nFor example, imagine you invest $1,000 at an annual interest rate of 5%. After the first year, you'll have $1,050. In the second year, you earn 5% on $1,050, not just the original $1,000, bringing your total to $1,102.50. While the difference may seem small at first, it becomes substantial over decades.\n\nThe key takeaway? Start saving early, stay consistent, and let time do the heavy lifting.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c11-review-cafe",
+      "genre": "review",
+      "tone": "casual",
+      "prompt": "Write a cafe review in typical AI-assistant style, about 120 words.",
+      "text": "Nestled in the heart of downtown, The Daily Grind is a true hidden gem for coffee lovers. From the moment you step inside, you're greeted by the warm aroma of freshly roasted beans and a cozy, inviting atmosphere. The baristas are not only friendly but also genuinely passionate about their craft, taking the time to recommend drinks tailored to your taste.\n\nI ordered the lavender oat latte, and it was nothing short of exceptional \u2014 perfectly balanced, smooth, and subtly sweet. The pastries, baked fresh every morning, are equally impressive. Whether you're looking for a quiet place to work or a spot to catch up with friends, The Daily Grind delivers an experience that keeps you coming back for more.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    },
+    {
+      "id": "c12-memo-security",
+      "genre": "internal memo",
+      "tone": "professional",
+      "prompt": "Write an internal memo about mandatory security training in typical AI-assistant style, about 130 words.",
+      "text": "As part of our ongoing commitment to safeguarding our organization, all employees are required to complete the annual cybersecurity awareness training by November 15. In an era where cyber threats are becoming increasingly sophisticated, it is crucial that every team member understands their role in protecting sensitive information.\n\nThe training consists of four short modules covering phishing, password management, data handling, and incident reporting. It takes approximately 45 minutes to complete and can be accessed through the Learning Portal at any time. Employees who complete the training will also receive a certificate for their records.\n\nWe appreciate your cooperation in helping us maintain a secure and resilient workplace. If you have any questions, please feel free to reach out to the IT Security team.",
+      "generator": "claude-opus-5-5 (written in the build session)"
+    }
+  ]
+}
