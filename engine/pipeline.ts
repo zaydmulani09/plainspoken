@@ -80,6 +80,8 @@ interface Candidate {
   words: number;
   inRange: boolean;
   density: number;
+  // Density without groups of three carried over from the source.
+  gateDensity: number;
   remainingTells: TellNote[];
   missing?: string[];
   added?: string[];
@@ -93,7 +95,7 @@ const MIN_WORDS_TO_REWRITE = 6;
 // The writer is asked for the target range (within 10 percent). A candidate
 // only fails on length outside the wider hard range, so it never has to pad
 // a paragraph whose filler it cut.
-function rangeFor(n: number): [number, number] {
+export function rangeFor(n: number): [number, number] {
   return [Math.max(1, Math.min(Math.floor(n * 0.9), n - 2)), Math.max(Math.ceil(n * 1.1), n + 2)];
 }
 function hardRangeFor(n: number): [number, number] {
@@ -121,7 +123,7 @@ function shuffle<T>(xs: T[]): T[] {
   return a;
 }
 
-function tellNotes(r: LintReport): TellNote[] {
+export function tellNotes(r: LintReport): TellNote[] {
   const seen = new Set<string>();
   const notes: TellNote[] = [];
   for (const h of r.hits) {
@@ -225,8 +227,8 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     emit({ type: "stage", i, stage: "writing" });
     // Two drafts run about 2.6 tokens per source word; a cut-off reply is
     // retried with double the budget.
-    const maxOut = Math.round(3 * n) + 500;
-    const maxRepair = Math.round(2 * n) + 400;
+    const maxOut = Math.round(2.6 * n) + 600;
+    const maxRepair = Math.round(1.4 * n) + 500;
     let texts: string[] = [];
     if (mode === "light") {
       const j = parseJson<{ candidates: { edits: { n: number; text: string }[] }[] }>(
@@ -256,20 +258,27 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     if (!texts.length) throw new ProviderError("bad_output", "the writer returned no drafts");
 
     const assess = (t: string): Candidate => {
-      const text = t.trim();
+      // Dashes and odd hyphens are typography; fix them here instead of spending a repair.
+      const text = stripBanned(t.trim());
       const frozen = checkFrozen(para, text, spans);
       const w = countWords(text);
       const l = lint(text);
+      // A group of three copied from the source is three claims, not a habit
+      // the draft picked up; repairs cannot cut it without losing one.
+      const src = para.toLowerCase();
+      const carried = (h: LintReport["hits"][number]) => h.category === "triads" && src.includes(h.text.toLowerCase());
+      const own = l.hits.filter((h) => !carried(h));
+      const gate = w ? ((l.score - l.hits.filter(carried).reduce((a, h) => a + h.weight, 0)) / w) * 100 : 0;
       return {
         text, frozen, bannedOk: bannedChars(text).ok, words: w, inRange: w >= hard[0] && w <= hard[1],
-        density: l.density, remainingTells: tellNotes(l),
+        density: l.density, gateDensity: gate, remainingTells: tellNotes({ ...l, hits: own }),
       };
     };
 
     const judgeMeaning = async (cands: Candidate[]) => {
       const labels = cands.map((_, k) => `R${k + 1}`);
       const m = parseJson<{ claims: { id: string; text: string }[]; results: { label: string; missing: string[]; added: string[] }[] }>(
-        await call("judge", MEANING_SYSTEM, meaningPrompt(rid, para, cands.map((c, k) => ({ label: labels[k], text: c.text })), claims), SCHEMAS.meaning, 2500 + 4 * n, "medium"),
+        await call("judge", MEANING_SYSTEM, meaningPrompt(rid, para, cands.map((c, k) => ({ label: labels[k], text: c.text })), claims), SCHEMAS.meaning, 900 + 3 * n),
       );
       const claimText = new Map((m.claims ?? []).map((c) => [c.id, c.text]));
       base.claims = Math.max(base.claims, claims?.length ?? m.claims?.length ?? 0);
@@ -296,10 +305,10 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     };
 
     const passes = (c: Candidate) => c.frozen.ok && c.bannedOk && c.inRange && c.missing !== undefined && !c.missing.length && !c.added?.length;
-    // A draft should also cut most of the tells. A near copy of the source
+    // A draft should also cut most of the tells (to 35% of the source). A near copy of the source
     // passes every meaning check, so without this it can win.
-    const tellTarget = Math.max(1.5, 0.3 * pl.density);
-    const tellsOk = (c: Candidate) => mode === "light" || c.density <= tellTarget;
+    const tellTarget = Math.max(2, 0.35 * pl.density);
+    const tellsOk = (c: Candidate) => mode === "light" || c.gateDensity <= tellTarget;
     const combined = (c: Candidate) =>
       (c.quality ?? 5) - 0.4 * c.density - 3 * (c.missing?.length ?? 0) - 3 * (c.added?.length ?? 0) - 3 * c.frozen.missing.length - 3 * c.frozen.added.length - (c.bannedOk ? 0 : 5) - (c.inRange ? 0 : 2);
     const bestOf = (cs: Candidate[]) => [...cs].sort((a, b) => combined(b) - combined(a))[0];

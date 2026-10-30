@@ -51,7 +51,7 @@ const sleep = (ms: number, signal?: AbortSignal) =>
 // ---------- Groq (OpenAI-compatible chat completions) ----------
 
 export const GROQ_MODELS: Record<Role, string[]> = {
-  writer: ["qwen/qwen3.8-27b", "openai/gpt-oss-120b"],
+  writer: ["openai/gpt-oss-120b", "qwen/qwen3.8-27b"],
   judge: ["openai/gpt-oss-20b", "openai/gpt-oss-120b"],
 };
 
@@ -125,6 +125,10 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         if (isOss) {
           body.reasoning_effort = o.effort ?? "low";
           body.include_reasoning = false;
+        } else if (o.effort === "medium" || o.effort === "high") {
+          // Qwen has reasoning on or off; keep it out of the reply.
+          body.reasoning_effort = "default";
+          body.reasoning_format = "hidden";
         } else body.reasoning_effort = "none";
         if (o.schema) {
           body.response_format = isOss
@@ -164,8 +168,8 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
           if (process.env.PLAINSPOKEN_DEBUG) console.error(model, res.status, errBody.slice(0, 600));
           if (res.status === 400 && o.schema && attempt < 3) {
             // Structured-output validation failures come back as 400; retry.
-            // An empty failed generation means reasoning used up the budget.
-            if (/"failed_generation":""/.test(errBody)) maxTokens = Math.min(maxTokens * 2, 8000);
+            // An empty or truncated generation means the budget ran out.
+            if (/"failed_generation":""|max completion tokens reached/.test(errBody)) maxTokens = Math.min(maxTokens * 2, 8000);
             await sleep(300, o.signal);
             continue;
           }
