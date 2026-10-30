@@ -93,11 +93,21 @@ Return {"results": [{"id": <claim number>, "status": "kept" | "changed" | "missi
   return out;
 }
 
+type Verdict = "win" | "tie" | "loss";
+
 // Returns the rewrite's result against the original: "win", "tie" or "loss".
-// The order of the two versions is random per call.
-export async function pairwise(p: Provider, tone: Tone, original: string, rewrite: string): Promise<{ result: "win" | "tie" | "loss"; rewriteWas: "A" | "B"; reason: string }> {
+// The judge sees both orders; a verdict that flips with the order counts as
+// a tie, so position bias cannot decide it.
+export async function pairwise(p: Provider, tone: Tone, original: string, rewrite: string): Promise<{ result: Verdict; orders: [Verdict, Verdict]; reason: string }> {
+  const first = await pairOnce(p, tone, original, rewrite, true);
+  const second = await pairOnce(p, tone, original, rewrite, false);
+  const score = { win: 1, tie: 0, loss: -1 }[first.result] + { win: 1, tie: 0, loss: -1 }[second.result];
+  const result: Verdict = score > 0 ? "win" : score < 0 ? "loss" : "tie";
+  return { result, orders: [first.result, second.result], reason: first.reason };
+}
+
+async function pairOnce(p: Provider, tone: Tone, original: string, rewrite: string, rewriteFirst: boolean): Promise<{ result: Verdict; reason: string }> {
   const rid = requestId();
-  const rewriteFirst = (globalThis.crypto.getRandomValues(new Uint8Array(1))[0] & 1) === 1;
   const [a, b] = rewriteFirst ? [rewrite, original] : [original, rewrite];
   const user = `${dataNotice(rid, ["version-A", "version-B"])}
 
@@ -115,6 +125,6 @@ Return {"reason": "<one sentence>", "winner": "A" | "B" | "tie"}.`;
   const r = await p.call({ role: "judge", system: PAIR_SYSTEM, user, schema: SCHEMA_PAIR, maxTokens: 1500 });
   const j = parseJson<{ winner: string; reason: string }>(r.text);
   const rewriteWas = rewriteFirst ? "A" : "B";
-  const result = j.winner === "tie" ? "tie" : j.winner === rewriteWas ? "win" : "loss";
-  return { result, rewriteWas, reason: j.reason ?? "" };
+  const result: Verdict = j.winner === "tie" ? "tie" : j.winner === rewriteWas ? "win" : "loss";
+  return { result, reason: j.reason ?? "" };
 }

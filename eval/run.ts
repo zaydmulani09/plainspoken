@@ -11,6 +11,7 @@ import { humanize } from "../engine/pipeline";
 import { groqProvider } from "../engine/providers";
 import { countWords, mattr } from "../engine/text";
 import { loadCorpus, readJson, writeJson, type Source } from "./corpus";
+import { aiProbability, DETECTOR } from "./detector";
 import { checkClaims, extractClaims, pairwise, type ClaimCheck } from "./judge";
 
 // Eight sources spread over generators and genres, used for tuning rounds.
@@ -37,7 +38,7 @@ interface TextResult {
   reduction: number;
   claims: number;
   check: ClaimCheck;
-  pair: { result: "win" | "tie" | "loss"; rewriteWas: string; reason: string };
+  pair: { result: "win" | "tie" | "loss"; orders: string[]; reason: string };
   sentenceCv: [number, number];
   mattr: [number, number];
   banned: ReturnType<typeof bannedChars>;
@@ -45,6 +46,7 @@ interface TextResult {
   calls: number;
   tokens: number;
   seconds: number;
+  detector?: [number, number];
 }
 
 function arg(name: string, fallback?: string) {
@@ -130,6 +132,11 @@ async function main() {
     }),
   );
 
+  // Local detector, scored at summary time (no API quota).
+  for (const r of results) r.detector ??= [r3(await aiProbability(r.original)), r3(await aiProbability(r.rewrite))];
+  const flaggedBefore = results.filter((r) => r.detector![0] > 0.5).length;
+  const flaggedAfter = results.filter((r) => r.detector![1] > 0.5).length;
+
   const missingIds = sources.filter((s) => !results.some((r) => r.id === s.id)).map((s) => s.id);
   const totalClaims = sum(results.map((r) => r.claims));
   const kept = sum(results.map((r) => r.check.kept));
@@ -162,7 +169,12 @@ async function main() {
       for (const [k, v] of Object.entries(r.fallbacks)) acc[k] = (acc[k] ?? 0) + v;
       return acc;
     }, {}),
-    detector: "not measured",
+    detector: {
+      ...DETECTOR,
+      meanAiProbability: [r3(mean(results.map((r) => r.detector![0]))), r3(mean(results.map((r) => r.detector![1])))],
+      flaggedAi: [flaggedBefore, flaggedAfter],
+      note: "Flagged means AI probability above 0.5. See eval/results/detector-sanity.json for its scores on human text.",
+    },
     usage: { calls: sum(results.map((r) => r.calls)), tokens: sum(results.map((r) => r.tokens)) },
   };
   const targets = [
@@ -176,7 +188,7 @@ async function main() {
   const md = [
     `# Eval round ${round} (${summary.date}, ${summary.set}, ${results.length} texts)`,
     "",
-    `Writer ${WRITER}, pipeline judge ${PIPELINE_JUDGE}, eval judge ${EVAL_JUDGE} (Groq). Mode: Standard. Detector: not measured.`,
+    `Writer ${WRITER}, pipeline judge ${PIPELINE_JUDGE}, eval judge ${EVAL_JUDGE} (Groq). Mode: Standard.`,
     "",
     "| Metric | Result | Target | Met |",
     "| --- | --- | --- | --- |",
@@ -184,6 +196,7 @@ async function main() {
     `| Tell density per 100 words | ${summary.tellReduction.densityBefore} before, ${summary.tellReduction.densityAfter} after | | |`,
     `| Sentence length spread (CV) | ${summary.sentenceCv.before} before, ${summary.sentenceCv.after} after | | |`,
     `| MATTR (window 50) | ${summary.mattr.before} before, ${summary.mattr.after} after | | |`,
+    `| Detector: ${DETECTOR.name}, texts flagged AI | ${flaggedBefore}/${results.length} before, ${flaggedAfter}/${results.length} after (mean AI probability ${summary.detector.meanAiProbability[0]} before, ${summary.detector.meanAiProbability[1]} after) | not a target | |`,
     "",
     missingIds.length ? `Not finished: ${missingIds.join(", ")}` : "",
   ].join("\n");
