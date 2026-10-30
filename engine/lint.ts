@@ -86,6 +86,16 @@ const IDIOM_RANGES = /^(?:bad to worse|time to time|start to finish|head to toe|
 const CHANGE_VERB = /\b(?:went|go|goes|going|gone|grew|grow|grows|growing|moved|move|moves|moving|changed|shifted|rose|fell|increased|decreased|dropped|jumped|climbed|switched|transitioned|drove|drive|traveled|travelled|flew|walked|commute[sd]?|ran|run|turned|evolved|upgraded|downgraded|migrated|converted|translated|promoted)\s+(?:\w+\s+)?$/i;
 const RANGE_LEAD = /\b(?:everything|anything|all|ranging|spanning|varying|vary|varies|range|ranges)\s+$/i;
 
+// Abstract nouns and quality adjectives, by suffix or from a short list of the
+// usual ones, plus hyphenated compounds like "data-driven".
+const ABSTRACT_SUFFIX = /(?:tion|sion|ity|ness|ment|ance|ence|ship|ism|ive|ous|ful|less|ical|able|ible|ent|ant|ic)$/i;
+const ABSTRACT_WORDS = new Set(
+  "trust growth purpose focus speed value impact change power balance vision quality insight clarity meaning depth scale reach care joy hope love freedom courage strength wisdom energy passion progress success excellence".split(" "),
+);
+function isAbstract(item: string): boolean {
+  return item.split(" ").some((w) => w.includes("-") || ABSTRACT_SUFFIX.test(w) || ABSTRACT_WORDS.has(w.toLowerCase()));
+}
+
 function overlaps(a: { start: number; end: number }, b: { start: number; end: number }) {
   return a.start < b.end && b.start < a.end;
 }
@@ -108,6 +118,9 @@ function specialHits(t: TellDef, text: string, sents: Span[], proseSents: Span[]
         const items = [before[1], m[1], after[1]];
         // Lists of names or numbers are content, not rhythm.
         if (items.some((x) => /\d|[A-Z]/.test(x.slice(1))) || /^[A-Z]/.test(m[1]) || /^[A-Z]/.test(after[1])) continue;
+        // So are concrete lists ("product, engineering, and marketing"). The
+        // tell is a run of abstract qualities, so two of the three must be.
+        if (items.filter(isAbstract).length < 2) continue;
         const start = s.start + m.index! - before[1].length;
         const end = s.start + m.index! + m[0].length + after[1].length;
         hits.push(mk(start, end));

@@ -22,6 +22,13 @@ describe("lint", () => {
     }
   });
 
+  it("flags abstract triads but not concrete lists", () => {
+    expect(ids("We value innovation, collaboration, and growth.")).toContain("triad-abstract");
+    expect(ids("The team is customer-centric, data-driven, and collaborative.")).toContain("triad-abstract");
+    expect(ids("Silos between product, engineering, and marketing caused delays.")).not.toContain("triad-abstract");
+    expect(ids("Buy eggs, flour, and butter on the way home.")).not.toContain("triad-abstract");
+  });
+
   it("flags em dashes, false ranges, bold, and double hedges", () => {
     expect(ids("The plan\u{2014}simple as it is\u{2014}works.")).toContain("dash");
     expect(ids("We cover everything from onboarding to offboarding.")).toContain("false-range");
