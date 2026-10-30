@@ -4,36 +4,36 @@ Single source of truth for the build. Survives context compaction.
 
 ## Decisions (fixed)
 - Server model route: Groq (GROQ_API_KEY). No ANTHROPIC_API_KEY in local env or any Vercel project (checked 2026-10-30).
-- Writer: openai/gpt-oss-120b. Judge: openai/gpt-oss-20b (fallback qwen/qwen3.8-27b). Eval judge: qwen/qwen3.8-27b (independent of pipeline judge and writer).
-- Groq free tier: 30 RPM, 1K RPD, 8K TPM, 200K TPD per model. Cached prompt tokens do not count.
+- Vercel AI Gateway: retested 2026-10-30 with the project OIDC token, 403 "requires a valid credit card on file". Not free, not used.
+- Groq models on the key (2026-10-30): qwen/qwen3.8-27b, openai/gpt-oss-120b, openai/gpt-oss-20b (plus safeguard/whisper/guard models, unused).
+- Writer: qwen/qwen3.8-27b (fallback gpt-oss-120b). Pipeline judge: openai/gpt-oss-20b (fallback gpt-oss-120b). Eval judge: openai/gpt-oss-120b; in eval the pipeline is pinned to qwen + 20b so the eval judge is independent.
+- Groq free tier per model: 30 RPM, 1K RPD, 8K TPM, 200K TPD. Admission counts prompt + max tokens; the limiter then books actual usage.
 - Anthropic path (server key if ever set, or BYOK): writer claude-sonnet-5-5, judge claude-haiku-5-5, no temperature, effort via output_config, thinking left adaptive.
-- Vercel project: plainspoken-app (plainspoken.vercel.app is taken). Repo: zaydmulani09/plainspoken.
+- Fallback policy: if no draft passes meaning after 2 repairs, keep the original paragraph (never ship a meaning change); a meaning-safe draft that only misses length is kept and flagged.
+- Run deadline 235 s (Vercel maxDuration 300); paragraphs not started by then are kept as written and flagged.
+- Vercel project: plainspoken-app, live at https://plainspoken-app.vercel.app. Repo: https://github.com/zaydmulani09/plainspoken (public, Git connected).
+- Firewall: custom rule "Rate limit humanize per IP", 10 requests / 600 s per IP on /api/humanize, deny. Published 2026-10-30.
 - Commits: Zayd Mulani <zaydmulani@gmail.com>, no trailers.
-- Node: winget install at %LOCALAPPDATA%/Microsoft/WinGet/Packages/OpenJS.NodeJS.LTS*/node-v24.20.0-win-x64 (not on PATH in this shell; source scratchpad env.sh).
+- Node: winget install, not on PATH in this shell; source scratchpad env.sh.
 
-## UI direction (user request 2026-10-30: very Apple, polished, no AI slop; use emilkowalski/skills apple-design + emil-design-eng)
-- system-ui for controls; ui-serif / New York stack for the edited text. Size-specific tracking (-0.02em large, ~0 body), tabular-nums for counts.
-- Neutrals: #fbfbfd bg / #1d1d1f text; dark #000 bg, #161617 surfaces, #f5f5f7 text. One accent: Apple link blue (#0066cc light, #2997ff dark). No gradients.
-- Translucent sticky toolbar (backdrop-filter blur+saturate), scroll-edge fade instead of hard divider.
-- Segmented controls (rounded-rect, not pills) with sliding thumb, transform-only transitions, ease-out cubic-bezier(0.23,1,0.32,1), 150-250ms.
-- :active scale(0.97); hover gated by (hover:hover) and (pointer:fine); never scale(0); no transition: all.
-- prefers-reduced-motion, prefers-reduced-transparency, prefers-contrast handled.
-- Still banned by brief: purple/blue gradients, glass cards, emoji icons, centered hero + 3 cards, pill buttons, italic accent words, 01/02/03 labels, monospace labels, cream bg.
+## UI direction (user request 2026-10-30: very Apple, polished, no AI slop; emilkowalski/skills apple-design + emil-design-eng)
+- system-ui for controls; ui-serif / New York, then Newsreader, for edited text. Tabular numbers for counts.
+- Neutrals #fbfbfd / #1d1d1f, dark #000 / #161617 / #f5f5f7. One accent: #0066cc light, #2997ff dark.
+- Translucent sticky toolbar, segmented controls with sliding thumb, :active scale(0.97), hover gated by pointer:fine.
+- Reduced motion, reduced transparency, increased contrast handled.
 
 ## Open
-- [ ] Scaffold Next.js app, git init, public repo
-- [ ] engine/tells.json with sources
-- [ ] engine: text, freeze, lint, voice, diff, guard
-- [ ] providers (Groq, Anthropic, BYOK), pipeline (rewrite, verify, repair), routes /api/humanize (NDJSON stream) and /api/analyze
-- [ ] limits: 1,500 words server key, per-IP firewall rule, daily cap
-- [ ] eval corpus 40+ texts, eval runner, metrics
-- [ ] UI: two panes, controls, streaming progress, highlights, tell report, meaning badge, copy, word counts, light/dark
-- [ ] Playwright screenshots desktop + 390px, fix issues
-- [ ] unit tests (lint, freeze), CI workflow
-- [ ] tuning rounds (max 6), record in eval/ROUNDS.md
-- [ ] retest Vercel AI Gateway without payment, record result
-- [ ] deploy production, env vars, firewall, live e2e (600-word sample), streaming + limits verified
-- [ ] README with real eval table
-- [ ] dash grep clean
+- [ ] Eval rounds on dev set (max 6), log in eval/ROUNDS.md
+- [ ] Final full eval run (42 texts) with shipped prompts
+- [ ] README with real eval table, limits, scoring, self-host, Vercel, BYOK
+- [ ] Redeploy, live e2e incl. 600-word sample, confirm streaming + limits (413, firewall)
+- [ ] CI green on GitHub
+- [ ] Final dash grep, TASKS closed, project memory saved
 
 ## Done
+- Scaffold, engine (text, freeze, tells.json with sources, lint, guard, diff, voice), providers, pipeline, CLI
+- API routes: /api/humanize (NDJSON), /api/analyze, /api/status; limits (1,500 words, IP, daily cap)
+- UI (Apple direction), headless screenshots desktop + 390px light/dark, no overflow, no console errors
+- Unit tests (18), Playwright e2e (5), CI workflow
+- Eval corpus: 42 sources from 4 generators (eval/corpus.json), runner + independent judge
+- Public repo pushed, Vercel project + GROQ_API_KEY env + production deploy, firewall rule
