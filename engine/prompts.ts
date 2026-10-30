@@ -32,11 +32,13 @@ Meaning comes first:
 - Stay inside the word range you are given. Never pad to reach it: no empty phrases, no added sentences. If cutting filler makes the text short, state the source's own points more fully instead.
 
 Style:
-- Use plain, specific words, the ones a person would say out loud. Prefer concrete wording over abstract wording for the same idea.
-- Vary sentence length on purpose. Mix short sentences with longer ones. Never start two sentences in a row with the same word.
+- Use plain, specific words, the ones a person would say out loud. Swap stock words for the everyday word: "fosters" becomes "builds" or "encourages", "empowers" becomes "lets" or "helps", "vital" becomes "important" or goes, "utilize" becomes "use".
+- Keep the prose flowing. Join closely related points in one sentence with plain links (and, but, so, because, which, while). Split a sentence only when it is long and tangled. One short sentence for emphasis is good; a string of short, choppy sentences reads worse than the source.
+- Let sentence length vary naturally, and never start two sentences in a row with the same word.
 - Cut filler, throat-clearing, signposting, and closing lines that only repeat what came before (their claims are already stated, so nothing is lost).
 - Commit to statements. Keep a hedge only where the source is genuinely unsure.
-- Keep the source's register unless the tone setting asks for a change.
+- Keep the source's register, formality, and point of view unless the tone setting asks for a change. Do not turn a formal text chatty or an impersonal one personal.
+- Read the result as a careful reader would: it should be at least as clear and easy to follow as the source.
 
 Never write any of these:
 - em dashes or en dashes (use commas, periods, colons, or parentheses)
@@ -113,7 +115,7 @@ function header(w: WriterInput): string {
 }
 
 function tellLines(t: TellNote[]): string {
-  if (!t.length) return "No specific tells were found; focus on rhythm and plain wording.";
+  if (!t.length) return "No specific tells were found; focus on flow and plain wording.";
   return "Tells found in the source (fix every one):\n" + t.map((x) => `- "${x.text}": ${x.label}${x.hint ? `. ${x.hint}` : ""}`).join("\n");
 }
 
@@ -235,7 +237,7 @@ Return {"claims": [{"id": "c1", "text": "..."}], "results": [{"label": "${rewrit
 }
 
 export const QUALITY_SYSTEM = `You are an experienced editor. You see several versions of the same passage in random order. Score each version from 1 to 10 on how well it reads as natural writing by a skilled person: clear, specific, easy to read aloud, varied rhythm, correct grammar, and a good fit for the stated tone.
-Lower the score for padding, vague filler, and the habits of machine-written prose: stock words (delve, pivotal, foster, landscape, journey), "not X but Y" framing, rhythmic groups of three, sentence-opening "Furthermore" or "Moreover", stated morals, closing summaries, and grand claims with no detail. Lower it just as much for awkward or ungrammatical sentences, comma splices, and lines that add nothing.
+Lower the score for padding, vague filler, and the habits of machine-written prose: stock words (delve, pivotal, foster, landscape, journey), "not X but Y" framing, rhythmic groups of three, sentence-opening "Furthermore" or "Moreover", stated morals, closing summaries, and grand claims with no detail. Lower it just as much for awkward or ungrammatical sentences, comma splices, strings of short choppy sentences, a register that no longer fits, and lines that add nothing.
 Longer is not better. Meaning is checked separately, so judge only the writing. Use the full scale and give equal scores only when two versions are truly equal. Return JSON only.`;
 
 export function qualityPrompt(rid: string, tone: Tone, versions: { label: string; text: string }[]): string {

@@ -227,7 +227,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     // retried with double the budget.
     const maxOut = Math.round(3 * n) + 500;
     const maxRepair = Math.round(2 * n) + 400;
-    let texts: string[];
+    let texts: string[] = [];
     if (mode === "light") {
       const j = parseJson<{ candidates: { edits: { n: number; text: string }[] }[] }>(
         await call("writer", WRITER_SYSTEM, lightPrompt(winput, sents.map((s) => s.text), pl.flagged), SCHEMAS.edits, maxOut),
@@ -242,10 +242,18 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
         return out;
       });
     } else {
-      const j = parseJson<{ candidates: string[] }>(await call("writer", WRITER_SYSTEM, writerPrompt({ ...winput, claims }), SCHEMAS.candidates, maxOut));
-      texts = (j.candidates ?? []).filter((t) => typeof t === "string" && t.trim()).slice(0, 2);
+      // Models in JSON-object mode sometimes wrap each draft in an object; take
+      // its first string field. One retry if no draft comes back at all.
+      const asText = (c: unknown): string =>
+        typeof c === "string" ? c : c && typeof c === "object" ? ((Object.values(c).find((v) => typeof v === "string") as string | undefined) ?? "") : "";
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const j = parseJson<{ candidates: unknown[] }>(await call("writer", WRITER_SYSTEM, writerPrompt({ ...winput, claims }), SCHEMAS.candidates, maxOut));
+        texts = (Array.isArray(j.candidates) ? j.candidates : []).map(asText).filter((t) => t.trim()).slice(0, 2);
+        if (texts.length) break;
+      }
     }
-    if (!texts.length) texts = [para];
+    // Never let the source stand in for a draft: it would pass every check.
+    if (!texts.length) throw new ProviderError("bad_output", "the writer returned no drafts");
 
     const assess = (t: string): Candidate => {
       const text = t.trim();
@@ -261,7 +269,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     const judgeMeaning = async (cands: Candidate[]) => {
       const labels = cands.map((_, k) => `R${k + 1}`);
       const m = parseJson<{ claims: { id: string; text: string }[]; results: { label: string; missing: string[]; added: string[] }[] }>(
-        await call("judge", MEANING_SYSTEM, meaningPrompt(rid, para, cands.map((c, k) => ({ label: labels[k], text: c.text })), claims), SCHEMAS.meaning, 700 + 3 * n),
+        await call("judge", MEANING_SYSTEM, meaningPrompt(rid, para, cands.map((c, k) => ({ label: labels[k], text: c.text })), claims), SCHEMAS.meaning, 1200 + 3 * n, "medium"),
       );
       const claimText = new Map((m.claims ?? []).map((c) => [c.id, c.text]));
       base.claims = Math.max(base.claims, claims?.length ?? m.claims?.length ?? 0);
@@ -287,9 +295,19 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       }
     };
 
-    const passes = (c: Candidate) => c.frozen.ok && c.bannedOk && c.inRange && !c.missing?.length && !c.added?.length;
+    const passes = (c: Candidate) => c.frozen.ok && c.bannedOk && c.inRange && c.missing !== undefined && !c.missing.length && !c.added?.length;
+    // A draft should also cut most of the tells. A near copy of the source
+    // passes every meaning check, so without this it can win.
+    const tellTarget = Math.max(1.5, 0.3 * pl.density);
+    const tellsOk = (c: Candidate) => mode === "light" || c.density <= tellTarget;
     const combined = (c: Candidate) =>
-      (c.quality ?? 5) - 0.15 * c.density - 3 * (c.missing?.length ?? 0) - 3 * (c.added?.length ?? 0) - 3 * c.frozen.missing.length - 3 * c.frozen.added.length - (c.bannedOk ? 0 : 5) - (c.inRange ? 0 : 2);
+      (c.quality ?? 5) - 0.4 * c.density - 3 * (c.missing?.length ?? 0) - 3 * (c.added?.length ?? 0) - 3 * c.frozen.missing.length - 3 * c.frozen.added.length - (c.bannedOk ? 0 : 5) - (c.inRange ? 0 : 2);
+    const bestOf = (cs: Candidate[]) => [...cs].sort((a, b) => combined(b) - combined(a))[0];
+    const tellProblems = (c: Candidate): string[] => [
+      `These AI tells remain. Rewrite the sentences that contain them in plain words, keeping every claim and every listed item: ${c.remainingTells
+        .map((t) => `"${t.text}" (${t.label}${t.hint ? `: ${t.hint}` : ""})`)
+        .join("; ")}`,
+    ];
 
     const problemsOf = (c: Candidate): string[] => {
       const ps: string[] = [];
@@ -327,22 +345,28 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       await judgeMeaning(pool);
       all.push(...pool);
       const ok = pool.filter(passes);
-      if (ok.length > 1) await judgeQuality(ok);
-      if (ok.length) {
-        chosen = ok.sort((a, b) => combined(b) - combined(a))[0];
+      const done = ok.filter(tellsOk);
+      if (done.length > 1) await judgeQuality(done);
+      if (done.length) {
+        chosen = bestOf(done);
         break;
       }
       if (loops >= maxLoops) break;
-      const best = [...pool].sort((a, b) => combined(b) - combined(a))[0];
+      // Meaning holds but tells remain: repair the tells. Otherwise repair
+      // the hard failures of the best draft.
+      const best = ok.length ? bestOf(ok) : bestOf(pool);
       loops++;
       emit({ type: "stage", i, stage: "repairing" });
       const j = parseJson<{ text: string }>(
-        await call("writer", WRITER_SYSTEM, repairPrompt({ rid, tone: o.tone, paragraph: para, draft: best.text, problems: problemsOf(best), locked, range }), SCHEMAS.text, maxRepair),
+        await call("writer", WRITER_SYSTEM, repairPrompt({ rid, tone: o.tone, paragraph: para, draft: best.text, problems: ok.length ? tellProblems(best) : problemsOf(best), locked, range }), SCHEMAS.text, maxRepair),
       );
       pool = [assess(j.text ?? best.text)];
     }
 
     let fallback: ParagraphResult["fallback"] = null;
+    // Out of repairs: a draft that keeps the meaning but still has some tells
+    // is fine to use.
+    if (!chosen && all.some(passes)) chosen = bestOf(all.filter(passes));
     if (!chosen) {
       // A draft the judge cleared on meaning but that missed the length range
       // is still safe to use. Anything that changed the meaning is not: keep
