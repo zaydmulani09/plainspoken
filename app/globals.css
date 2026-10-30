@@ -1,0 +1,450 @@
+@import "tailwindcss";
+
+/* Tokens. Neutrals follow Apple's web palette; one accent (link blue). */
+:root {
+  --bg: #fbfbfd;
+  --surface: #ffffff;
+  --surface-2: #f5f5f7;
+  --text: #1d1d1f;
+  --text-2: #6e6e73;
+  --text-3: #86868b;
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  --accent: #0066cc;
+  --accent-hover: #0077ed;
+  --accent-tint: rgba(0, 113, 227, 0.1);
+  --accent-ink: #ffffff;
+  --tell: rgba(255, 149, 0, 0.2);
+  --tell-line: rgba(201, 105, 0, 0.55);
+  --ok: #1a7f37;
+  --warn: #b25000;
+  --warn-tint: rgba(255, 149, 0, 0.1);
+  --seg-track: rgba(118, 118, 128, 0.12);
+  --seg-thumb: #ffffff;
+  --seg-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+  --bar: rgba(255, 255, 255, 0.72);
+  --serif: ui-serif, "New York", var(--font-newsreader), Charter, Georgia, serif;
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --surface: #161617;
+    --surface-2: #1d1d1f;
+    --text: #f5f5f7;
+    --text-2: #a1a1a6;
+    --text-3: #86868b;
+    --line: rgba(255, 255, 255, 0.1);
+    --line-strong: rgba(255, 255, 255, 0.18);
+    --accent: #2997ff;
+    --accent-hover: #47a6ff;
+    --accent-tint: rgba(41, 151, 255, 0.16);
+    --accent-ink: #ffffff;
+    --tell: rgba(255, 159, 10, 0.22);
+    --tell-line: rgba(255, 179, 64, 0.6);
+    --ok: #30d158;
+    --warn: #ffb340;
+    --warn-tint: rgba(255, 159, 10, 0.12);
+    --seg-track: rgba(118, 118, 128, 0.24);
+    --seg-thumb: #636366;
+    --seg-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --bar: rgba(22, 22, 23, 0.72);
+    color-scheme: dark;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.47;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--accent-tint);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@layer components {
+  /* Translucent toolbar: content scrolls under it. */
+  .bar {
+    background: var(--bar);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Segmented control: rounded rectangle track with a sliding thumb. */
+  .seg {
+    position: relative;
+    display: inline-flex;
+    padding: 2px;
+    border-radius: 9px;
+    background: var(--seg-track);
+    isolation: isolate;
+  }
+  .seg-thumb {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+    border-radius: 7px;
+    background: var(--seg-thumb);
+    box-shadow: var(--seg-shadow);
+    transition: transform 220ms var(--ease-out);
+    z-index: -1;
+  }
+  .seg button {
+    position: relative;
+    flex: 1 1 0;
+    min-width: max-content;
+    height: 28px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.006em;
+    color: var(--text-2);
+    border-radius: 7px;
+    white-space: nowrap;
+    transition: color 150ms ease;
+  }
+  .seg button[aria-checked="true"] {
+    color: var(--text);
+  }
+  .seg button + button::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    bottom: 7px;
+    width: 1px;
+    background: var(--line-strong);
+    transition: opacity 150ms ease;
+  }
+  .seg button[aria-checked="true"]::before,
+  .seg button[aria-checked="true"] + button::before {
+    opacity: 0;
+  }
+  /* Before the thumb is measured, paint the selected segment itself. */
+  .seg:not([data-ready]) button[aria-checked="true"] {
+    background: var(--seg-thumb);
+    box-shadow: var(--seg-shadow);
+  }
+
+  /* Editor: a transparent textarea over a mirror that paints the tell marks.
+     Both share one grid cell, so the mirror sets the height. */
+  .editor {
+    min-height: 360px;
+  }
+  .editor-layer {
+    grid-area: 1 / 1;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+  div.editor-layer {
+    color: transparent;
+    pointer-events: none;
+  }
+  textarea.editor-layer {
+    height: 100%;
+    background: transparent;
+    color: var(--text);
+    caret-color: var(--accent);
+    resize: none;
+    overflow: hidden;
+    outline: none;
+  }
+  textarea.editor-layer::placeholder {
+    color: var(--text-3);
+  }
+  @media (max-width: 1023px) {
+    .editor {
+      min-height: 220px;
+    }
+  }
+
+  .tell-hl {
+    background: var(--tell);
+    box-shadow: inset 0 -1.5px 0 var(--tell-line);
+    border-radius: 2px;
+    color: inherit;
+  }
+
+  .sheet-dialog {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    width: calc(100% - 32px);
+    max-width: 520px;
+    max-height: calc(100dvh - 48px);
+    margin: auto;
+    overflow: visible;
+  }
+  .sheet-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.32);
+  }
+  .sheet-dialog[open]::backdrop {
+    animation: fade 200ms ease both;
+  }
+  .sheet-dialog .sheet {
+    border-radius: 14px;
+    max-height: calc(100dvh - 48px);
+    overflow: auto;
+  }
+  .sheet-dialog[open] .sheet {
+    animation: sheet-in 240ms var(--ease-out) both;
+  }
+  @media (max-width: 640px) {
+    .sheet-dialog {
+      width: 100%;
+      max-width: none;
+      margin: auto 0 0;
+    }
+    .sheet-dialog .sheet {
+      border-radius: 14px 14px 0 0;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .sheet-dialog[open] .sheet {
+      animation-name: sheet-up;
+    }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--seg-track);
+    transition: transform 160ms var(--ease-out), background-color 150ms ease, opacity 150ms ease;
+    user-select: none;
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .btn:disabled {
+    opacity: 0.4;
+  }
+  .btn-primary {
+    height: 36px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--accent-ink);
+    background: var(--accent);
+  }
+  .btn-plain {
+    background: transparent;
+    color: var(--accent);
+    padding: 0 6px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover:not(:disabled) {
+      background: rgba(118, 118, 128, 0.2);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+    .btn-plain:hover:not(:disabled) {
+      background: var(--accent-tint);
+    }
+  }
+
+  .pane {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+
+  .label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--text-2);
+  }
+
+  /* Serif reading surface shared by the editor, its overlay, and the output. */
+  .prose-edit {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.62;
+    letter-spacing: 0;
+    font-optical-sizing: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  @media (max-width: 640px) {
+    .prose-edit {
+      font-size: 17px;
+    }
+  }
+
+  .tell-mark {
+    background: var(--tell);
+    box-shadow: inset 0 -1.5px 0 var(--tell-line);
+    border-radius: 2px;
+    color: transparent;
+  }
+  .chg {
+    background: var(--accent-tint);
+    border-radius: 3px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--text);
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-tint);
+  }
+
+  .spinner {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line-strong);
+    border-top-color: var(--text-2);
+    animation: spin 800ms linear infinite;
+  }
+
+  .shimmer {
+    color: var(--text-3);
+    background: linear-gradient(90deg, transparent 0%, var(--surface-2) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: sweep 1.6s ease-in-out infinite;
+    border-radius: 4px;
+  }
+
+  .sheet {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .enter {
+    animation: enter 260ms var(--ease-out) both;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+@keyframes sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seg-thumb,
+  .btn {
+    transition: none;
+  }
+  .sheet-dialog[open] .sheet {
+    animation: fade 160ms ease both;
+  }
+  .enter {
+    animation: fade 160ms ease both;
+  }
+  .shimmer {
+    animation: none;
+  }
+  .spinner {
+    animation-duration: 2s;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .bar {
+    background: var(--bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --line: rgba(0, 0, 0, 0.3);
+    --line-strong: rgba(0, 0, 0, 0.45);
+    --text-2: #3a3a3c;
+  }
+}
