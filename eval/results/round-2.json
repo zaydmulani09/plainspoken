@@ -1,0 +1,393 @@
+{
+  "summary": {
+    "round": 2,
+    "date": "2026-10-30",
+    "set": "dev",
+    "texts": 5,
+    "missing": [
+      "c02-essay-social-media",
+      "c05-report-sales",
+      "c07-blog-productivity"
+    ],
+    "models": {
+      "writer": "openai/gpt-oss-120b",
+      "pipelineJudge": "openai/gpt-oss-20b",
+      "evalJudge": "qwen/qwen3.8-27b"
+    },
+    "tellReduction": {
+      "pooled": 0.558,
+      "meanPerText": 0.515,
+      "densityBefore": 4.862,
+      "densityAfter": 2.147
+    },
+    "claims": {
+      "total": 60,
+      "kept": 51,
+      "changed": 9,
+      "missing": 0,
+      "recall": 0.85,
+      "added": 3,
+      "textsWithAdditions": 2
+    },
+    "quality": {
+      "win": 2,
+      "tie": 1,
+      "loss": 2,
+      "winOrTie": 0.6
+    },
+    "length": {
+      "totalDrift": -0.11,
+      "meanAbsDrift": 0.109,
+      "within10": 3
+    },
+    "sentenceCv": {
+      "before": 0.227,
+      "after": 0.248
+    },
+    "mattr": {
+      "before": 0.864,
+      "after": 0.865
+    },
+    "bannedChars": 0,
+    "fallbacks": {},
+    "detector": {
+      "name": "TMR AI text detector (Oxidane/tmr-ai-text-detector)",
+      "build": "onnx-community/tmr-ai-text-detector-ONNX, fp32, transformers.js 4.3.1, CPU",
+      "url": "https://huggingface.co/Oxidane/tmr-ai-text-detector",
+      "meanAiProbability": [
+        0.984,
+        0.975
+      ],
+      "flaggedAi": [
+        5,
+        5
+      ],
+      "note": "Flagged means AI probability above 0.5. See eval/results/detector-sanity.json for its scores on human text."
+    },
+    "usage": {
+      "calls": 22,
+      "tokens": 44049
+    }
+  },
+  "results": [
+    {
+      "id": "g02-linkedin-failed-launch",
+      "genre": "social post",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Launching a product that didn\u2019t meet expectations was a humbling experience, but it turned into a powerful learning curve. First, I realized the importance of validating assumptions early; we relied heavily on internal enthusiasm without enough real\u2011world user feedback, which led to misaligned features. Second, cross\u2011functional communication proved critical\u2014siloes between product, engineering, and marketing caused delays and mixed messaging that confused early adopters. Third, we underestimated the need for a phased rollout; a soft launch would have let us iterate based on actual usage data rather than guessing. Finally, we learned that post\u2011launch metrics must be tracked obsessively, not just sales numbers but also engagement, churn, and support tickets, to catch problems before they snowball. While the launch didn\u2019t succeed, the insights gained have reshaped our development process, making us more customer\u2011centric, data\u2011driven, and collaborative. Failure, when dissected honestly, can become the foundation for future success.",
+      "rewrite": "Launching a product that fell short of expectations was humbling, yet it provided a clear learning path. I discovered early that we must validate assumptions with real-world user feedback instead of relying on internal enthusiasm, which had produced misaligned features. I also saw that communication across product, engineering, and marketing is essential; silos caused delays and mixed messages that confused early adopters. We missed the benefit of a phased rollout: a soft launch would have let us adjust the product based on actual usage data rather than guesswork. Now we track post-launch metrics obsessively, including engagement, churn, and support tickets, not merely sales figures, to spot problems before they grow. Although the launch failed, the insights have altered our development process, making it more customer-centric and collaborative. When examined honestly, such failures can become the basis for future success.",
+      "words": [
+        152,
+        139
+      ],
+      "drift": -0.086,
+      "density": [
+        4.39,
+        1.78
+      ],
+      "score": [
+        6.68,
+        2.47
+      ],
+      "reduction": 0.595,
+      "claims": 17,
+      "check": {
+        "kept": 16,
+        "changed": [
+          "The new process is more customer\u2011centric, data\u2011driven, and collaborative."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B uses a structured list format (First, Second, Third, Finally) that makes the specific lessons learned easier to scan and digest, which is more effective for a professional audience than the dense paragraph structure of Version A."
+      },
+      "sentenceCv": [
+        0.26,
+        0.239
+      ],
+      "mattr": [
+        0.946,
+        0.916
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 4,
+      "tokens": 8030,
+      "seconds": 184,
+      "detector": [
+        0.982,
+        0.974
+      ]
+    },
+    {
+      "id": "g09-essay-libraries",
+      "genre": "essay",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "Public libraries today serve as vital community hubs that extend far beyond their traditional role as book repositories. They offer free access to a wide array of digital resources, including e\u2011books, audiobooks, streaming services, and online databases, thereby bridging the digital divide and empowering residents with tools for lifelong learning. Many libraries host workshops and classes on practical topics such as coding, financial literacy, and language learning, which help individuals acquire skills that enhance employability and personal growth. By providing quiet study spaces, collaborative workrooms, and high\u2011speed internet, libraries support students, freelancers, and small business owners alike, fostering a sense of belonging and encouraging intellectual curiosity. Cultural programs\u2014author talks, art exhibits, and community celebrations\u2014turn libraries into inclusive cultural centers that celebrate diversity and promote civic engagement. In times of crisis, libraries often become emergency resource centers, offering shelter, food distribution, and information on relief services. Thus, modern public libraries function as democratic spaces where knowledge, creativity, and community resilience converge, underscoring their indispensable role in building vibrant, connected societies.",
+      "rewrite": "Public libraries now act as community hubs that go well beyond just holding books. They give free access to many digital resources, e-books, audiobooks, streaming services and online databases, helping close the digital gap and giving residents tools for lifelong learning. Libraries also run workshops and classes on practical subjects like coding, financial literacy and language learning, which boost employability and personal growth. With quiet study areas, collaborative workrooms and high-speed internet, they serve students, freelancers and small business owners, creating a sense of belonging and sparking curiosity. Cultural events such as author talks, art exhibits and community celebrations turn these spaces into inclusive cultural centers that celebrate diversity and encourage civic involvement. In crises, libraries become emergency resource sites, providing shelter, food distribution and information on relief services. Modern public libraries therefore function as democratic places where knowledge and community resilience meet, making them essential for building connected societies.",
+      "words": [
+        173,
+        150
+      ],
+      "drift": -0.133,
+      "density": [
+        9.18,
+        3.09
+      ],
+      "score": [
+        15.88,
+        4.64
+      ],
+      "reduction": 0.663,
+      "claims": 11,
+      "check": {
+        "kept": 7,
+        "changed": [
+          "This support fosters a sense of belonging and encourages intellectual curiosity.",
+          "In times of crisis, libraries often become emergency resource centers, offering shelter, food distribution, and information on relief services.",
+          "Modern public libraries function as democratic spaces where knowledge, creativity, and community resilience converge.",
+          "This underscores their indispensable role in building vibrant, connected societies."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more concise and direct, avoiding the slightly flowery and redundant phrasing found in Version B (e.g., 'vital community hubs that extend far beyond their traditional role as book repositories' vs. 'community hubs that go well beyond just holding books')."
+      },
+      "sentenceCv": [
+        0.224,
+        0.227
+      ],
+      "mattr": [
+        0.895,
+        0.899
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 2,
+      "tokens": 4366,
+      "seconds": 5,
+      "detector": [
+        0.987,
+        0.983
+      ]
+    },
+    {
+      "id": "g12-nursing-statement",
+      "genre": "personal statement",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "From a young age, I have been drawn to the compassionate nature of nursing, believing that caring for others is both a privilege and a responsibility. My volunteer experience at [local hospital] exposed me to the profound impact that skilled, empathetic nurses have on patients\u2019 recovery journeys, and it cemented my resolve to pursue this path. I am fascinated by the blend of science, communication, and problem\u2011solving that nursing demands, and I thrive in environments where I can apply evidence\u2011based knowledge while maintaining a human touch. In my role as a caregiver for my [family member], I witnessed first\u2011hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations. I am eager to study nursing at [university], where the curriculum\u2019s emphasis on clinical practice and interprofessional collaboration aligns with my goal of becoming a well\u2011rounded clinician. Ultimately, I want to contribute to a healthcare system that values holistic, patient\u2011centered care, and I am committed to lifelong learning and advocacy for those in need.",
+      "rewrite": "Caring for others has felt like both a privilege and a responsibility ever since I was a child, which is why nursing appeals to me. My time volunteering at [local hospital] let me see the real difference skilled, empathetic nurses make in patients\u2019 recoveries, and it solidified my resolve to pursue this career. I enjoy the blend of science and communication that nursing demands, especially when I can apply evidence-based knowledge without losing the human touch. While caring for my [family member], I experienced firsthand how clear, compassionate communication and quick interventions can alter a patient\u2019s trajectory. I am eager to study at [university] because its curriculum focuses on hands-on clinical work and interprofessional collaboration, exactly what I need to become a well-rounded clinician. I also value holistic, patient-centered care as a core principle of nursing. I hope to contribute to a healthcare system that puts patients first, and I remain dedicated to lifelong learning and advocacy for those in need.",
+      "words": [
+        178,
+        161
+      ],
+      "drift": -0.096,
+      "density": [
+        6.35,
+        2.81
+      ],
+      "score": [
+        11.3,
+        4.53
+      ],
+      "reduction": 0.558,
+      "claims": 6,
+      "check": {
+        "kept": 4,
+        "changed": [
+          "I am fascinated by the blend of science, communication, and problem\u2011solving that nursing demands, and I thrive in environments where I can apply evidence\u2011based knowledge while maintaining a human touch.",
+          "In my role as a caregiver for my [family member], I witnessed first\u2011hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations."
+        ],
+        "missing": [],
+        "added": [
+          "I enjoy the blend of science and communication that nursing demands, especially when I can apply evidence-based knowledge without losing the human touch.",
+          "While caring for my [family member], I experienced firsthand how clear, compassionate communication and quick interventions can alter a patient\u2019s trajectory."
+        ]
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "loss",
+          "win"
+        ],
+        "reason": "Version B is better written because it uses more precise and professional vocabulary (e.g., 'cemented,' 'recovery journeys,' 'timely interventions') and maintains a smoother, more cohesive flow, whereas Version A feels slightly more generic and choppy."
+      },
+      "sentenceCv": [
+        0.099,
+        0.234
+      ],
+      "mattr": [
+        0.858,
+        0.872
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 6,
+      "tokens": 14892,
+      "seconds": 360,
+      "detector": [
+        0.986,
+        0.97
+      ]
+    },
+    {
+      "id": "g19-explainer-api",
+      "genre": "explainer",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "An API, or Application Programming Interface, acts as a bridge that allows different software programs to communicate with each other. Think of it like a waiter in a restaurant. You, the customer, want specific food items, but you do not go into the kitchen to cook them yourself. Instead, you tell the waiter what you want. The waiter takes your order to the kitchen, where they prepare the meal. Then, the waiter brings the finished dish back to your table. In this scenario, you are one piece of software, the kitchen is another software system, and the waiter is the API. It handles the request, retrieves the data or service you need, and delivers it to you without you needing to know the complex details of how the kitchen operates. This separation keeps systems organized and secure. When you check the weather on your phone, an API fetches that data from a weather service and displays it for you. This seamless interaction happens millions of times daily, powering apps, websites, and smart devices. By standardizing how these requests and responses are handled, APIs make modern digital life possible and efficient for everyone.",
+      "rewrite": "An API, or Application Programming Interface, is a bridge that lets different software programs talk to each other. Imagine a waiter in a restaurant: you, the customer, order food without entering the kitchen, and the waiter carries your request to the chefs and brings the finished dish back. In that picture you are one piece of software, the kitchen is another system, and the waiter is the API. It takes your request, pulls the needed data or service, and returns it so you don\u2019t have to understand the kitchen\u2019s inner workings. This separation keeps each system organized and more secure. For example, when you check the weather on your phone, an API pulls the forecast from a weather service and shows it to you. That interaction happens millions of times a day, powering apps, websites and smart devices. By defining a common way to make requests and receive responses, APIs make modern digital life possible and efficient for everyone.",
+      "words": [
+        192,
+        159
+      ],
+      "drift": -0.172,
+      "density": [
+        1.56,
+        0.84
+      ],
+      "score": [
+        3,
+        1.34
+      ],
+      "reduction": 0.462,
+      "claims": 11,
+      "check": {
+        "kept": 10,
+        "changed": [
+          "This separation keeps systems organized and secure."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more concise and flows better, avoiding the repetitive, step-by-step breakdown of the analogy found in Version B."
+      },
+      "sentenceCv": [
+        0.42,
+        0.322
+      ],
+      "mattr": [
+        0.757,
+        0.787
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 2,
+      "tokens": 4355,
+      "seconds": 120,
+      "detector": [
+        0.979,
+        0.961
+      ]
+    },
+    {
+      "id": "g25-postmortem-cert",
+      "genre": "internal memo",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "On June 12, our platform experienced a two-hour outage affecting all users. The root cause was an expired TLS certificate that prevented secure connections from being established. Our monitoring systems detected the spike in failed handshakes, and the incident response team immediately investigated. We quickly identified that the certificate had lapsed due to a gap in our automated renewal process.\n\nTo resolve the issue, the infrastructure team issued a new certificate and deployed it across all load balancers. Verification confirmed that services were fully operational within forty-five minutes of the fix being applied. The remaining time was spent monitoring system stability and communicating status updates to our customer base.\n\nWhile the service disruption was brief, it highlighted a critical vulnerability in our certificate management workflow. We have since implemented stricter automated checks and added redundant alerts to ensure any upcoming expiration triggers immediate action. Additionally, we have updated our runbooks to include faster verification steps for certificate deployments. We apologize for the inconvenience and are committed to strengthening our infrastructure to prevent similar issues in the future.",
+      "rewrite": "On June 12, our platform suffered a two-hour outage that impacted every user. An expired TLS certificate blocked secure connections, and our monitoring tools flagged a surge in failed handshakes. The incident response team launched immediately an investigation, quickly traced the failure to a lapse in the automated renewal process, and began remediation fully.\n\nTo fix the outage, a new certificate was issued and deployed across every load balancer by the infrastructure team. Services returned to full operation in forty-five minutes, as confirmed by verification checks. Afterwards, we focused on observing system health and regularly updating our customers on the situation.\n\nAlthough the service outage lasted only minutes, it revealed a serious weakness in how we manage certificates. We responded by tightening automated validations and installing redundant alerts that fire as soon as a certificate approaches expiration. The runbooks were also revised to incorporate quicker verification procedures for deployments. We regret the inconvenience caused and are dedicated to reinforcing our infrastructure to avoid recurrence of such problems.",
+      "words": [
+        177,
+        167
+      ],
+      "drift": -0.056,
+      "density": [
+        3.13,
+        2.2
+      ],
+      "score": [
+        5.54,
+        3.68
+      ],
+      "reduction": 0.297,
+      "claims": 15,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "The service disruption was brief."
+        ],
+        "missing": [],
+        "added": [
+          "The incident response team began remediation fully."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is superior because it maintains a consistent timeline (acknowledging the two-hour outage and explaining the remaining time after the 45-minute fix), whereas Version A contains a logical contradiction by stating the outage lasted 'only minutes' after previously specifying it was two hours."
+      },
+      "sentenceCv": [
+        0.132,
+        0.217
+      ],
+      "mattr": [
+        0.864,
+        0.853
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 8,
+      "tokens": 12406,
+      "seconds": 539,
+      "detector": [
+        0.986,
+        0.985
+      ]
+    }
+  ]
+}

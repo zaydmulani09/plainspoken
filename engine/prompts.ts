@@ -2,6 +2,8 @@
 // providers can cache them; everything request-specific goes in the user
 // message, with pasted text wrapped in tags that carry a per-request random id.
 
+import { droppedWords } from "./text";
+
 export type Mode = "light" | "standard" | "deep";
 export type Tone = "casual" | "neutral" | "academic" | "professional";
 
@@ -27,7 +29,7 @@ Meaning comes first:
 - Copy every LOCKED span exactly, character for character.
 - Keep [bracketed placeholders] exactly as they are and never fill them in.
 - Keep every item when the source lists things. If a list of three reads like a rhythmic triplet, keep all three items and change the sentence around them (for example, pair two and give the third its own clause).
-- Keep the strength of each claim. "Important" stays important, "can" stays can, "some" stays some. "Highlights the importance of X" means X matters; it does not mean X is proven or required.
+- Keep the strength of each claim. "Important" stays important, "can" stays can, "some" stays some, "often" stays often. "Highlights the importance of X" means X matters; it does not mean X is proven or required.
 - Keep the source's person (I, we, you), tense, stance, and genre. An email stays an email. A list stays a list with the same markers.
 - Stay inside the word range you are given. Never pad to reach it: no empty phrases, no added sentences. If cutting filler makes the text short, state the source's own points more fully instead.
 
@@ -35,7 +37,7 @@ Style:
 - Use plain, specific words, the ones a person would say out loud. Swap stock words for the everyday word: "fosters" becomes "builds" or "encourages", "empowers" becomes "lets" or "helps", "vital" becomes "important" or goes, "utilize" becomes "use".
 - Keep the prose flowing. Join closely related points in one sentence with plain links (and, but, so, because, which, while). Split a sentence only when it is long and tangled. One short sentence for emphasis is good; a string of short, choppy sentences reads worse than the source.
 - Let sentence length vary naturally, and never start two sentences in a row with the same word.
-- Cut filler, throat-clearing, signposting, and closing lines that only repeat what came before (their claims are already stated, so nothing is lost).
+- Cut filler, throat-clearing, signposting that announces what is coming ("Let's dive in", "In this post"), and closing lines that only repeat what came before (their claims are already stated, so nothing is lost). Keep markers that organize a run of points, such as "First", "Second", and "Finally"; they help the reader.
 - Commit to statements. Keep a hedge only where the source is genuinely unsure.
 - Keep the source's register, formality, and point of view unless the tone setting asks for a change. Do not turn a formal text chatty or an impersonal one personal.
 - Read the result as a careful reader would: it should be at least as clear and easy to follow as the source.
@@ -179,7 +181,7 @@ export interface RepairInput {
 
 export function repairPrompt(r: RepairInput): string {
   return `Request ${r.rid}. Tone: ${TONE_GUIDE[r.tone]}
-The draft rewrite below has problems. Fix exactly these and keep the rest of the draft as it is:
+The draft rewrite below has problems. Fix each one, and rewrite the sentences you touch so they read naturally. Leave the other sentences as they are:
 ${r.problems.map((p) => `- ${p}`).join("\n")}
 Word range for the result: ${r.range[0]} to ${r.range[1]} words.
 ${r.locked.length ? `LOCKED spans, copy each exactly: ${JSON.stringify(r.locked)}` : ""}
@@ -218,6 +220,7 @@ Then, for each rewrite, report:
 - missing: ids of claims that are absent or whose meaning changed (including a weaker or stronger hedge, a changed number, a changed actor)
 - added: anything the rewrite states that the source does not say or clearly imply (new facts, details, examples, reasons, feelings, or stronger or broader claims). A role, job title, timeframe, or personal detail about the author or anyone else counts, even a small one like "As a product lead" or "recently".
 Rewording, reordering, merging sentences, changing tone, and cutting filler or a closing line that only repeats an earlier claim are all fine and are not problems.
+Each rewrite comes with the source words it does not use. Most are harmless swaps of wording. Check each one that could carry meaning, such as a hedge or frequency word ("often", "some", "may"), a list item, or a qualifier, and mark the claim missing if that meaning is gone.
 Return JSON only.`;
 
 export function meaningPrompt(rid: string, source: string, rewrites: { label: string; text: string }[], claims?: string[]): string {
@@ -229,7 +232,12 @@ Source:
 ${source}
 </source-${rid}>
 
-${rewrites.map((r) => `Rewrite ${r.label}:\n<rewrite-${r.label}-${rid}>\n${r.text}\n</rewrite-${r.label}-${rid}>`).join("\n\n")}
+${rewrites
+  .map((r) => {
+    const gone = droppedWords(source, r.text);
+    return `Rewrite ${r.label}:\n<rewrite-${r.label}-${rid}>\n${r.text}\n</rewrite-${r.label}-${rid}>${gone.length ? `\nSource words rewrite ${r.label} does not use: ${gone.join(", ")}` : ""}`;
+  })
+  .join("\n\n")}
 
 ${dataNotice(rid, tags)}
 

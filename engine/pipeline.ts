@@ -92,14 +92,14 @@ interface Candidate {
 
 const MIN_WORDS_TO_REWRITE = 6;
 
-// The writer is asked for the target range (within 10 percent). A candidate
-// only fails on length outside the wider hard range, so it never has to pad
-// a paragraph whose filler it cut.
+// The writer is asked for a range within 7 percent, since drafts run short. A
+// candidate only fails outside the hard range (14 percent), so it never has to
+// pad a paragraph whose filler it cut.
 export function rangeFor(n: number): [number, number] {
-  return [Math.max(1, Math.min(Math.floor(n * 0.9), n - 2)), Math.max(Math.ceil(n * 1.1), n + 2)];
+  return [Math.max(1, Math.min(Math.floor(n * 0.93), n - 2)), Math.max(Math.ceil(n * 1.07), n + 2)];
 }
 function hardRangeFor(n: number): [number, number] {
-  return [Math.max(1, Math.min(Math.floor(n * 0.8), n - 6)), Math.max(Math.ceil(n * 1.15), n + 5)];
+  return [Math.max(1, Math.min(Math.floor(n * 0.86), n - 6)), Math.max(Math.ceil(n * 1.14), n + 5)];
 }
 
 // Quotes and other frozen spans are copied verbatim, so normalize any dash in

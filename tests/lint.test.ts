@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { droppedWords } from "@/engine/text";
 import { lint, SOURCES, TELLS, tellReduction } from "@/engine/lint";
 
 const AI = `In today's fast-paced digital landscape, it's important to note that collaboration is crucial. Moreover, teams must foster trust, embrace change, and unlock potential. This isn't just about tools. It's about people. Ultimately, the key takeaway is clear: we must delve into the rich tapestry of modern work, underscoring its pivotal role in our journey.`;
@@ -62,5 +63,13 @@ describe("lint", () => {
       expect(t.sources.length, t.id).toBeGreaterThan(0);
       for (const s of t.sources) expect(SOURCES[s], `${t.id} -> ${s}`).toBeDefined();
     }
+  });
+});
+
+describe("droppedWords", () => {
+  it("lists content words the rewrite lost, ignoring inflection", () => {
+    const src = "Libraries often become emergency centers, offering shelter and food.";
+    const out = "Libraries become emergency centres that offer shelter and food.";
+    expect(droppedWords(src, out)).toEqual(["often", "centers"]);
   });
 });

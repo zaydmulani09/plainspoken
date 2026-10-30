@@ -80,8 +80,12 @@ async function main() {
   const runOne = async (s: Source): Promise<TextResult | null> => {
     const cached = new URL(`${s.id}.json`, cacheDir);
     if (existsSync(cached)) return JSON.parse(readFileSync(cached, "utf8"));
+    // --cached: summarize what a stopped round finished, without new calls.
+    if (process.argv.includes("--cached")) return null;
     const t0 = Date.now();
-    const res = await humanize(s.text, { mode: "standard", tone: s.tone, provider: pipeline, concurrency: 2 });
+    // Paragraph concurrency matches the live route, and texts run one at a
+    // time by default, so the seconds below are close to a live run.
+    const res = await humanize(s.text, { mode: "standard", tone: s.tone, provider: pipeline, concurrency: 3 });
     const fallbacks: Record<string, number> = {};
     for (const p of res.paragraphs) if (p.fallback) fallbacks[p.fallback] = (fallbacks[p.fallback] ?? 0) + 1;
     if (fallbacks.error || fallbacks.time) {
@@ -118,13 +122,13 @@ async function main() {
   let next = 0;
   let failures = 0;
   await Promise.all(
-    Array.from({ length: Number(arg("concurrency", "2")) }, async () => {
+    Array.from({ length: Number(arg("concurrency", "1")) }, async () => {
       while (next < sources.length && failures < 3) {
         const s = sources[next++];
         try {
           const r = await runOne(s);
           if (r) results.push(r);
-          else failures++;
+          else if (!process.argv.includes("--cached")) failures++;
         } catch (e) {
           failures++;
           console.log(`${s.id}: ${(e as Error).message}`);

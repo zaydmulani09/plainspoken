@@ -121,6 +121,27 @@ export function cv(xs: number[]): number {
   return m ? stdev(xs) / m : 0;
 }
 
+// Function words carry no claim. Negations, "about", "more" and "most" stay
+// out of this list on purpose: dropping one changes a claim.
+const FUNCTION_WORDS = new Set(
+  "a an the and or but nor so yet of in on at to for from by with as is are was were be been being am do does did has have had it its this that these those there their they them we us our you your i me my he she his her him which who whom whose what when where while than then also just very into onto over under".split(" "),
+);
+const stem = (w: string) => w.toLowerCase().replace(/['’]s$/, "").replace(/(?:ing|ed|ly|(?<!s)s)$/, "");
+
+// Source words with no form in the rewrite, in source order, for the meaning
+// judge to look at. Most are harmless swaps; some are a dropped hedge or item.
+export function droppedWords(source: string, rewrite: string, limit = 40): string[] {
+  const have = new Set(words(rewrite).map(stem));
+  const out: string[] = [];
+  for (const w of words(source)) {
+    const l = w.toLowerCase();
+    if (FUNCTION_WORDS.has(l) || /^\d/.test(l) || have.has(stem(w)) || out.includes(l)) continue;
+    out.push(l);
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
 export function escapeRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
