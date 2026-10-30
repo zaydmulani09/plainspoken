@@ -108,7 +108,10 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         let k = waits[0] <= patience ? 0 : waits.indexOf(Math.min(...waits));
         const model = list[k];
         if (waits[k] > 0) await sleep(waits[k], o.signal);
-        used(model, Date.now()).entries.push({ t: Date.now(), n: need });
+        // Admission needs room for prompt plus max tokens; once the call returns,
+        // the window holds what it actually used.
+        const entry = { t: Date.now(), n: need };
+        used(model, entry.t).entries.push(entry);
         const isOss = model.startsWith("openai/");
         const body: Record<string, unknown> = {
           model,
@@ -165,6 +168,8 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
           throw lastErr;
         }
         const j = await res.json();
+        const actual = (j.usage?.prompt_tokens ?? 0) + (j.usage?.completion_tokens ?? 0);
+        if (actual > 0) entry.n = actual;
         const choice = j.choices?.[0];
         const text: string = choice?.message?.content ?? "";
         if (choice?.finish_reason === "length" || !text.trim()) {

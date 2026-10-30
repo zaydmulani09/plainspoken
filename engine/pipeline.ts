@@ -8,7 +8,7 @@ import {
   claimsPrompt, lightPrompt, meaningPrompt, qualityPrompt, repairPrompt, requestId, writerPrompt,
   type Mode, type TellNote, type Tone,
 } from "./prompts";
-import { parseJson, type Provider } from "./providers";
+import { parseJson, ProviderError, type Provider } from "./providers";
 import { countWords, joinBlocks, sentences, splitBlocks } from "./text";
 import { describeVoice, type VoiceCard } from "./voice";
 
@@ -20,6 +20,9 @@ export interface HumanizeOptions {
   concurrency?: number;
   maxLoops?: number;
   signal?: AbortSignal;
+  // Epoch ms. Paragraphs not started by then are kept as written, and calls
+  // still running 35 seconds later are cut, so a run fits a serverless limit.
+  deadline?: number;
   onEvent?: (e: PipelineEvent) => void;
 }
 
@@ -38,6 +41,10 @@ export interface ParagraphResult {
   text: string;
   rewritten: boolean;
   flagged: boolean;
+  // Why a paragraph was not rewritten as planned: "original" means every draft
+  // changed its meaning, so the original was kept; "length" means the kept
+  // draft is outside the length range; "time" and "error" kept the original.
+  fallback: "original" | "length" | "time" | "error" | null;
   issues: string[];
   claims: number;
   missing: string[];
@@ -140,8 +147,11 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
   const p = o.provider;
   const usage = { calls: 0, inputTokens: 0, outputTokens: 0 };
   const emit = (e: PipelineEvent) => o.onEvent?.(e);
+  const signals = [o.signal, o.deadline ? AbortSignal.timeout(Math.max(1000, o.deadline - Date.now() + 35000)) : undefined].filter((s): s is AbortSignal => !!s);
+  const signal = signals.length ? AbortSignal.any(signals) : undefined;
+  const late = () => o.deadline !== undefined && Date.now() > o.deadline;
   const call = async (role: "writer" | "judge", system: string, user: string, schema: Record<string, unknown>, maxTokens: number, effort?: "low" | "medium" | "high") => {
-    const r = await p.call({ role, system, user, schema, maxTokens, effort, signal: o.signal });
+    const r = await p.call({ role, system, user, schema, maxTokens, effort, signal });
     usage.calls++;
     usage.inputTokens += r.inputTokens;
     usage.outputTokens += r.outputTokens;
@@ -161,18 +171,27 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
   const voice = o.voice ? { description: describeVoice(o.voice), excerpts: o.voice.excerpts.slice(0, 3) } : undefined;
   const maxLoops = o.maxLoops ?? 2;
 
+  const baseFor = (i: number): ParagraphResult => ({
+    i, original: blocks[i].text, text: blocks[i].text, rewritten: false, flagged: false, fallback: null, issues: [], claims: 0, missing: [], added: [],
+    frozenMissing: [], qualityOriginal: null, qualityChosen: null, loops: 0, candidatesTried: 0, cleanedChars: false,
+  });
+  // Keeps the paragraph as written, minus banned characters.
+  const keepOriginal = (r: ParagraphResult, fallback: ParagraphResult["fallback"]): ParagraphResult => {
+    const cleaned = stripBanned(normalizeFrozenDashes(r.original));
+    emit({ type: "stage", i: r.i, stage: "done" });
+    return { ...r, text: cleaned, rewritten: false, flagged: fallback !== null, fallback, missing: [], added: [], frozenMissing: [], cleanedChars: cleaned !== r.original };
+  };
+
   const processOne = async (i: number): Promise<ParagraphResult> => {
     const block = blocks[i];
     const plan = plans[i];
-    const base: ParagraphResult = {
-      i, original: block.text, text: block.text, rewritten: false, flagged: false, issues: [], claims: 0, missing: [], added: [],
-      frozenMissing: [], qualityOriginal: null, qualityChosen: null, loops: 0, candidatesTried: 0, cleanedChars: false,
-    };
+    const base = baseFor(i);
     if (!plan.rewrite) {
       emit({ type: "stage", i, stage: "skipped" });
       const cleaned = stripBanned(block.text);
       return { ...base, text: cleaned, cleanedChars: cleaned !== block.text };
     }
+    if (late()) return keepOriginal(base, "time");
     const rid = requestId();
     const para = normalizeFrozenDashes(block.text);
     const spans: Frozen[] = freeze(para);
@@ -204,8 +223,10 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     }
 
     emit({ type: "stage", i, stage: "writing" });
-    const maxOut = Math.round(4 * n) + 700;
-    const maxRepair = Math.round(2 * n) + 600;
+    // Two drafts run about 2.6 tokens per source word; a cut-off reply is
+    // retried with double the budget.
+    const maxOut = Math.round(3 * n) + 500;
+    const maxRepair = Math.round(2 * n) + 400;
     let texts: string[];
     if (mode === "light") {
       const j = parseJson<{ candidates: { edits: { n: number; text: string }[] }[] }>(
@@ -237,7 +258,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       };
     };
 
-    const judge = async (cands: Candidate[]) => {
+    const judgeMeaning = async (cands: Candidate[]) => {
       const labels = cands.map((_, k) => `R${k + 1}`);
       const m = parseJson<{ claims: { id: string; text: string }[]; results: { label: string; missing: string[]; added: string[] }[] }>(
         await call("judge", MEANING_SYSTEM, meaningPrompt(rid, para, cands.map((c, k) => ({ label: labels[k], text: c.text })), claims), SCHEMAS.meaning, 700 + 3 * n),
@@ -250,7 +271,11 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
         c.missingText = c.missing.map((id) => claimText.get(id) ?? id);
         c.added = (r?.added ?? []).filter((a) => typeof a === "string" && a.trim());
       });
-      // Blind quality comparison: original plus candidates, shuffled.
+    };
+
+    // Blind quality comparison of the passing drafts plus the original,
+    // shuffled. Only needed when there is a choice to make.
+    const judgeQuality = async (cands: Candidate[]) => {
       const versions = shuffle([{ key: -1, text: para }, ...cands.map((c, k) => ({ key: k, text: c.text }))]).map((v, k) => ({ ...v, label: String.fromCharCode(65 + k) }));
       const q = parseJson<{ scores: { label: string; score: number }[] }>(
         await call("judge", QUALITY_SYSTEM, qualityPrompt(rid, o.tone, versions), SCHEMAS.quality, 600),
@@ -284,6 +309,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     let loops = 0;
     let chosen: Candidate | null = null;
     while (true) {
+      if (late()) break;
       emit({ type: "stage", i, stage: "checking" });
       const detOk = pool.filter((c) => c.frozen.ok && c.bannedOk && c.inRange);
       // If every candidate fails the cheap checks, repair before spending judge calls.
@@ -298,11 +324,12 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
         pool = [assess(j.text ?? best.text)];
         continue;
       }
-      await judge(pool);
+      await judgeMeaning(pool);
       all.push(...pool);
-      const ok = pool.filter(passes).sort((a, b) => combined(b) - combined(a));
+      const ok = pool.filter(passes);
+      if (ok.length > 1) await judgeQuality(ok);
       if (ok.length) {
-        chosen = ok[0];
+        chosen = ok.sort((a, b) => combined(b) - combined(a))[0];
         break;
       }
       if (loops >= maxLoops) break;
@@ -315,20 +342,28 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       pool = [assess(j.text ?? best.text)];
     }
 
-    let flagged = false;
+    let fallback: ParagraphResult["fallback"] = null;
     if (!chosen) {
-      flagged = true;
-      const judged = all.filter((c) => c.quality !== undefined);
-      chosen = [...(judged.length ? judged : all)].sort((a, b) => combined(b) - combined(a))[0];
+      // A draft the judge cleared on meaning but that missed the length range
+      // is still safe to use. Anything that changed the meaning is not: keep
+      // the original paragraph instead.
+      const safe = all.filter((c) => c.missing !== undefined && !c.missing.length && !c.added?.length && c.frozen.ok && c.bannedOk);
+      if (!safe.length) {
+        const best = [...all].sort((a, b) => combined(b) - combined(a))[0];
+        return keepOriginal({ ...base, loops, candidatesTried: all.length, issues: best ? problemsOf(best) : [] }, late() && !all.some((c) => c.missing !== undefined) ? "time" : "original");
+      }
+      fallback = "length";
+      chosen = safe.sort((a, b) => combined(b) - combined(a))[0];
     }
     const cleaned = stripBanned(chosen.text);
-    const issues = flagged ? problemsOf(chosen).filter((x) => !x.startsWith("Remove these AI tells")) : [];
+    const issues = fallback ? problemsOf(chosen) : [];
     emit({ type: "stage", i, stage: "done" });
     return {
       ...base,
       text: cleaned,
       rewritten: true,
-      flagged,
+      flagged: fallback !== null,
+      fallback,
       issues,
       missing: chosen.missingText ?? [],
       added: [...(chosen.added ?? []), ...chosen.frozen.added],
@@ -347,7 +382,14 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     while (next < blocks.length) {
       const i = next++;
       emit({ type: "stage", i, stage: "queued" });
-      results[i] = await processOne(i);
+      try {
+        results[i] = await processOne(i);
+      } catch (e) {
+        // The client left, or the key is bad: stop the run. Any other failure
+        // (rate limit, outage, cut-off at the deadline) keeps this paragraph as written.
+        if (o.signal?.aborted || (e instanceof ProviderError && (e.code === "auth" || e.code === "no_key"))) throw e;
+        results[i] = keepOriginal(baseFor(i), late() || signal?.aborted ? "time" : "error");
+      }
       emit({ type: "paragraph", result: results[i] });
     }
   });

@@ -66,8 +66,9 @@ export async function POST(req: Request) {
       const ping = setInterval(() => send({ type: "ping" }), 10000);
       send({ type: "start", provider: { name: provider.name, writer: provider.models.writer, judge: provider.models.judge, source: provider.source }, words });
       try {
+        // Stop starting paragraphs at 235 s so the stream ends before the 300 s cap.
         const result = await humanize(text, {
-          mode, tone, voice, provider, signal: req.signal, concurrency: provider.name === "groq" ? 2 : 4,
+          mode, tone, voice, provider, signal: req.signal, concurrency: provider.name === "groq" ? 3 : 4, deadline: Date.now() + 235_000,
           onEvent: (e: PipelineEvent) => send(e),
         });
         send({ type: "done", result });
