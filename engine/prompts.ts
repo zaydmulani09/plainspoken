@@ -216,7 +216,7 @@ export const MEANING_SYSTEM = `You check whether rewrites keep the meaning of a 
 First list the source's claims: every distinct fact, opinion, qualifier, condition, instruction, request, or piece of advice, as short plain statements, with numbers, names, and meaningful hedges ("about", "might").
 Then, for each rewrite, report:
 - missing: ids of claims that are absent or whose meaning changed (including a weaker or stronger hedge, a changed number, a changed actor)
-- added: anything the rewrite states that the source does not say or clearly imply (new facts, details, examples, reasons, feelings, or stronger or broader claims)
+- added: anything the rewrite states that the source does not say or clearly imply (new facts, details, examples, reasons, feelings, or stronger or broader claims). A role, job title, timeframe, or personal detail about the author or anyone else counts, even a small one like "As a product lead" or "recently".
 Rewording, reordering, merging sentences, changing tone, and cutting filler or a closing line that only repeats an earlier claim are all fine and are not problems.
 Return JSON only.`;
 

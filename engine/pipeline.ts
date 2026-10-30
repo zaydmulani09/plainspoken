@@ -269,7 +269,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     const judgeMeaning = async (cands: Candidate[]) => {
       const labels = cands.map((_, k) => `R${k + 1}`);
       const m = parseJson<{ claims: { id: string; text: string }[]; results: { label: string; missing: string[]; added: string[] }[] }>(
-        await call("judge", MEANING_SYSTEM, meaningPrompt(rid, para, cands.map((c, k) => ({ label: labels[k], text: c.text })), claims), SCHEMAS.meaning, 1200 + 3 * n, "medium"),
+        await call("judge", MEANING_SYSTEM, meaningPrompt(rid, para, cands.map((c, k) => ({ label: labels[k], text: c.text })), claims), SCHEMAS.meaning, 2500 + 4 * n, "medium"),
       );
       const claimText = new Map((m.claims ?? []).map((c) => [c.id, c.text]));
       base.claims = Math.max(base.claims, claims?.length ?? m.claims?.length ?? 0);
@@ -412,6 +412,8 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
         // The client left, or the key is bad: stop the run. Any other failure
         // (rate limit, outage, cut-off at the deadline) keeps this paragraph as written.
         if (o.signal?.aborted || (e instanceof ProviderError && (e.code === "auth" || e.code === "no_key"))) throw e;
+        // Local debugging only; never set in production, where the message could quote model output.
+        if (process.env.PLAINSPOKEN_DEBUG) console.error(`paragraph ${i}:`, e);
         results[i] = keepOriginal(baseFor(i), late() || signal?.aborted ? "time" : "error");
       }
       emit({ type: "paragraph", result: results[i] });

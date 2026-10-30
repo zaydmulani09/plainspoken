@@ -160,8 +160,12 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         }
         if (!res.ok) {
           lastErr = new ProviderError("unavailable", `Groq ${res.status}`);
-          if (res.status === 400 && o.schema && attempt < 2) {
+          const errBody = await res.text().catch(() => "");
+          if (process.env.PLAINSPOKEN_DEBUG) console.error(model, res.status, errBody.slice(0, 600));
+          if (res.status === 400 && o.schema && attempt < 3) {
             // Structured-output validation failures come back as 400; retry.
+            // An empty failed generation means reasoning used up the budget.
+            if (/"failed_generation":""/.test(errBody)) maxTokens = Math.min(maxTokens * 2, 8000);
             await sleep(300, o.signal);
             continue;
           }

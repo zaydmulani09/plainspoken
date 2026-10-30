@@ -499,9 +499,10 @@ const HOW: [string, React.ReactNode][] = [
     "Two drafts, then checks",
     <>
       The writer model drafts each paragraph twice. A separate judge model lists the paragraph&apos;s claims and checks
-      every draft against them, then scores the drafts and your original without knowing which is which. The best draft
-      that keeps every claim and adds none wins. If none passes, the writer gets two repair rounds. After that the
-      closest draft is kept and marked for review.
+      every draft against them, then scores the drafts and your original without knowing which is which. A draft wins
+      only if it keeps every claim, adds none, and drops most of the tells. If none passes, the writer gets two repair
+      rounds. If the meaning still does not hold, your paragraph is kept as written and marked, so a changed meaning
+      never ships.
     </>,
   ],
   [
