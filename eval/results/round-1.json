@@ -1,0 +1,488 @@
+{
+  "summary": {
+    "round": 1,
+    "date": "2026-10-30",
+    "set": "dev",
+    "texts": 8,
+    "missing": [],
+    "models": {
+      "writer": "qwen/qwen3.8-27b",
+      "pipelineJudge": "openai/gpt-oss-20b",
+      "evalJudge": "openai/gpt-oss-120b"
+    },
+    "tellReduction": {
+      "pooled": 0.428,
+      "meanPerText": 0.409,
+      "densityBefore": 6.797,
+      "densityAfter": 3.888
+    },
+    "claims": {
+      "total": 86,
+      "kept": 81,
+      "changed": 4,
+      "missing": 1,
+      "recall": 0.942,
+      "added": 0,
+      "textsWithAdditions": 0
+    },
+    "quality": {
+      "win": 3,
+      "tie": 0,
+      "loss": 5,
+      "winOrTie": 0.375
+    },
+    "length": {
+      "totalDrift": -0.086,
+      "meanAbsDrift": 0.084,
+      "within10": 6
+    },
+    "sentenceCv": {
+      "before": 0.246,
+      "after": 0.344
+    },
+    "mattr": {
+      "before": 0.876,
+      "after": 0.87
+    },
+    "bannedChars": 0,
+    "fallbacks": {},
+    "detector": "not measured",
+    "usage": {
+      "calls": 42,
+      "tokens": 65771
+    }
+  },
+  "results": [
+    {
+      "id": "g02-linkedin-failed-launch",
+      "genre": "social post",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Launching a product that didn\u2019t meet expectations was a humbling experience, but it turned into a powerful learning curve. First, I realized the importance of validating assumptions early; we relied heavily on internal enthusiasm without enough real\u2011world user feedback, which led to misaligned features. Second, cross\u2011functional communication proved critical\u2014siloes between product, engineering, and marketing caused delays and mixed messaging that confused early adopters. Third, we underestimated the need for a phased rollout; a soft launch would have let us iterate based on actual usage data rather than guessing. Finally, we learned that post\u2011launch metrics must be tracked obsessively, not just sales numbers but also engagement, churn, and support tickets, to catch problems before they snowball. While the launch didn\u2019t succeed, the insights gained have reshaped our development process, making us more customer\u2011centric, data\u2011driven, and collaborative. Failure, when dissected honestly, can become the foundation for future success.",
+      "rewrite": "The product launch did not meet expectations, but the experience proved instructive. We relied too heavily on internal enthusiasm without enough real-world user feedback, which led to misaligned features. Validating assumptions early is therefore essential. Cross-functional communication also proved critical. Silos between product, engineering, and marketing caused delays and mixed messaging that confused early adopters. We underestimated the need for a phased rollout; a soft launch would have let us iterate based on actual usage data rather than guessing. Post-launch metrics must be tracked closely, including engagement, churn, and support tickets, not just sales numbers, to catch problems before they snowball. The launch failed, but the insights gained have changed our development process. We are now more customer-centric, data-driven, and collaborative. When failure is dissected honestly, it can become the foundation for future success.",
+      "words": [
+        152,
+        134
+      ],
+      "drift": -0.118,
+      "density": [
+        5.71,
+        2.61
+      ],
+      "score": [
+        8.68,
+        3.5
+      ],
+      "reduction": 0.543,
+      "claims": 17,
+      "check": {
+        "kept": 13,
+        "changed": [
+          "Launching a product that didn\u2019t meet expectations was a humbling experience.",
+          "I realized the importance of validating assumptions early.",
+          "Post\u2011launch metrics must be tracked obsessively.",
+          "The insights gained have reshaped our development process."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "rewriteWas": "A",
+        "reason": "Version A maintains a more formal, objective tone and clearer structure suited to a professional audience, whereas B includes informal phrasing and first\u2011person language."
+      },
+      "sentenceCv": [
+        0.26,
+        0.472
+      ],
+      "mattr": [
+        0.946,
+        0.946
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 2,
+      "tokens": 4035,
+      "seconds": 9
+    },
+    {
+      "id": "g09-essay-libraries",
+      "genre": "essay",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "Public libraries today serve as vital community hubs that extend far beyond their traditional role as book repositories. They offer free access to a wide array of digital resources, including e\u2011books, audiobooks, streaming services, and online databases, thereby bridging the digital divide and empowering residents with tools for lifelong learning. Many libraries host workshops and classes on practical topics such as coding, financial literacy, and language learning, which help individuals acquire skills that enhance employability and personal growth. By providing quiet study spaces, collaborative workrooms, and high\u2011speed internet, libraries support students, freelancers, and small business owners alike, fostering a sense of belonging and encouraging intellectual curiosity. Cultural programs\u2014author talks, art exhibits, and community celebrations\u2014turn libraries into inclusive cultural centers that celebrate diversity and promote civic engagement. In times of crisis, libraries often become emergency resource centers, offering shelter, food distribution, and information on relief services. Thus, modern public libraries function as democratic spaces where knowledge, creativity, and community resilience converge, underscoring their indispensable role in building vibrant, connected societies.",
+      "rewrite": "Public libraries have evolved into vital community hubs. They are no longer simply book repositories. Instead, they offer free access to a wide array of digital resources, including e-books, audiobooks, streaming services, and online databases. Access to these tools helps bridge the digital divide and empowers residents with lifelong learning opportunities. Workshops on topics like coding, financial literacy, and language learning are common. Such classes help people acquire skills that enhance their employability and support personal growth. By providing quiet spaces, collaborative workrooms, and high-speed internet, libraries support students, freelancers, and small business owners alike. This fosters a sense of belonging and encourages intellectual curiosity. Cultural programs, such as author talks, art exhibits, and community celebrations, make libraries inclusive centers. They promote civic engagement and celebrate diversity. In times of crisis, libraries often become emergency resource centers, offering shelter, food distribution, and information on relief services. Modern public libraries are democratic spaces where knowledge, creativity, and community resilience converge. They are indispensable for building vibrant, connected societies.",
+      "words": [
+        173,
+        167
+      ],
+      "drift": -0.035,
+      "density": [
+        10.91,
+        6.6
+      ],
+      "score": [
+        18.88,
+        11.03
+      ],
+      "reduction": 0.395,
+      "claims": 11,
+      "check": {
+        "kept": 11,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "rewriteWas": "A",
+        "reason": "Version B reads more smoothly with clearer phrasing and better flow, making the neutral tone easier to follow."
+      },
+      "sentenceCv": [
+        0.224,
+        0.359
+      ],
+      "mattr": [
+        0.895,
+        0.89
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 5,
+      "tokens": 9889,
+      "seconds": 69
+    },
+    {
+      "id": "g19-explainer-api",
+      "genre": "explainer",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "An API, or Application Programming Interface, acts as a bridge that allows different software programs to communicate with each other. Think of it like a waiter in a restaurant. You, the customer, want specific food items, but you do not go into the kitchen to cook them yourself. Instead, you tell the waiter what you want. The waiter takes your order to the kitchen, where they prepare the meal. Then, the waiter brings the finished dish back to your table. In this scenario, you are one piece of software, the kitchen is another software system, and the waiter is the API. It handles the request, retrieves the data or service you need, and delivers it to you without you needing to know the complex details of how the kitchen operates. This separation keeps systems organized and secure. When you check the weather on your phone, an API fetches that data from a weather service and displays it for you. This seamless interaction happens millions of times daily, powering apps, websites, and smart devices. By standardizing how these requests and responses are handled, APIs make modern digital life possible and efficient for everyone.",
+      "rewrite": "An API, or Application Programming Interface, is a way for different software programs to talk to one another. It works like a waiter in a restaurant. You order a meal, the waiter takes that order to the kitchen, and the kitchen prepares the food. The waiter then brings the dish back to your table. In this setup, you represent one software program, the kitchen is another, and the API is the messenger. It takes your request, gets the data or service you need, and hands it back to you. You do not have to understand how the kitchen cooks. This separation keeps the systems organized and secure. When you check the weather on your phone, an API grabs that information from a weather service and shows it on your screen. This smooth interaction happens millions of times every day. It powers apps, websites, and smart devices. APIs make modern digital life possible and efficient for everyone by standardizing how these requests and responses are handled.",
+      "words": [
+        192,
+        165
+      ],
+      "drift": -0.141,
+      "density": [
+        2.6,
+        1.64
+      ],
+      "score": [
+        5,
+        2.71
+      ],
+      "reduction": 0.369,
+      "claims": 11,
+      "check": {
+        "kept": 10,
+        "changed": [],
+        "missing": [
+          "You, the customer, want specific food items, but you do not go into the kitchen to cook them yourself."
+        ],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "rewriteWas": "A",
+        "reason": "Version B uses clearer phrasing and smoother flow while conveying the same information."
+      },
+      "sentenceCv": [
+        0.42,
+        0.404
+      ],
+      "mattr": [
+        0.757,
+        0.742
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 2,
+      "tokens": 3751,
+      "seconds": 60
+    },
+    {
+      "id": "g12-nursing-statement",
+      "genre": "personal statement",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "From a young age, I have been drawn to the compassionate nature of nursing, believing that caring for others is both a privilege and a responsibility. My volunteer experience at [local hospital] exposed me to the profound impact that skilled, empathetic nurses have on patients\u2019 recovery journeys, and it cemented my resolve to pursue this path. I am fascinated by the blend of science, communication, and problem\u2011solving that nursing demands, and I thrive in environments where I can apply evidence\u2011based knowledge while maintaining a human touch. In my role as a caregiver for my [family member], I witnessed first\u2011hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations. I am eager to study nursing at [university], where the curriculum\u2019s emphasis on clinical practice and interprofessional collaboration aligns with my goal of becoming a well\u2011rounded clinician. Ultimately, I want to contribute to a healthcare system that values holistic, patient\u2011centered care, and I am committed to lifelong learning and advocacy for those in need.",
+      "rewrite": "I have been drawn to the compassionate nature of nursing from a young age. Caring for others feels like both a privilege and a responsibility to me. My time volunteering at [local hospital] showed me how skilled, empathetic nurses change a patient\u2019s recovery. Watching that happen cemented my decision to follow this path. I am fascinated by how nursing blends science, communication, and problem-solving. I like settings where I can apply evidence-based methods without losing the personal connection to the patient. When I cared for my [family member], I saw how important it is to explain things clearly and kindly. Timely interventions helped them, and those moments defined my professional goals. I want to attend [university] to study nursing. Their program stresses clinical practice and collaborating with other professionals, which matches my aim to become a well-rounded clinician. I intend to contribute to a healthcare system that values holistic, patient-centered care. I am also committed to lifelong learning and advocacy for those who need support.",
+      "words": [
+        178,
+        165
+      ],
+      "drift": -0.073,
+      "density": [
+        6.35,
+        3.79
+      ],
+      "score": [
+        11.3,
+        6.26
+      ],
+      "reduction": 0.403,
+      "claims": 6,
+      "check": {
+        "kept": 6,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "rewriteWas": "A",
+        "reason": "Version B reads more smoothly with clearer, more polished language and better flow, making it easier to understand while maintaining a neutral tone."
+      },
+      "sentenceCv": [
+        0.099,
+        0.254
+      ],
+      "mattr": [
+        0.858,
+        0.848
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 6,
+      "tokens": 11401,
+      "seconds": 182
+    },
+    {
+      "id": "c02-essay-social-media",
+      "genre": "essay",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "neutral",
+      "original": "In today's digital age, social media has become an integral part of teenagers' lives, shaping how they communicate, learn, and see themselves. Platforms like Instagram and TikTok offer a powerful space for creativity and connection, allowing young people to share their voices with the world. However, it's important to recognize that these benefits come with significant challenges. Constant exposure to curated images can foster unrealistic expectations, fueling anxiety and low self-esteem. Moreover, the endless scroll is designed to capture attention, often at the expense of sleep and face-to-face relationships. Ultimately, social media is not inherently good or bad \u2014 it is a tool whose impact depends on how it is used. By fostering digital literacy and encouraging healthy boundaries, parents and educators can help teenagers navigate this complex landscape and harness its potential for good.",
+      "rewrite": "Social media is now a core part of teenage life, shaping how young people communicate, learn, and see themselves. Platforms like Instagram and TikTok offer a powerful space for creativity and connection, allowing users to share their voices globally. These perks come with real downsides. Seeing polished images all the time can build unrealistic standards, which then drive up anxiety and hurt self-esteem. The infinite feed is built to grab attention, often stealing time away from sleep and in-person relationships. The medium itself is neither good nor bad. Its effects depend entirely on how a person uses it. When parents and educators push for digital literacy and set healthy boundaries, they help teenagers handle the platform effectively and use its potential for good.",
+      "words": [
+        134,
+        123
+      ],
+      "drift": -0.082,
+      "density": [
+        10.99,
+        0.41
+      ],
+      "score": [
+        14.73,
+        0.5
+      ],
+      "reduction": 0.963,
+      "claims": 7,
+      "check": {
+        "kept": 7,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "rewriteWas": "A",
+        "reason": "Version B reads more smoothly and uses clearer, more natural phrasing while maintaining the neutral tone."
+      },
+      "sentenceCv": [
+        0.242,
+        0.431
+      ],
+      "mattr": [
+        0.891,
+        0.918
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 4,
+      "tokens": 7027,
+      "seconds": 61
+    },
+    {
+      "id": "g25-postmortem-cert",
+      "genre": "internal memo",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "On June 12, our platform experienced a two-hour outage affecting all users. The root cause was an expired TLS certificate that prevented secure connections from being established. Our monitoring systems detected the spike in failed handshakes, and the incident response team immediately investigated. We quickly identified that the certificate had lapsed due to a gap in our automated renewal process.\n\nTo resolve the issue, the infrastructure team issued a new certificate and deployed it across all load balancers. Verification confirmed that services were fully operational within forty-five minutes of the fix being applied. The remaining time was spent monitoring system stability and communicating status updates to our customer base.\n\nWhile the service disruption was brief, it highlighted a critical vulnerability in our certificate management workflow. We have since implemented stricter automated checks and added redundant alerts to ensure any upcoming expiration triggers immediate action. Additionally, we have updated our runbooks to include faster verification steps for certificate deployments. We apologize for the inconvenience and are committed to strengthening our infrastructure to prevent similar issues in the future.",
+      "rewrite": "On June 12, a two-hour outage interrupted service for every user. An expired TLS certificate stopped secure connections from forming. Our monitoring tools caught the surge in failed handshakes, prompting the response team to investigate right away. The team found that a gap in automated renewal had let the certificate lapse.\n\nThe infrastructure team resolved the issue by issuing a new certificate and deploying it to every load balancer. Services were fully operational within forty-five minutes of the fix, confirmed by verification. We used the remaining time to monitor system stability and send status updates to customers.\n\nAlthough the service disruption was brief, it revealed a critical vulnerability in our certificate management workflow. Stricter automated checks and redundant alerts are now in place to ensure any upcoming expiration triggers immediate action. Our runbooks also include faster verification steps for certificate deployments. We apologize for the inconvenience and remain committed to strengthening our infrastructure to prevent similar issues in the future.",
+      "words": [
+        177,
+        160
+      ],
+      "drift": -0.096,
+      "density": [
+        3.13,
+        2.19
+      ],
+      "score": [
+        5.54,
+        3.51
+      ],
+      "reduction": 0.3,
+      "claims": 15,
+      "check": {
+        "kept": 15,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "rewriteWas": "B",
+        "reason": "Version B is slightly clearer and more natural with concise phrasing while retaining all key details."
+      },
+      "sentenceCv": [
+        0.132,
+        0.237
+      ],
+      "mattr": [
+        0.864,
+        0.85
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 8,
+      "tokens": 9827,
+      "seconds": 179
+    },
+    {
+      "id": "c05-report-sales",
+      "genre": "business report",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "professional",
+      "original": "The third quarter marked a pivotal period of growth for the Northeast region. Total revenue reached $4.2 million, representing a 12% increase compared to the same period last year. This impressive performance was driven by several key factors, including the successful launch of our premium subscription tier, enhanced customer retention efforts, and a strategic expansion into two new markets.\n\nNotably, customer churn decreased from 8.1% to 6.4%, underscoring the effectiveness of our renewed focus on customer success. However, it is worth noting that acquisition costs rose by 9%, highlighting the need for more efficient marketing strategies moving forward. Overall, the results demonstrate strong momentum and position the region well for continued success in the fourth quarter.",
+      "rewrite": "Revenue in the Northeast region climbed 12% to $4.2 million during the third quarter. This marked a key period of growth compared to the prior year. The results reflect the successful launch of our premium subscription tier, better customer retention efforts, and a strategic expansion into two new markets.\n\nNotably, customer churn decreased from 8.1% to 6.4%, underscoring the effectiveness of our renewed focus on customer success. However, it is worth noting that acquisition costs rose by 9%, highlighting the need for more efficient marketing strategies moving forward. Overall, the results demonstrate strong momentum and position the region well for continued success in the fourth quarter.",
+      "words": [
+        116,
+        106
+      ],
+      "drift": -0.086,
+      "density": [
+        10.09,
+        10.42
+      ],
+      "score": [
+        11.7,
+        11.04
+      ],
+      "reduction": -0.033,
+      "claims": 12,
+      "check": {
+        "kept": 12,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "rewriteWas": "B",
+        "reason": "Version B conveys the same information more concisely and directly, enhancing readability while maintaining a professional tone."
+      },
+      "sentenceCv": [
+        0.303,
+        0.234
+      ],
+      "mattr": [
+        0.914,
+        0.882
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 4,
+      "tokens": 5624,
+      "seconds": 60
+    },
+    {
+      "id": "c07-blog-productivity",
+      "genre": "blog post",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "casual",
+      "original": "Have you ever wondered why some people seem to get so much done while others struggle to keep up? The secret isn't working longer hours \u2014 it's working smarter. In this fast-paced world, productivity has become more than just a buzzword; it's an essential skill for success in both our personal and professional lives.\n\nThe good news is that boosting your productivity doesn't require a complete overhaul of your routine. Small, intentional changes can have a profound impact on how you manage your time and energy. From prioritizing your most important tasks to minimizing distractions and building sustainable habits, there are countless strategies you can implement today.\n\nIn this post, we'll explore five proven techniques that can help you unlock your full potential and reclaim control of your day.",
+      "rewrite": "Have you ever wondered why some people seem to get so much done while others struggle to keep up? The secret isn't working longer hours; it's working smarter. In this fast-paced world, productivity has become more than just a buzzword. It's an essential skill for success in both our personal and professional lives.\n\nGood news: you don't need to flip your whole routine upside down. Even small, deliberate shifts change how you handle your time and energy. From picking your top tasks to cutting back on distractions and building habits that last, there are countless strategies you can implement today.\n\nHere are five techniques that actually work. They can help you unlock your full potential and take real control back over your day.",
+      "words": [
+        128,
+        123
+      ],
+      "drift": -0.039,
+      "density": [
+        7.13,
+        4.79
+      ],
+      "score": [
+        9.13,
+        5.89
+      ],
+      "reduction": 0.328,
+      "claims": 7,
+      "check": {
+        "kept": 7,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "rewriteWas": "A",
+        "reason": "Version B reads more smoothly with clearer phrasing and better punctuation, making it more natural and easy to follow in a casual tone."
+      },
+      "sentenceCv": [
+        0.285,
+        0.362
+      ],
+      "mattr": [
+        0.887,
+        0.888
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 11,
+      "tokens": 14217,
+      "seconds": 64
+    }
+  ]
+}

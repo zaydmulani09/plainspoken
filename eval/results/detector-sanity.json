@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-30",
+  "detector": {
+    "name": "TMR AI text detector (Oxidane/tmr-ai-text-detector)",
+    "build": "onnx-community/tmr-ai-text-detector-ONNX, fp32, transformers.js 4.3.1, CPU",
+    "url": "https://huggingface.co/Oxidane/tmr-ai-text-detector"
+  },
+  "humanPassagesFlaggedAi": "2/10",
+  "humanSummariesFlaggedAi": "10/10",
+  "rows": [
+    {
+      "title": "Bicycle",
+      "revision": 1375091239,
+      "passage": {
+        "words": 180,
+        "ai": 0.03
+      },
+      "summary": {
+        "words": 39,
+        "ai": 0.922
+      }
+    },
+    {
+      "title": "Printing_press",
+      "revision": 1382715270,
+      "passage": {
+        "words": 180,
+        "ai": 0.013
+      },
+      "summary": {
+        "words": 55,
+        "ai": 0.982
+      }
+    },
+    {
+      "title": "Sourdough",
+      "revision": 1382803423,
+      "passage": {
+        "words": 180,
+        "ai": 0.023
+      },
+      "summary": {
+        "words": 57,
+        "ai": 0.985
+      }
+    },
+    {
+      "title": "Lisbon",
+      "revision": 1382839868,
+      "passage": {
+        "words": 180,
+        "ai": 0.015
+      },
+      "summary": {
+        "words": 50,
+        "ai": 0.976
+      }
+    },
+    {
+      "title": "Marathon",
+      "revision": 1381602132,
+      "passage": {
+        "words": 180,
+        "ai": 0.878
+      },
+      "summary": {
+        "words": 73,
+        "ai": 0.985
+      }
+    },
+    {
+      "title": "Public_library",
+      "revision": 1365518546,
+      "passage": {
+        "words": 180,
+        "ai": 0.014
+      },
+      "summary": {
+        "words": 41,
+        "ai": 0.969
+      }
+    },
+    {
+      "title": "Compound_interest",
+      "revision": 1377563152,
+      "passage": {
+        "words": 180,
+        "ai": 0.92
+      },
+      "summary": {
+        "words": 39,
+        "ai": 0.808
+      }
+    },
+    {
+      "title": "Strength_training",
+      "revision": 1380374969,
+      "passage": {
+        "words": 180,
+        "ai": 0.047
+      },
+      "summary": {
+        "words": 27,
+        "ai": 0.966
+      }
+    },
+    {
+      "title": "Transcontinental_railroad",
+      "revision": 1366730506,
+      "passage": {
+        "words": 180,
+        "ai": 0.016
+      },
+      "summary": {
+        "words": 143,
+        "ai": 0.931
+      }
+    },
+    {
+      "title": "Ramen",
+      "revision": 1382307049,
+      "passage": {
+        "words": 180,
+        "ai": 0.36
+      },
+      "summary": {
+        "words": 66,
+        "ai": 0.983
+      }
+    }
+  ]
+}
