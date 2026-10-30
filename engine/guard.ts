@@ -35,6 +35,9 @@ export function stripBanned(text: string): string {
     .replace(ODD_SPACE, " ")
     .replace(ODD_HYPHEN, "-")
     .replace(/(\d)\s*[\u{2012}-\u{2014}]\s*(\d)/gu, "$1-$2")
+    // A lone dash in a sentence usually introduces what follows: a colon
+    // reads right where a comma would make a splice. A pair is an aside.
+    .replace(/(^|[.!?]\s+)([^.!?:\u{2014}\n]+?)\s*\u{2014}\s*([^.!?:\u{2014}\n]+)(?=[.!?]|$)/gmu, "$1$2: $3")
     .replace(/\s*[\u{2014}\u{2015}\u{2E3A}\u{2E3B}]\s*/gu, ", ")
     .replace(/\s+[\u{2012}\u{2013}\u{FE58}\u{FE63}\u{FF0D}]\s+/gu, ", ")
     .replace(DASH, "-")

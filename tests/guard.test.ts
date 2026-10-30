@@ -18,6 +18,7 @@ describe("guard", () => {
 
   it("cleans typography without changing words", () => {
     expect(stripBanned(`The plan ${EM} simple as it is ${EM} works.`)).toBe("The plan, simple as it is, works.");
+    expect(stripBanned(`Communication is essential${EM}silos caused delays. Next.`)).toBe("Communication is essential: silos caused delays. Next.");
     expect(stripBanned(`pages 4${EN}9`)).toBe("pages 4-9");
     expect(stripBanned("zero\u{200B}width and\u{00A0}space")).toBe("zerowidth and space");
     expect(bannedChars(stripBanned(`a${EM}b ${EN} c\u{2011}d`)).ok).toBe(true);
