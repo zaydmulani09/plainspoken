@@ -6,7 +6,7 @@ Single source of truth for the build. Survives context compaction.
 - Server model route: Groq (GROQ_API_KEY). No ANTHROPIC_API_KEY in local env or any Vercel project (checked 2026-10-30).
 - Vercel AI Gateway: retested 2026-10-30 with the project OIDC token, 403 "requires a valid credit card on file". Not free, not used.
 - Groq models on the key (2026-10-30): qwen/qwen3.8-27b, openai/gpt-oss-120b, openai/gpt-oss-20b (plus safeguard/whisper/guard models, unused).
-- Writer: qwen/qwen3.8-27b (fallback gpt-oss-120b). Pipeline judge: openai/gpt-oss-20b (fallback gpt-oss-120b). Eval judge: openai/gpt-oss-120b; in eval the pipeline is pinned to qwen + 20b so the eval judge is independent.
+- Writer: openai/gpt-oss-120b at low effort (fallback qwen); qwen drafts were choppy and dropped list items (2026-10-30 A/B on g09). Pipeline judge: openai/gpt-oss-20b at medium effort for meaning (fallback 120b). Eval judge: qwen/qwen3.8-27b with reasoning on; eval pins the pipeline to 120b + 20b so the eval judge is a different model family. Claims cache (eval/claims.json) was extracted by 120b in round 1 and reused.
 - Groq free tier per model: 30 RPM, 1K RPD, 8K TPM, 200K TPD. Admission counts prompt + max tokens; the limiter then books actual usage.
 - Anthropic path (server key if ever set, or BYOK): writer claude-sonnet-5-5, judge claude-haiku-5-5, no temperature, effort via output_config, thinking left adaptive.
 - Fallback policy: if no draft passes meaning after 2 repairs, keep the original paragraph (never ship a meaning change); a meaning-safe draft that only misses length is kept and flagged.

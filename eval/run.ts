@@ -20,9 +20,9 @@ export const DEV_SET = [
   "g25-postmortem-cert", "c02-essay-social-media", "c05-report-sales", "c07-blog-productivity",
 ];
 
-const WRITER = "qwen/qwen3.8-27b";
+const WRITER = "openai/gpt-oss-120b";
 const PIPELINE_JUDGE = "openai/gpt-oss-20b";
-const EVAL_JUDGE = "openai/gpt-oss-120b";
+const EVAL_JUDGE = "qwen/qwen3.8-27b";
 
 interface TextResult {
   id: string;
@@ -73,7 +73,8 @@ async function main() {
   const claimsPath = new URL("./claims.json", import.meta.url);
   const claimsCache: Record<string, string[]> = existsSync(claimsPath) ? readJson(claimsPath) : {};
 
-  const pipeline = groqProvider(key, "server", { writer: [WRITER], judge: [PIPELINE_JUDGE] });
+  // Same models as the live site, minus the qwen writer fallback (qwen is the eval judge).
+  const pipeline = groqProvider(key, "server", { writer: [WRITER], judge: [PIPELINE_JUDGE, WRITER] });
   const judge = groqProvider(key, "server", { writer: [EVAL_JUDGE], judge: [EVAL_JUDGE] });
 
   const runOne = async (s: Source): Promise<TextResult | null> => {

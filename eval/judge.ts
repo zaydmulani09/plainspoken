@@ -53,7 +53,7 @@ ${text}
 </passage-${rid}>
 
 Return {"claims": [...]}.`;
-  const r = await p.call({ role: "judge", system: CLAIMS_SYSTEM, user, schema: SCHEMA_CLAIMS, maxTokens: 2500 });
+  const r = await p.call({ role: "judge", system: CLAIMS_SYSTEM, user, schema: SCHEMA_CLAIMS, maxTokens: 5000, effort: "medium" });
   return parseJson<{ claims: string[] }>(r.text).claims.filter((c) => typeof c === "string" && c.trim());
 }
 
@@ -80,7 +80,7 @@ ${rewrite}
 </rewrite-${rid}>
 
 Return {"results": [{"id": <claim number>, "status": "kept" | "changed" | "missing"}, ...], "added": ["<claim the rewrite adds>", ...]}. Give a result for every claim.`;
-  const r = await p.call({ role: "judge", system: CHECK_SYSTEM, user, schema: SCHEMA_CHECK, maxTokens: 3000 });
+  const r = await p.call({ role: "judge", system: CHECK_SYSTEM, user, schema: SCHEMA_CHECK, maxTokens: 6000, effort: "medium" });
   const j = parseJson<{ results: { id: number; status: string }[]; added: string[] }>(r.text);
   const status = new Map(j.results.map((x) => [x.id, x.status]));
   const out: ClaimCheck = { kept: 0, changed: [], missing: [], added: (j.added ?? []).filter((a) => a.trim()) };
@@ -122,7 +122,7 @@ ${b}
 </version-B-${rid}>
 
 Return {"reason": "<one sentence>", "winner": "A" | "B" | "tie"}.`;
-  const r = await p.call({ role: "judge", system: PAIR_SYSTEM, user, schema: SCHEMA_PAIR, maxTokens: 1500 });
+  const r = await p.call({ role: "judge", system: PAIR_SYSTEM, user, schema: SCHEMA_PAIR, maxTokens: 4000, effort: "medium" });
   const j = parseJson<{ winner: string; reason: string }>(r.text);
   const rewriteWas = rewriteFirst ? "A" : "B";
   const result: Verdict = j.winner === "tie" ? "tie" : j.winner === rewriteWas ? "win" : "loss";
