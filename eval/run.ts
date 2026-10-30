@@ -1,0 +1,197 @@
+// Eval runner. Rewrites each source with the pipeline (Standard mode, the
+// source's tone), then measures it with deterministic metrics and an
+// independent judge model.
+// Usage: GROQ_API_KEY=... npx tsx eval/run.ts --round 1 [--set dev|all] [--ids a,b]
+// Per-text results are cached in eval/.cache/round-N so a run can resume after
+// a rate limit. Summaries go to eval/results/round-N.json and .md.
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { bannedChars } from "../engine/guard";
+import { lint, tellReduction } from "../engine/lint";
+import { humanize } from "../engine/pipeline";
+import { groqProvider } from "../engine/providers";
+import { countWords, mattr } from "../engine/text";
+import { loadCorpus, readJson, writeJson, type Source } from "./corpus";
+import { checkClaims, extractClaims, pairwise, type ClaimCheck } from "./judge";
+
+// Eight sources spread over generators and genres, used for tuning rounds.
+export const DEV_SET = [
+  "g02-linkedin-failed-launch", "g09-essay-libraries", "g12-nursing-statement", "g19-explainer-api",
+  "g25-postmortem-cert", "c02-essay-social-media", "c05-report-sales", "c07-blog-productivity",
+];
+
+const WRITER = "qwen/qwen3.8-27b";
+const PIPELINE_JUDGE = "openai/gpt-oss-20b";
+const EVAL_JUDGE = "openai/gpt-oss-120b";
+
+interface TextResult {
+  id: string;
+  genre: string;
+  generator: string;
+  tone: string;
+  original: string;
+  rewrite: string;
+  words: [number, number];
+  drift: number;
+  density: [number, number];
+  score: [number, number];
+  reduction: number;
+  claims: number;
+  check: ClaimCheck;
+  pair: { result: "win" | "tie" | "loss"; rewriteWas: string; reason: string };
+  sentenceCv: [number, number];
+  mattr: [number, number];
+  banned: ReturnType<typeof bannedChars>;
+  fallbacks: Record<string, number>;
+  calls: number;
+  tokens: number;
+  seconds: number;
+}
+
+function arg(name: string, fallback?: string) {
+  const i = process.argv.indexOf(`--${name}`);
+  return i >= 0 ? process.argv[i + 1] : fallback;
+}
+
+const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+const mean = (xs: number[]) => (xs.length ? sum(xs) / xs.length : 0);
+const r3 = (x: number) => Math.round(x * 1000) / 1000;
+const cvOf = (t: string) => lint(t).metrics.find((m) => m.id === "rhythm-sentence-cv")?.value ?? 0;
+
+async function main() {
+  const key = process.env.GROQ_API_KEY;
+  if (!key) throw new Error("GROQ_API_KEY is not set");
+  const round = Number(arg("round", "1"));
+  const set = arg("set", "dev");
+  const ids = arg("ids")?.split(",");
+  const corpus = loadCorpus();
+  const sources = ids ? corpus.filter((s) => ids.includes(s.id)) : set === "all" ? corpus : corpus.filter((s) => DEV_SET.includes(s.id));
+
+  const cacheDir = new URL(`./.cache/round-${round}/`, import.meta.url);
+  mkdirSync(cacheDir, { recursive: true });
+  const claimsPath = new URL("./claims.json", import.meta.url);
+  const claimsCache: Record<string, string[]> = existsSync(claimsPath) ? readJson(claimsPath) : {};
+
+  const pipeline = groqProvider(key, "server", { writer: [WRITER], judge: [PIPELINE_JUDGE] });
+  const judge = groqProvider(key, "server", { writer: [EVAL_JUDGE], judge: [EVAL_JUDGE] });
+
+  const runOne = async (s: Source): Promise<TextResult | null> => {
+    const cached = new URL(`${s.id}.json`, cacheDir);
+    if (existsSync(cached)) return JSON.parse(readFileSync(cached, "utf8"));
+    const t0 = Date.now();
+    const res = await humanize(s.text, { mode: "standard", tone: s.tone, provider: pipeline, concurrency: 2 });
+    const fallbacks: Record<string, number> = {};
+    for (const p of res.paragraphs) if (p.fallback) fallbacks[p.fallback] = (fallbacks[p.fallback] ?? 0) + 1;
+    if (fallbacks.error || fallbacks.time) {
+      console.log(`${s.id}: provider error, not cached`);
+      return null;
+    }
+    if (!claimsCache[s.id]) {
+      claimsCache[s.id] = await extractClaims(judge, s.text);
+      writeJson(claimsPath, claimsCache);
+    }
+    const claims = claimsCache[s.id];
+    const check = await checkClaims(judge, s.text, claims, res.text);
+    const pair = await pairwise(judge, s.tone, s.text, res.text);
+    const before = lint(s.text);
+    const after = lint(res.text);
+    const w0 = countWords(s.text);
+    const w1 = countWords(res.text);
+    const out: TextResult = {
+      id: s.id, genre: s.genre, generator: s.generator, tone: s.tone, original: s.text, rewrite: res.text,
+      words: [w0, w1], drift: r3((w1 - w0) / w0), density: [before.density, after.density], score: [before.score, after.score],
+      reduction: r3(tellReduction(before, after)), claims: claims.length, check, pair,
+      sentenceCv: [r3(cvOf(s.text)), r3(cvOf(res.text))], mattr: [r3(mattr(s.text)), r3(mattr(res.text))],
+      banned: bannedChars(res.text), fallbacks, calls: res.usage.calls, tokens: res.usage.inputTokens + res.usage.outputTokens,
+      seconds: Math.round((Date.now() - t0) / 1000),
+    };
+    writeJson(cached, out);
+    console.log(
+      `${s.id}: tells ${before.density.toFixed(1)} -> ${after.density.toFixed(1)}, claims ${check.kept}/${claims.length} kept, ${check.changed.length} changed, ${check.missing.length} missing, ${check.added.length} added, pair ${pair.result}, drift ${(out.drift * 100).toFixed(0)}%, ${out.seconds}s`,
+    );
+    return out;
+  };
+
+  const results: TextResult[] = [];
+  let next = 0;
+  let failures = 0;
+  await Promise.all(
+    Array.from({ length: Number(arg("concurrency", "2")) }, async () => {
+      while (next < sources.length && failures < 3) {
+        const s = sources[next++];
+        try {
+          const r = await runOne(s);
+          if (r) results.push(r);
+          else failures++;
+        } catch (e) {
+          failures++;
+          console.log(`${s.id}: ${(e as Error).message}`);
+        }
+      }
+    }),
+  );
+
+  const missingIds = sources.filter((s) => !results.some((r) => r.id === s.id)).map((s) => s.id);
+  const totalClaims = sum(results.map((r) => r.claims));
+  const kept = sum(results.map((r) => r.check.kept));
+  const added = sum(results.map((r) => r.check.added.length));
+  const words0 = sum(results.map((r) => r.words[0]));
+  const words1 = sum(results.map((r) => r.words[1]));
+  const pooledBefore = (sum(results.map((r) => r.score[0])) / words0) * 100;
+  const pooledAfter = (sum(results.map((r) => r.score[1])) / words1) * 100;
+  const banned = sum(results.map((r) => r.banned.dashes + r.banned.invisible + r.banned.oddSpaces + r.banned.mixedScript.length));
+  const summary = {
+    round,
+    date: new Date().toISOString().slice(0, 10),
+    set: ids ? `ids:${ids.join(",")}` : set,
+    texts: results.length,
+    missing: missingIds,
+    models: { writer: WRITER, pipelineJudge: PIPELINE_JUDGE, evalJudge: EVAL_JUDGE },
+    tellReduction: { pooled: r3(1 - pooledAfter / pooledBefore), meanPerText: r3(mean(results.map((r) => r.reduction))), densityBefore: r3(pooledBefore), densityAfter: r3(pooledAfter) },
+    claims: { total: totalClaims, kept, changed: sum(results.map((r) => r.check.changed.length)), missing: sum(results.map((r) => r.check.missing.length)), recall: r3(kept / totalClaims), added, textsWithAdditions: results.filter((r) => r.check.added.length).length },
+    quality: {
+      win: results.filter((r) => r.pair.result === "win").length,
+      tie: results.filter((r) => r.pair.result === "tie").length,
+      loss: results.filter((r) => r.pair.result === "loss").length,
+      winOrTie: r3(results.filter((r) => r.pair.result !== "loss").length / results.length),
+    },
+    length: { totalDrift: r3((words1 - words0) / words0), meanAbsDrift: r3(mean(results.map((r) => Math.abs(r.drift)))), within10: results.filter((r) => Math.abs(r.drift) <= 0.1).length },
+    sentenceCv: { before: r3(mean(results.map((r) => r.sentenceCv[0]))), after: r3(mean(results.map((r) => r.sentenceCv[1]))) },
+    mattr: { before: r3(mean(results.map((r) => r.mattr[0]))), after: r3(mean(results.map((r) => r.mattr[1]))) },
+    bannedChars: banned,
+    fallbacks: results.reduce<Record<string, number>>((acc, r) => {
+      for (const [k, v] of Object.entries(r.fallbacks)) acc[k] = (acc[k] ?? 0) + v;
+      return acc;
+    }, {}),
+    detector: "not measured",
+    usage: { calls: sum(results.map((r) => r.calls)), tokens: sum(results.map((r) => r.tokens)) },
+  };
+  const targets = [
+    ["Tell reduction (pooled)", `${(summary.tellReduction.pooled * 100).toFixed(1)}%`, ">= 80%", summary.tellReduction.pooled >= 0.8],
+    ["Claim recall", `${(summary.claims.recall * 100).toFixed(1)}% (${kept}/${totalClaims})`, ">= 98%", summary.claims.recall >= 0.98],
+    ["Added claims", `${added} in ${summary.claims.textsWithAdditions} texts`, "0", added === 0],
+    ["Quality win or tie vs original", `${(summary.quality.winOrTie * 100).toFixed(1)}% (${summary.quality.win} win, ${summary.quality.tie} tie, ${summary.quality.loss} loss)`, ">= 85%", summary.quality.winOrTie >= 0.85],
+    ["Length drift", `${(summary.length.totalDrift * 100).toFixed(1)}% total, ${summary.length.within10}/${results.length} texts within 10%`, "within 10%", Math.abs(summary.length.totalDrift) <= 0.1],
+    ["Banned characters in output", String(banned), "0", banned === 0],
+  ] as const;
+  const md = [
+    `# Eval round ${round} (${summary.date}, ${summary.set}, ${results.length} texts)`,
+    "",
+    `Writer ${WRITER}, pipeline judge ${PIPELINE_JUDGE}, eval judge ${EVAL_JUDGE} (Groq). Mode: Standard. Detector: not measured.`,
+    "",
+    "| Metric | Result | Target | Met |",
+    "| --- | --- | --- | --- |",
+    ...targets.map(([m, v, t, ok]) => `| ${m} | ${v} | ${t} | ${ok ? "yes" : "no"} |`),
+    `| Tell density per 100 words | ${summary.tellReduction.densityBefore} before, ${summary.tellReduction.densityAfter} after | | |`,
+    `| Sentence length spread (CV) | ${summary.sentenceCv.before} before, ${summary.sentenceCv.after} after | | |`,
+    `| MATTR (window 50) | ${summary.mattr.before} before, ${summary.mattr.after} after | | |`,
+    "",
+    missingIds.length ? `Not finished: ${missingIds.join(", ")}` : "",
+  ].join("\n");
+  const outDir = new URL("./results/", import.meta.url);
+  mkdirSync(outDir, { recursive: true });
+  writeJson(new URL(`round-${round}.json`, outDir), { summary, results });
+  writeFileSync(new URL(`round-${round}.md`, outDir), md + "\n");
+  console.log("\n" + md);
+}
+
+main();
