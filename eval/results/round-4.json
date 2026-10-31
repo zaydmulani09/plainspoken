@@ -1,0 +1,265 @@
+{
+  "summary": {
+    "round": 4,
+    "date": "2026-10-31",
+    "set": "dev",
+    "texts": 3,
+    "missing": [
+      "g19-explainer-api",
+      "g25-postmortem-cert",
+      "c02-essay-social-media",
+      "c05-report-sales",
+      "c07-blog-productivity"
+    ],
+    "models": {
+      "writer": "openai/gpt-oss-120b",
+      "pipelineJudge": "openai/gpt-oss-20b",
+      "evalJudge": "qwen/qwen3.8-27b"
+    },
+    "tellReduction": {
+      "pooled": 0.353,
+      "meanPerText": 0.318,
+      "densityBefore": 6.732,
+      "densityAfter": 4.355
+    },
+    "claims": {
+      "total": 34,
+      "kept": 31,
+      "changed": 3,
+      "missing": 0,
+      "recall": 0.912,
+      "added": 0,
+      "textsWithAdditions": 0
+    },
+    "quality": {
+      "win": 1,
+      "tie": 1,
+      "loss": 1,
+      "winOrTie": 0.667
+    },
+    "length": {
+      "totalDrift": -0.054,
+      "meanAbsDrift": 0.054,
+      "within10": 3
+    },
+    "sentenceCv": {
+      "before": 0.194,
+      "after": 0.19
+    },
+    "mattr": {
+      "before": 0.9,
+      "after": 0.893
+    },
+    "bannedChars": 0,
+    "fallbacks": {
+      "original": 1
+    },
+    "detector": {
+      "name": "TMR AI text detector (Oxidane/tmr-ai-text-detector)",
+      "build": "onnx-community/tmr-ai-text-detector-ONNX, fp32, transformers.js 4.3.1, CPU",
+      "url": "https://huggingface.co/Oxidane/tmr-ai-text-detector",
+      "meanAiProbability": [
+        0.985,
+        0.984
+      ],
+      "flaggedAi": [
+        3,
+        3
+      ],
+      "note": "Flagged means AI probability above 0.5. See eval/results/detector-sanity.json for its scores on human text."
+    },
+    "usage": {
+      "calls": 15,
+      "tokens": 37717
+    }
+  },
+  "results": [
+    {
+      "id": "g02-linkedin-failed-launch",
+      "genre": "social post",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Launching a product that didn\u2019t meet expectations was a humbling experience, but it turned into a powerful learning curve. First, I realized the importance of validating assumptions early; we relied heavily on internal enthusiasm without enough real\u2011world user feedback, which led to misaligned features. Second, cross\u2011functional communication proved critical\u2014siloes between product, engineering, and marketing caused delays and mixed messaging that confused early adopters. Third, we underestimated the need for a phased rollout; a soft launch would have let us iterate based on actual usage data rather than guessing. Finally, we learned that post\u2011launch metrics must be tracked obsessively, not just sales numbers but also engagement, churn, and support tickets, to catch problems before they snowball. While the launch didn\u2019t succeed, the insights gained have reshaped our development process, making us more customer\u2011centric, data\u2011driven, and collaborative. Failure, when dissected honestly, can become the foundation for future success.",
+      "rewrite": "Launching a product that fell short of expectations was humbling, yet it turned into a powerful learning curve. I discovered that early validation of assumptions is essential; we depended on internal enthusiasm instead of real-world user feedback, which produced misaligned features. I also saw that cross-functional communication is vital: breakdowns between product, engineering, and marketing caused delays and mixed messages that confused early adopters. In addition, we missed the advantage of a phased rollout; a soft launch would have let us iterate using actual usage data rather than speculation. We also learned that post-launch metrics must be monitored rigorously, including engagement, churn, and support tickets, not only sales figures, to detect problems early. Although the launch failed, the experience has altered our development process, making it more customer-focused, data-driven, and collaborative. When examined honestly, such failures can become the basis for future success.",
+      "words": [
+        152,
+        143
+      ],
+      "drift": -0.059,
+      "density": [
+        4.39,
+        2.88
+      ],
+      "score": [
+        6.68,
+        4.12
+      ],
+      "reduction": 0.344,
+      "claims": 17,
+      "check": {
+        "kept": 16,
+        "changed": [
+          "Tracking metrics helps catch problems before they snowball."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is superior because it uses a clear numbered structure (First, Second, Third, Finally) to organize the lessons learned, making the text easier to scan and follow, and it employs more precise and professional vocabulary (e.g., 'customer-centric' vs. 'customer-focused', 'snowball' vs. 'detect problems early')."
+      },
+      "sentenceCv": [
+        0.26,
+        0.228
+      ],
+      "mattr": [
+        0.946,
+        0.92
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 6,
+      "tokens": 14270,
+      "seconds": 68,
+      "detector": [
+        0.982,
+        0.981
+      ]
+    },
+    {
+      "id": "g09-essay-libraries",
+      "genre": "essay",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "Public libraries today serve as vital community hubs that extend far beyond their traditional role as book repositories. They offer free access to a wide array of digital resources, including e\u2011books, audiobooks, streaming services, and online databases, thereby bridging the digital divide and empowering residents with tools for lifelong learning. Many libraries host workshops and classes on practical topics such as coding, financial literacy, and language learning, which help individuals acquire skills that enhance employability and personal growth. By providing quiet study spaces, collaborative workrooms, and high\u2011speed internet, libraries support students, freelancers, and small business owners alike, fostering a sense of belonging and encouraging intellectual curiosity. Cultural programs\u2014author talks, art exhibits, and community celebrations\u2014turn libraries into inclusive cultural centers that celebrate diversity and promote civic engagement. In times of crisis, libraries often become emergency resource centers, offering shelter, food distribution, and information on relief services. Thus, modern public libraries function as democratic spaces where knowledge, creativity, and community resilience converge, underscoring their indispensable role in building vibrant, connected societies.",
+      "rewrite": "Public libraries now act as community hubs that go well beyond just holding books. They give free access to many digital resources such as e-books, audiobooks, streaming services and online databases, which helps close the digital divide and gives residents tools for lifelong learning. Libraries also run workshops and classes on practical topics like coding, financial literacy and language learning, letting people pick up skills that improve job prospects and personal growth. With quiet study areas, collaborative workrooms and high-speed internet, they support students, freelancers and small business owners, creating a sense of belonging and sparking curiosity. Cultural events such as author talks, art exhibits and community celebrations turn these spaces into inclusive centers that celebrate diversity and encourage civic participation. In crises, libraries often become emergency resource sites, providing shelter, food distribution and information on relief services. Modern public libraries therefore serve as democratic spaces where knowledge, creativity, and community resilience meet, making them essential for building connected societies.",
+      "words": [
+        173,
+        160
+      ],
+      "drift": -0.075,
+      "density": [
+        9.18,
+        3.32
+      ],
+      "score": [
+        15.88,
+        5.31
+      ],
+      "reduction": 0.638,
+      "claims": 11,
+      "check": {
+        "kept": 9,
+        "changed": [
+          "This support fosters a sense of belonging and encourages intellectual curiosity.",
+          "This underscores their indispensable role in building vibrant, connected societies."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more direct and uses simpler, more natural language, whereas Version B relies on heavier, more formal phrasing that feels less accessible."
+      },
+      "sentenceCv": [
+        0.224,
+        0.251
+      ],
+      "mattr": [
+        0.895,
+        0.91
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "calls": 4,
+      "tokens": 9621,
+      "seconds": 67,
+      "detector": [
+        0.987,
+        0.984
+      ]
+    },
+    {
+      "id": "g12-nursing-statement",
+      "genre": "personal statement",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "From a young age, I have been drawn to the compassionate nature of nursing, believing that caring for others is both a privilege and a responsibility. My volunteer experience at [local hospital] exposed me to the profound impact that skilled, empathetic nurses have on patients\u2019 recovery journeys, and it cemented my resolve to pursue this path. I am fascinated by the blend of science, communication, and problem\u2011solving that nursing demands, and I thrive in environments where I can apply evidence\u2011based knowledge while maintaining a human touch. In my role as a caregiver for my [family member], I witnessed first\u2011hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations. I am eager to study nursing at [university], where the curriculum\u2019s emphasis on clinical practice and interprofessional collaboration aligns with my goal of becoming a well\u2011rounded clinician. Ultimately, I want to contribute to a healthcare system that values holistic, patient\u2011centered care, and I am committed to lifelong learning and advocacy for those in need.",
+      "rewrite": "From a young age, I have been drawn to the compassionate nature of nursing, believing that caring for others is both a privilege and a responsibility. My volunteer experience at [local hospital] exposed me to the profound impact that skilled, empathetic nurses have on patients\u2019 recovery journeys, and it cemented my resolve to pursue this path. I am fascinated by the blend of science, communication, and problem-solving that nursing demands, and I thrive in environments where I can apply evidence-based knowledge while maintaining a human touch. In my role as a caregiver for my [family member], I witnessed first-hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations. I am eager to study nursing at [university], where the curriculum\u2019s emphasis on clinical practice and interprofessional collaboration aligns with my goal of becoming a well-rounded clinician. Ultimately, I want to contribute to a healthcare system that values holistic, patient-centered care, and I am committed to lifelong learning and advocacy for those in need.",
+      "words": [
+        178,
+        173
+      ],
+      "drift": -0.028,
+      "density": [
+        6.35,
+        6.53
+      ],
+      "score": [
+        11.3,
+        11.3
+      ],
+      "reduction": -0.028,
+      "claims": 6,
+      "check": {
+        "kept": 6,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical in content and quality, with the only difference being the use of non-breaking hyphens in Version B, which does not affect readability or tone."
+      },
+      "sentenceCv": [
+        0.099,
+        0.092
+      ],
+      "mattr": [
+        0.858,
+        0.848
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "calls": 5,
+      "tokens": 13826,
+      "seconds": 172,
+      "detector": [
+        0.986,
+        0.986
+      ]
+    }
+  ]
+}

@@ -102,6 +102,7 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
       const patience = o.role === "writer" ? 25000 : 4000;
       let maxTokens = o.maxTokens ?? 2000;
       let lastErr: unknown = null;
+      const started = Date.now();
       for (let attempt = 0; attempt < 8; attempt++) {
         const need = Math.ceil((o.system.length + o.user.length) / 3.5) + maxTokens;
         const waits = list.map((m) => waitFor(m, need));
@@ -158,8 +159,13 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
           // A daily limit will not clear soon: mark the model full for a minute so
           // the next attempt picks another one.
           const daily = /per day|TPD|RPD/i.test(errBody);
-          const wait = daily ? 60000 : Math.max(parseReset(res.headers.get("retry-after") ? `${res.headers.get("retry-after")}s` : null), 1000);
+          const wait = daily
+            ? 60000
+            : Math.max(parseReset(res.headers.get("retry-after") ? `${res.headers.get("retry-after")}s` : null), parseReset(res.headers.get("x-ratelimit-reset-tokens")), 1000);
           used(model, Date.now()).entries.push({ t: Date.now() - 60000 + wait, n: TPM });
+          // A per-minute limit clears soon, so it does not use up an attempt
+          // for the first two minutes of a call.
+          if (res.status === 429 && !daily && Date.now() - started + wait < 120000) attempt--;
           continue;
         }
         if (!res.ok) {

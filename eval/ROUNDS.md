@@ -76,3 +76,27 @@ Findings:
 Changes:
 - A deterministic check in code (engine/keep.ts): every item of a listed series ("A, B, and C") and every hedge or frequency word must survive, with swaps allowed inside a hedge group ("often" to "frequently"). A miss sends the draft to repair with the exact items. On the cached round 2 and 3 outputs it flags exactly the drops the eval judge found (creativity, often, data-driven, problem-solving), plus one false alarm ("daily" in g19).
 - The meaning judge also gets the new words each draft brings in, to catch added details.
+
+Results (3 of 8 texts; g19 and g25 failed on Groq rate limits, and the round was stopped to save the daily quota for the final run):
+
+| Metric | Result | Target |
+| --- | --- | --- |
+| Tell reduction | 35.3% | >= 80% |
+| Claim recall | 91.2% (31/34) | >= 98% |
+| Added claims | 0 | 0 |
+| Win or tie | 66.7% | >= 85% |
+| Length drift | -5.4% | within 10% |
+
+Findings:
+- Recall rose (g09 from 7/11 to 9/11 kept). The list-item check made g09 keep "creativity" and "often".
+- Repairs that restored missing claims copied the source wording back, tells included, and the tell repair that followed dropped claims again. In g12 the loop ended on the source text.
+- The writer still dropped g02's First/Second/Third/Finally and opened a sentence with "In addition".
+- Rate limit retries gave up after 8 quick attempts while the per-minute window was full.
+
+## Round 5 (final, all 42 texts)
+
+Changes:
+- Repairs restore a missing claim's meaning in plain words, not the source's wording, and are told which source phrasings to avoid.
+- When the source orders its points with First, Second, Finally, the writer is told to keep those markers. "In addition" joins the banned sentence openers.
+- Per-minute rate limits retry for up to two minutes, honoring Groq's reset headers.
+- Eval pins the pipeline judge to gpt-oss-20b (no 120b fallback) and runs the pairwise judge without reasoning, to fit the free tier's daily token quota. Rewrites are cached apart from judgments, so a run can resume when the quota frees.

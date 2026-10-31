@@ -48,7 +48,7 @@ Never write any of these:
 - new lists of three adjectives or nouns that the source did not have
 - "from X to Y" for things that are not on a real scale
 - a rhetorical question followed by its answer, or a colon that announces a reveal ("The result:", "Here's the thing")
-- sentence-opening furthermore, moreover, additionally, ultimately, overall, notably, importantly, indeed
+- sentence-opening furthermore, moreover, additionally, in addition, ultimately, overall, notably, importantly, indeed
 - stated lessons ("this taught me", "the takeaway is", "what matters is") or summaries ("in conclusion", "in short", "all in all")
 - trailing clauses like ", highlighting...", ", underscoring...", ", reflecting...", ", ensuring..."
 - "serves as" or "stands as" where "is" works
@@ -105,12 +105,18 @@ function contextBlock(rid: string, c: WriterInput["context"]): string {
   return `\nNeighboring paragraphs, for flow only. Do not rewrite them or move content in from them:\n<context-${rid}>\n${c.before ? `Before: ${c.before}\n` : ""}${c.after ? `After: ${c.after}\n` : ""}</context-${rid}>\n`;
 }
 
+// Sentence-opening ordinal markers, which organize points and should stay.
+function ordinals(p: string): string[] {
+  return [...p.matchAll(/(?:^|[.!?]\s+)(First|Firstly|Second|Secondly|Third|Thirdly|Fourth|Finally|Lastly)\b/g)].map((m) => m[1]);
+}
+
 function header(w: WriterInput): string {
   return [
     `Request ${w.rid}. Tone: ${TONE_GUIDE[w.tone]}`,
     `Word range for the result: ${w.range[0]} to ${w.range[1]} words.`,
     w.locked.length ? `LOCKED spans, copy each exactly: ${JSON.stringify(w.locked)}` : "LOCKED spans: none.",
     w.isList ? "The source is a list. Keep it a list with the same number of items and the same markers." : "",
+    ordinals(w.paragraph).length ? `The source orders its points with ${ordinals(w.paragraph).map((o) => `"${o}"`).join(", ")}. Keep those markers, in that order.` : "",
   ]
     .filter(Boolean)
     .join("\n");

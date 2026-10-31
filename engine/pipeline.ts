@@ -325,14 +325,17 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       const ps: string[] = [];
       if (c.frozen.missing.length) ps.push(`These locked spans are missing or altered; include each exactly: ${JSON.stringify(c.frozen.missing)}`);
       if (c.frozen.added.length) ps.push(`Remove details that are not in the source: ${JSON.stringify(c.frozen.added)}`);
-      if (c.missingText?.length) ps.push(`These claims from the source are missing or changed; restore them: ${JSON.stringify(c.missingText)}`);
+      if (c.missingText?.length) ps.push(`These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): ${JSON.stringify(c.missingText)}`);
       if (c.added?.length) ps.push(`Remove content the source does not say: ${JSON.stringify(c.added)}`);
       if (!c.inRange) ps.push(`The draft has ${c.words} words; it must have ${range[0]} to ${range[1]}.`);
       if (!c.bannedOk) ps.push("Remove every em dash and en dash and any unusual characters.");
       if (c.keep.items.length) ps.push(`These items from the source's lists are missing; keep each one: ${JSON.stringify(c.keep.items)}`);
       if (c.keep.hedges.length) ps.push(`The source says ${c.keep.hedges.map((h) => `"${h}"`).join(", ")}; keep that qualifier or one that means the same.`);
-      // Repairs fix hard failures only. Asking for tell fixes at the same time
-      // pulls against the meaning lock (for example, dropping a listed item).
+      // Restored claims tend to come back in the source's wording, tells and all,
+      // so name the tells to avoid. The list-item and hedge checks keep this
+      // from costing a listed item.
+      const avoid = winput.tells.filter((t) => !t.text.startsWith("("));
+      if (ps.length && avoid.length) ps.push(`While fixing, do not reuse these source phrasings, which read as AI-written: ${avoid.map((t) => `"${t.text}"`).join(", ")}`);
       return ps;
     };
 

@@ -43,6 +43,8 @@ interface TextResult {
   mattr: [number, number];
   banned: ReturnType<typeof bannedChars>;
   fallbacks: Record<string, number>;
+  // What was still wrong with each paragraph that fell back.
+  issues?: string[][];
   calls: number;
   tokens: number;
   seconds: number;
@@ -73,8 +75,10 @@ async function main() {
   const claimsPath = new URL("./claims.json", import.meta.url);
   const claimsCache: Record<string, string[]> = existsSync(claimsPath) ? readJson(claimsPath) : {};
 
-  // Same models as the live site, minus the qwen writer fallback (qwen is the eval judge).
-  const pipeline = groqProvider(key, "server", { writer: [WRITER], judge: [PIPELINE_JUDGE, WRITER] });
+  // The live site's models, pinned: no qwen writer fallback (qwen is the eval
+  // judge), and no gpt-oss-120b judge fallback, so a full run fits the free
+  // tier's daily token quota. Live runs can only get a stronger judge.
+  const pipeline = groqProvider(key, "server", { writer: [WRITER], judge: [PIPELINE_JUDGE] });
   const judge = groqProvider(key, "server", { writer: [EVAL_JUDGE], judge: [EVAL_JUDGE] });
 
   const runOne = async (s: Source): Promise<TextResult | null> => {
@@ -82,16 +86,26 @@ async function main() {
     if (existsSync(cached)) return JSON.parse(readFileSync(cached, "utf8"));
     // --cached: summarize what a stopped round finished, without new calls.
     if (process.argv.includes("--cached")) return null;
-    const t0 = Date.now();
-    // Paragraph concurrency matches the live route, and texts run one at a
-    // time by default, so the seconds below are close to a live run.
-    const res = await humanize(s.text, { mode: "standard", tone: s.tone, provider: pipeline, concurrency: 3 });
+    // The rewrite is cached on its own, so judging can resume after the
+    // judge model's daily quota resets without redoing it.
+    const rewriteCache = new URL(`${s.id}.rewrite.json`, cacheDir);
+    let res: Awaited<ReturnType<typeof humanize>>;
+    let seconds: number;
+    if (existsSync(rewriteCache)) ({ res, seconds } = readJson(rewriteCache) as { res: typeof res; seconds: number });
+    else {
+      const t0 = Date.now();
+      // Paragraph concurrency matches the live route, and texts run one at a
+      // time by default, so the seconds below are close to a live run.
+      res = await humanize(s.text, { mode: "standard", tone: s.tone, provider: pipeline, concurrency: 3 });
+      seconds = Math.round((Date.now() - t0) / 1000);
+      if (res.paragraphs.some((p) => p.fallback === "error" || p.fallback === "time")) {
+        console.log(`${s.id}: provider error, not cached`);
+        return null;
+      }
+      writeJson(rewriteCache, { res, seconds });
+    }
     const fallbacks: Record<string, number> = {};
     for (const p of res.paragraphs) if (p.fallback) fallbacks[p.fallback] = (fallbacks[p.fallback] ?? 0) + 1;
-    if (fallbacks.error || fallbacks.time) {
-      console.log(`${s.id}: provider error, not cached`);
-      return null;
-    }
     if (!claimsCache[s.id]) {
       claimsCache[s.id] = await extractClaims(judge, s.text);
       writeJson(claimsPath, claimsCache);
@@ -108,8 +122,8 @@ async function main() {
       words: [w0, w1], drift: r3((w1 - w0) / w0), density: [before.density, after.density], score: [before.score, after.score],
       reduction: r3(tellReduction(before, after)), claims: claims.length, check, pair,
       sentenceCv: [r3(cvOf(s.text)), r3(cvOf(res.text))], mattr: [r3(mattr(s.text)), r3(mattr(res.text))],
-      banned: bannedChars(res.text), fallbacks, calls: res.usage.calls, tokens: res.usage.inputTokens + res.usage.outputTokens,
-      seconds: Math.round((Date.now() - t0) / 1000),
+      banned: bannedChars(res.text), fallbacks, issues: res.paragraphs.filter((p) => p.fallback).map((p) => p.issues), calls: res.usage.calls, tokens: res.usage.inputTokens + res.usage.outputTokens,
+      seconds,
     };
     writeJson(cached, out);
     console.log(

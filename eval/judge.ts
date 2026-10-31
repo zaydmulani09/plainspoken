@@ -122,7 +122,7 @@ ${b}
 </version-B-${rid}>
 
 Return {"reason": "<one sentence>", "winner": "A" | "B" | "tie"}.`;
-  const r = await p.call({ role: "judge", system: PAIR_SYSTEM, user, schema: SCHEMA_PAIR, maxTokens: 4000, effort: "medium" });
+  const r = await p.call({ role: "judge", system: PAIR_SYSTEM, user, schema: SCHEMA_PAIR, maxTokens: 1500 });
   const j = parseJson<{ winner: string; reason: string }>(r.text);
   const rewriteWas = rewriteFirst ? "A" : "B";
   const result: Verdict = j.winner === "tie" ? "tie" : j.winner === rewriteWas ? "win" : "loss";
