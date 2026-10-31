@@ -156,6 +156,7 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         if (res.status === 429 || res.status >= 500) {
           lastErr = new ProviderError(res.status === 429 ? "rate_limit" : "unavailable", `Groq ${res.status}`);
           const errBody = await res.text().catch(() => "");
+          if (process.env.PLAINSPOKEN_DEBUG) console.error(model, res.status, errBody.slice(0, 300));
           // A daily limit will not clear soon: mark the model full for a minute so
           // the next attempt picks another one.
           const daily = /per day|TPD|RPD/i.test(errBody);
