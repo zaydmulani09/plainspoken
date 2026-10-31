@@ -60,11 +60,11 @@ The live site runs on route 3, Groq's free tier.
 
 ## Evaluation
 
-EVAL_SECTION
+The full 42-text evaluation is running. Tuning rounds on the 8-text dev set, with their numbers, are in [eval/ROUNDS.md](eval/ROUNDS.md).
 
 ## Detector
 
-DETECTOR_SECTION
+Not measured yet for the final pipeline. The detector and its sanity check are in [eval/detector.ts](eval/detector.ts) and [eval/results/detector-sanity.json](eval/results/detector-sanity.json).
 
 ## API
 
@@ -107,7 +107,7 @@ npx tsx scripts/cli.ts draft.txt --mode standard --tone neutral
 Import the repo, set `ANTHROPIC_API_KEY` or `GROQ_API_KEY` in the project's environment variables, and deploy. Optional: `DAILY_WORD_CAP` (default 60000), `IP_LIMIT` (default 8 per 10 minutes), `GROQ_WRITER_MODELS` and `GROQ_JUDGE_MODELS` (comma-separated). For the per-IP firewall rule:
 
 ```bash
-vercel firewall rules add "Rate limit humanize per IP" --condition "path:eq:/api/humanize" --rate-limit 10/600 --action deny
+vercel firewall rules add "Rate limit humanize per IP" --condition '{"type":"path","op":"eq","value":"/api/humanize"}' --action rate_limit --rate-limit-requests 10 --rate-limit-window 600 --rate-limit-action deny
 ```
 
 ```bash
