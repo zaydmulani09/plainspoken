@@ -90,7 +90,14 @@ function parseReset(v: string | null): number {
   return ms;
 }
 
+// Batch jobs may pass several comma-separated keys from separate Groq accounts,
+// each with its own daily quota. A key whose daily quota is spent for a model
+// is skipped until Groq says it frees.
+const spentUntil = new Map<string, number>();
+const isSpent = (key: string, model: string) => (spentUntil.get(`${key} ${model}`) ?? 0) > Date.now();
+
 export function groqProvider(apiKey: string, source: "server" | "byok", models = GROQ_MODELS): Provider {
+  const keys = apiKey.split(",").map((k) => k.trim()).filter(Boolean);
   return {
     name: "groq",
     source,
@@ -109,6 +116,7 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         let k = waits[0] <= patience ? 0 : waits.indexOf(Math.min(...waits));
         const model = list[k];
         if (waits[k] > 0) await sleep(waits[k], o.signal);
+        const key = keys.find((x) => !isSpent(x, model)) ?? keys[0];
         // Admission needs room for prompt plus max tokens; once the call returns,
         // the window holds what it actually used.
         const entry = { t: Date.now(), n: need };
@@ -140,7 +148,7 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         try {
           res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
-            headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+            headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
             body: JSON.stringify(body),
             signal: o.signal,
           });
@@ -160,6 +168,13 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
           // A daily limit will not clear soon: mark the model full for a minute so
           // the next attempt picks another one.
           const daily = /per day|TPD|RPD/i.test(errBody);
+          const again = /try again in (?:(\d+)m)?([\d.]+)s/.exec(errBody);
+          const dailyWait = again ? (Number(again[1] ?? 0) * 60 + Number(again[2])) * 1000 + 500 : 60000;
+          if (daily) spentUntil.set(`${key} ${model}`, Date.now() + dailyWait);
+          if (daily && keys.some((x) => !isSpent(x, model))) {
+            attempt--;
+            continue;
+          }
           const wait = daily
             ? 60000
             : Math.max(parseReset(res.headers.get("retry-after") ? `${res.headers.get("retry-after")}s` : null), parseReset(res.headers.get("x-ratelimit-reset-tokens")), 1000);
@@ -170,9 +185,8 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
           // The daily quota is a rolling 24 hour window, so it frees a little at a
           // time. Batch jobs (the eval) can set GROQ_WAIT_DAILY to wait for it.
           if (daily && process.env.GROQ_WAIT_DAILY) {
-            const m = /try again in (?:(\d+)m)?([\d.]+)s/.exec(errBody);
-            const s = m ? Number(m[1] ?? 0) * 60 + Number(m[2]) : 60;
-            await sleep(Math.min(s * 1000 + 500, 600000), o.signal);
+            const soonest = Math.min(...keys.map((x) => spentUntil.get(`${x} ${model}`) ?? 0)) - Date.now();
+            await sleep(Math.min(Math.max(soonest, 1000), 600000), o.signal);
             attempt--;
           }
           continue;

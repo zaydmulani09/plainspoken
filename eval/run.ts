@@ -62,7 +62,9 @@ const r3 = (x: number) => Math.round(x * 1000) / 1000;
 const cvOf = (t: string) => lint(t).metrics.find((m) => m.id === "rhythm-sentence-cv")?.value ?? 0;
 
 async function main() {
-  const key = process.env.GROQ_API_KEY;
+  // GROQ_EXTRA_KEYS: comma-separated keys from other Groq accounts, used when
+  // the first key's daily quota is spent.
+  const key = [process.env.GROQ_API_KEY, process.env.GROQ_EXTRA_KEYS].filter(Boolean).join(",");
   if (!key) throw new Error("GROQ_API_KEY is not set");
   const round = Number(arg("round", "1"));
   const set = arg("set", "dev");
