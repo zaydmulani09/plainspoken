@@ -227,10 +227,12 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     }
 
     emit({ type: "stage", i, stage: "writing" });
-    // Two drafts run about 2.6 tokens per source word; a cut-off reply is
-    // retried with double the budget.
-    const maxOut = Math.round(2.6 * n) + 600;
-    const maxRepair = Math.round(1.4 * n) + 500;
+    // Two drafts run about 2.6 tokens per source word, plus reasoning. A
+    // cut-off reply is wasted (its tokens still count) and retried with double
+    // the budget, so the caps leave room: the daily quota counts what a call
+    // uses, not its cap.
+    const maxOut = Math.round(3.4 * n) + 1000;
+    const maxRepair = Math.round(2 * n) + 800;
     let texts: string[] = [];
     if (mode === "light") {
       const j = parseJson<{ candidates: { edits: { n: number; text: string }[] }[] }>(
