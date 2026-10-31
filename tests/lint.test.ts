@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { keepCheck } from "@/engine/keep";
 import { droppedWords } from "@/engine/text";
 import { lint, SOURCES, TELLS, tellReduction } from "@/engine/lint";
 
@@ -71,5 +72,15 @@ describe("droppedWords", () => {
     const src = "Libraries often become emergency centers, offering shelter and food.";
     const out = "Libraries become emergency centres that offer shelter and food.";
     expect(droppedWords(src, out)).toEqual(["often", "centers"]);
+  });
+});
+
+describe("keepCheck", () => {
+  it("flags dropped list items and hedges, allowing swaps within a hedge group", () => {
+    const src = "Libraries often host coding, financial literacy, and language classes. They are places where knowledge, creativity, and community meet.";
+    const r = keepCheck(src, "Libraries host coding, financial literacy and language classes. Knowledge and community meet there.");
+    expect(r.items).toEqual(["creativity"]);
+    expect(r.hedges).toEqual(["often"]);
+    expect(keepCheck(src, "Libraries frequently host coding, financial literacy and language classes. Knowledge, creativity and community meet there.")).toEqual({ items: [], hedges: [] });
   });
 });

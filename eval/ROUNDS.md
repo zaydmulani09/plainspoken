@@ -56,3 +56,23 @@ Changes:
 - Writer prompt keeps ordinal markers and "often"-type hedges; repairs may rewrite the sentences they touch.
 - Length: the writer is asked for 7% either side; drafts fail outside 14%.
 - Eval runs one text at a time with the live route's paragraph concurrency, so its timings match a live run.
+
+Results (3 of 8 texts; stopped early because the dropped-word hint did not work, see below):
+
+| Metric | Result | Target |
+| --- | --- | --- |
+| Tell reduction | 42.9% | >= 80% |
+| Claim recall | 85.3% (29/34) | >= 98% |
+| Added claims | 0 | 0 |
+| Win or tie | 33.3% | >= 85% |
+| Length drift | -7.4% | within 10% |
+
+Findings:
+- The low-effort judge saw "often" and "creativity" in its dropped-word list for g09 and still passed the draft. A hint is not enough for a small judge.
+- The machine went into standby mid-round and the run paused for five hours; timings for g02 in this round are meaningless.
+
+## Round 4
+
+Changes:
+- A deterministic check in code (engine/keep.ts): every item of a listed series ("A, B, and C") and every hedge or frequency word must survive, with swaps allowed inside a hedge group ("often" to "frequently"). A miss sends the draft to repair with the exact items. On the cached round 2 and 3 outputs it flags exactly the drops the eval judge found (creativity, often, data-driven, problem-solving), plus one false alarm ("daily" in g19).
+- The meaning judge also gets the new words each draft brings in, to catch added details.

@@ -2,6 +2,7 @@
 // (frozen spans, meaning, quality, lint), pick, repair up to twice, fall back.
 import { bannedChars, hasDash, stripBanned } from "./guard";
 import { checkFrozen, freeze, uniqueFrozen, type Frozen } from "./freeze";
+import { keepCheck, type KeepReport } from "./keep";
 import { lint, TELLS, type LintReport } from "./lint";
 import {
   CLAIMS_SYSTEM, MEANING_SYSTEM, QUALITY_SYSTEM, SCHEMAS, WRITER_SYSTEM,
@@ -83,6 +84,7 @@ interface Candidate {
   // Density without groups of three carried over from the source.
   gateDensity: number;
   remainingTells: TellNote[];
+  keep: KeepReport;
   missing?: string[];
   added?: string[];
   missingText?: string[];
@@ -271,7 +273,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       const gate = w ? ((l.score - l.hits.filter(carried).reduce((a, h) => a + h.weight, 0)) / w) * 100 : 0;
       return {
         text, frozen, bannedOk: bannedChars(text).ok, words: w, inRange: w >= hard[0] && w <= hard[1],
-        density: l.density, gateDensity: gate, remainingTells: tellNotes({ ...l, hits: own }),
+        density: l.density, gateDensity: gate, remainingTells: tellNotes({ ...l, hits: own }), keep: keepCheck(para, text),
       };
     };
 
@@ -308,9 +310,10 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
     // A draft should also cut most of the tells (to 35% of the source). A near copy of the source
     // passes every meaning check, so without this it can win.
     const tellTarget = Math.max(2, 0.35 * pl.density);
+    const keepsAll = (c: Candidate) => !c.keep.items.length && !c.keep.hedges.length;
     const tellsOk = (c: Candidate) => mode === "light" || c.gateDensity <= tellTarget;
     const combined = (c: Candidate) =>
-      (c.quality ?? 5) - 0.4 * c.density - 3 * (c.missing?.length ?? 0) - 3 * (c.added?.length ?? 0) - 3 * c.frozen.missing.length - 3 * c.frozen.added.length - (c.bannedOk ? 0 : 5) - (c.inRange ? 0 : 2);
+      (c.quality ?? 5) - 0.4 * c.density - 3 * (c.missing?.length ?? 0) - 3 * (c.added?.length ?? 0) - 3 * c.frozen.missing.length - 3 * c.frozen.added.length - (c.bannedOk ? 0 : 5) - (c.inRange ? 0 : 2) - 2 * (c.keep.items.length + c.keep.hedges.length);
     const bestOf = (cs: Candidate[]) => [...cs].sort((a, b) => combined(b) - combined(a))[0];
     const tellProblems = (c: Candidate): string[] => [
       `These AI tells remain. Rewrite the sentences that contain them in plain words, keeping every claim and every listed item: ${c.remainingTells
@@ -326,6 +329,8 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       if (c.added?.length) ps.push(`Remove content the source does not say: ${JSON.stringify(c.added)}`);
       if (!c.inRange) ps.push(`The draft has ${c.words} words; it must have ${range[0]} to ${range[1]}.`);
       if (!c.bannedOk) ps.push("Remove every em dash and en dash and any unusual characters.");
+      if (c.keep.items.length) ps.push(`These items from the source's lists are missing; keep each one: ${JSON.stringify(c.keep.items)}`);
+      if (c.keep.hedges.length) ps.push(`The source says ${c.keep.hedges.map((h) => `"${h}"`).join(", ")}; keep that qualifier or one that means the same.`);
       // Repairs fix hard failures only. Asking for tell fixes at the same time
       // pulls against the meaning lock (for example, dropping a listed item).
       return ps;
@@ -354,7 +359,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       await judgeMeaning(pool);
       all.push(...pool);
       const ok = pool.filter(passes);
-      const done = ok.filter(tellsOk);
+      const done = ok.filter((c) => keepsAll(c) && tellsOk(c));
       if (done.length > 1) await judgeQuality(done);
       if (done.length) {
         chosen = bestOf(done);
@@ -364,18 +369,19 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       // Meaning holds but tells remain: repair the tells. Otherwise repair
       // the hard failures of the best draft.
       const best = ok.length ? bestOf(ok) : bestOf(pool);
+      const tellsOnly = ok.length > 0 && keepsAll(best);
       loops++;
       emit({ type: "stage", i, stage: "repairing" });
       const j = parseJson<{ text: string }>(
-        await call("writer", WRITER_SYSTEM, repairPrompt({ rid, tone: o.tone, paragraph: para, draft: best.text, problems: ok.length ? tellProblems(best) : problemsOf(best), locked, range }), SCHEMAS.text, maxRepair),
+        await call("writer", WRITER_SYSTEM, repairPrompt({ rid, tone: o.tone, paragraph: para, draft: best.text, problems: tellsOnly ? tellProblems(best) : problemsOf(best), locked, range }), SCHEMAS.text, maxRepair),
       );
       pool = [assess(j.text ?? best.text)];
     }
 
     let fallback: ParagraphResult["fallback"] = null;
     // Out of repairs: a draft that keeps the meaning but still has some tells
-    // is fine to use.
-    if (!chosen && all.some(passes)) chosen = bestOf(all.filter(passes));
+    // is fine to use, preferring one that kept every list item and hedge.
+    if (!chosen && all.some(passes)) chosen = bestOf(all.filter((c) => passes(c) && keepsAll(c)).length ? all.filter((c) => passes(c) && keepsAll(c)) : all.filter(passes));
     if (!chosen) {
       // A draft the judge cleared on meaning but that missed the length range
       // is still safe to use. Anything that changed the meaning is not: keep

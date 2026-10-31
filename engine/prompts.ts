@@ -220,7 +220,7 @@ Then, for each rewrite, report:
 - missing: ids of claims that are absent or whose meaning changed (including a weaker or stronger hedge, a changed number, a changed actor)
 - added: anything the rewrite states that the source does not say or clearly imply (new facts, details, examples, reasons, feelings, or stronger or broader claims). A role, job title, timeframe, or personal detail about the author or anyone else counts, even a small one like "As a product lead" or "recently".
 Rewording, reordering, merging sentences, changing tone, and cutting filler or a closing line that only repeats an earlier claim are all fine and are not problems.
-Each rewrite comes with the source words it does not use. Most are harmless swaps of wording. Check each one that could carry meaning, such as a hedge or frequency word ("often", "some", "may"), a list item, or a qualifier, and mark the claim missing if that meaning is gone.
+Each rewrite comes with the source words it does not use and the new words it brings in. Most are harmless swaps of wording. Check each dropped word that could carry meaning, such as a hedge or frequency word ("often", "some", "may"), a list item, or a qualifier, and mark the claim missing if that meaning is gone. Check each new word that could carry a fact, detail, or feeling the source does not state, and list it under added.
 Return JSON only.`;
 
 export function meaningPrompt(rid: string, source: string, rewrites: { label: string; text: string }[], claims?: string[]): string {
@@ -235,7 +235,13 @@ ${source}
 ${rewrites
   .map((r) => {
     const gone = droppedWords(source, r.text);
-    return `Rewrite ${r.label}:\n<rewrite-${r.label}-${rid}>\n${r.text}\n</rewrite-${r.label}-${rid}>${gone.length ? `\nSource words rewrite ${r.label} does not use: ${gone.join(", ")}` : ""}`;
+    const fresh = droppedWords(r.text, source);
+    return `Rewrite ${r.label}:
+<rewrite-${r.label}-${rid}>
+${r.text}
+</rewrite-${r.label}-${rid}>${gone.length ? `
+Source words rewrite ${r.label} does not use: ${gone.join(", ")}` : ""}${fresh.length ? `
+Words in rewrite ${r.label} that the source does not use: ${fresh.join(", ")}` : ""}`;
   })
   .join("\n\n")}
 
