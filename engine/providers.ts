@@ -166,6 +166,14 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
           // A per-minute limit clears soon, so it does not use up an attempt
           // for the first two minutes of a call.
           if (res.status === 429 && !daily && Date.now() - started + wait < 120000) attempt--;
+          // The daily quota is a rolling 24 hour window, so it frees a little at a
+          // time. Batch jobs (the eval) can set GROQ_WAIT_DAILY to wait for it.
+          if (daily && process.env.GROQ_WAIT_DAILY) {
+            const m = /try again in (?:(\d+)m)?([\d.]+)s/.exec(errBody);
+            const s = m ? Number(m[1] ?? 0) * 60 + Number(m[2]) : 60;
+            await sleep(Math.min(s * 1000 + 500, 600000), o.signal);
+            attempt--;
+          }
           continue;
         }
         if (!res.ok) {
