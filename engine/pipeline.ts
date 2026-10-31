@@ -334,7 +334,7 @@ export async function humanize(input: string, o: HumanizeOptions): Promise<Human
       // Restored claims tend to come back in the source's wording, tells and all,
       // so name the tells to avoid. The list-item and hedge checks keep this
       // from costing a listed item.
-      const avoid = winput.tells.filter((t) => !t.text.startsWith("("));
+      const avoid = winput.tells.filter((t) => !t.text.startsWith("(") && t.text.trim().includes(" "));
       if (ps.length && avoid.length) ps.push(`While fixing, do not reuse these source phrasings, which read as AI-written: ${avoid.map((t) => `"${t.text}"`).join(", ")}`);
       return ps;
     };
