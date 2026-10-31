@@ -6,7 +6,7 @@ Single source of truth for the build. Survives context compaction.
 - Server model route: Groq (GROQ_API_KEY). No ANTHROPIC_API_KEY in local env or any Vercel project (checked 2026-10-30).
 - Vercel AI Gateway: retested 2026-10-30 with the project OIDC token, 403 "requires a valid credit card on file". Not free, not used.
 - Groq models on the key (2026-10-30): qwen/qwen3.8-27b, openai/gpt-oss-120b, openai/gpt-oss-20b (plus safeguard/whisper/guard models, unused).
-- Writer: openai/gpt-oss-120b at low effort (fallback qwen); qwen drafts were choppy and dropped list items (2026-10-30 A/B on g09). Pipeline judge: openai/gpt-oss-20b at medium effort for meaning (fallback 120b). Eval judge: qwen/qwen3.8-27b with reasoning on; eval pins the pipeline to 120b + 20b so the eval judge is a different model family. Claims cache (eval/claims.json) was extracted by 120b in round 1 and reused.
+- Writer: openai/gpt-oss-120b at low effort (fallback qwen); qwen drafts were choppy and dropped list items (2026-10-30 A/B on g09). Pipeline judge: openai/gpt-oss-20b at low effort for meaning (fallback 120b); medium effort reserved too much of the per-minute window. Eval judge: qwen/qwen3.8-27b with reasoning on; eval pins the pipeline to 120b + 20b so the eval judge is a different model family. Claims cache (eval/claims.json): the 8 dev texts were extracted by 120b in round 1, the other 34 by qwen in the final run.
 - Groq free tier per model: 30 RPM, 1K RPD, 8K TPM, 200K TPD. Admission counts prompt + max tokens; the limiter then books actual usage.
 - Anthropic path (server key if ever set, or BYOK): writer claude-sonnet-5-5, judge claude-haiku-5-5, no temperature, effort via output_config, thinking left adaptive.
 - Fallback policy: if no draft passes meaning after 2 repairs, keep the original paragraph (never ship a meaning change); a meaning-safe draft that only misses length is kept and flagged.
@@ -23,10 +23,10 @@ Single source of truth for the build. Survives context compaction.
 - Reduced motion, reduced transparency, increased contrast handled.
 
 ## Open
-- [ ] Eval rounds on dev set (max 6), log in eval/ROUNDS.md
+- [x] Eval rounds on dev set (4 of max 6), log in eval/ROUNDS.md
 - [ ] Final full eval run (42 texts) with shipped prompts
 - [ ] README with real eval table, limits, scoring, self-host, Vercel, BYOK
-- [ ] Redeploy, live e2e incl. 600-word sample, confirm streaming + limits (413, firewall)
+- [x] Live e2e incl. 600-word sample (5/5 pass 2026-10-31), streaming + 413; firewall 403 on request 11 (2026-10-31)
 - [ ] CI green on GitHub
 - [ ] Final dash grep, TASKS closed, project memory saved
 
