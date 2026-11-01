@@ -1,0 +1,3115 @@
+{
+  "summary": {
+    "round": 5,
+    "date": "2026-10-31",
+    "set": "all",
+    "texts": 42,
+    "missing": [],
+    "models": {
+      "writer": "openai/gpt-oss-120b",
+      "pipelineJudge": "openai/gpt-oss-20b",
+      "evalJudge": "qwen/qwen3.8-27b"
+    },
+    "tellReduction": {
+      "pooled": 0.452,
+      "meanPerText": 0.412,
+      "densityBefore": 4.412,
+      "densityAfter": 2.417
+    },
+    "claims": {
+      "total": 713,
+      "kept": 611,
+      "changed": 95,
+      "missing": 7,
+      "recall": 0.857,
+      "added": 46,
+      "textsWithAdditions": 21
+    },
+    "quality": {
+      "win": 16,
+      "tie": 15,
+      "loss": 11,
+      "winOrTie": 0.738
+    },
+    "length": {
+      "totalDrift": -0.049,
+      "meanAbsDrift": 0.05,
+      "within10": 36
+    },
+    "sentenceCv": {
+      "before": 0.332,
+      "after": 0.342
+    },
+    "mattr": {
+      "before": 0.863,
+      "after": 0.86
+    },
+    "bannedChars": 0,
+    "fallbacks": {
+      "original": 14
+    },
+    "detector": {
+      "name": "TMR AI text detector (Oxidane/tmr-ai-text-detector)",
+      "build": "onnx-community/tmr-ai-text-detector-ONNX, fp32, transformers.js 4.3.1, CPU",
+      "url": "https://huggingface.co/Oxidane/tmr-ai-text-detector",
+      "meanAiProbability": [
+        0.983,
+        0.941
+      ],
+      "flaggedAi": [
+        42,
+        41
+      ],
+      "note": "Flagged means AI probability above 0.5. See eval/results/detector-sanity.json for its scores on human text."
+    },
+    "usage": {
+      "calls": 304,
+      "tokens": 634841
+    },
+    "served": {
+      "ovh/gpt-oss-120b": 106,
+      "ovh/gpt-oss-20b": 78,
+      "openai/gpt-oss-20b": 28,
+      "qwen/qwen3.8-27b": 78,
+      "ovh/qwen3.8-27b": 28,
+      "openai/gpt-oss-120b": 4
+    }
+  },
+  "results": [
+    {
+      "id": "g01-blog-writing-things-down",
+      "genre": "blog post",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "There is a persistent myth in the startup world that documentation is the enemy of speed. We are told to move fast, break things, and rely on the implicit knowledge shared over daily standups and casual hallway conversations. For a tiny team, this approach feels natural. You know everyone\u2019s strengths, you remember what was done last quarter, and you assume that if something happens, everyone will just know. But this comfort is dangerous. When information lives only in heads, it is fragile. It disappears when a key person takes a vacation, gets sick, or moves on to their next opportunity. It vanishes when a new hire joins and struggles to contribute because they cannot find the context for recent decisions. Writing things down is not about bureaucracy. It is about building a shared reality that outlasts any single individual. It transforms individual memory into collective institutional memory, ensuring that your company\u2019s trajectory remains clear, consistent, and accessible to everyone who needs it.",
+      "rewrite": "A lot of startups cling to the idea that docs slow you down. We\u2019re told to move fast, break things, and rely on what we pick up in daily stand-ups or hallway chats. In a tiny team that feels natural: you know each other's strengths, you remember what happened last quarter, and you assume everyone will just know when something changes. The problem is that this comfort is dangerous. When knowledge lives only in heads, it disappears if a key person takes a vacation, gets sick, or leaves. New hires hit a wall because they can\u2019t find the context behind recent decisions. Writing things down isn\u2019t about adding red tape. It\u2019s about building a shared reality that outlasts any one person. By putting ideas on paper you turn individual memory into a collective record, so the company\u2019s direction stays easy to follow for anyone who needs it.",
+      "words": [
+        162,
+        147
+      ],
+      "drift": -0.093,
+      "density": [
+        3.4,
+        1.36
+      ],
+      "score": [
+        5.5,
+        2
+      ],
+      "reduction": 0.6,
+      "claims": 16,
+      "check": {
+        "kept": 10,
+        "changed": [
+          "There is a persistent myth in the startup world that documentation is the enemy of speed.",
+          "Information that lives only in heads vanishes when a new hire joins and struggles to contribute because they cannot find the context for recent decisions.",
+          "Writing things down is not about bureaucracy.",
+          "Writing things down transforms individual memory into collective institutional memory.",
+          "Writing things down ensures that a company\u2019s trajectory remains clear, consistent, and accessible to everyone who needs it."
+        ],
+        "missing": [
+          "Information that lives only in heads is fragile."
+        ],
+        "added": [
+          "New hires hit a wall"
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A uses more natural, conversational phrasing (e.g., 'cling to the idea,' 'hit a wall') that better fits the requested casual tone, whereas Version B relies on more formal and stiff language (e.g., 'persistent myth,' 'institutional memory')."
+      },
+      "sentenceCv": [
+        0.458,
+        0.451
+      ],
+      "mattr": [
+        0.871,
+        0.889
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 13863,
+      "seconds": 126,
+      "detector": [
+        0.962,
+        0.169
+      ]
+    },
+    {
+      "id": "g02-linkedin-failed-launch",
+      "genre": "social post",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Launching a product that didn\u2019t meet expectations was a humbling experience, but it turned into a powerful learning curve. First, I realized the importance of validating assumptions early; we relied heavily on internal enthusiasm without enough real\u2011world user feedback, which led to misaligned features. Second, cross\u2011functional communication proved critical\u2014siloes between product, engineering, and marketing caused delays and mixed messaging that confused early adopters. Third, we underestimated the need for a phased rollout; a soft launch would have let us iterate based on actual usage data rather than guessing. Finally, we learned that post\u2011launch metrics must be tracked obsessively, not just sales numbers but also engagement, churn, and support tickets, to catch problems before they snowball. While the launch didn\u2019t succeed, the insights gained have reshaped our development process, making us more customer\u2011centric, data\u2011driven, and collaborative. Failure, when dissected honestly, can become the foundation for future success.",
+      "rewrite": "The product launch did not meet expectations, and that disappointment turned into a valuable learning curve. First, I recognized the need to validate assumptions early; we relied on internal enthusiasm without sufficient real-world user feedback, leading to features that missed the mark. Second, cross-functional communication was critical, as silos among product, engineering and marketing created delays and mixed messaging that confused early adopters. Third, we overlooked the benefit of a phased rollout; a soft launch would have allowed iteration based on actual usage data instead of guesswork. Finally, we now track post-launch metrics obsessively, monitoring engagement, churn and support tickets as well as sales to spot issues before they grow. Although the launch failed, those insights have altered our development process, making it more customer-centric, data-driven and collaborative. Honest analysis of failure can lay the groundwork for future success.",
+      "words": [
+        152,
+        139
+      ],
+      "drift": -0.086,
+      "density": [
+        4.39,
+        1.91
+      ],
+      "score": [
+        6.68,
+        2.65
+      ],
+      "reduction": 0.565,
+      "claims": 17,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "Launching a product that didn\u2019t meet expectations was a humbling experience.",
+          "Post\u2011launch metrics must be tracked obsessively.",
+          "The launch didn\u2019t succeed."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more concise and maintains a professional tone without the slightly informal or dramatic phrasing found in Version B (e.g., 'humbling experience', 'snowball')."
+      },
+      "sentenceCv": [
+        0.26,
+        0.262
+      ],
+      "mattr": [
+        0.946,
+        0.915
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 2,
+      "tokens": 5107,
+      "seconds": 59,
+      "detector": [
+        0.982,
+        0.91
+      ]
+    },
+    {
+      "id": "g03-college-changed-mind",
+      "genre": "college short answer",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "During my sophomore year of high school, I enrolled in a required AP Biology class, convinced it would be a straightforward, low\u2011effort course. Midway through the semester, the teacher introduced a project on genetic engineering that required extensive research, collaboration, and creative problem\u2011solving. I initially resisted the extra workload, fearing it would jeopardize my GPA. However, after a discussion with my science club advisor, I realized the project aligned with my growing interest in biotechnology and offered a tangible way to apply classroom concepts. I shifted my mindset from avoidance to proactive engagement, dedicating weekends to literature reviews and coordinating with peers. The project culminated in a presentation that earned top honors at the regional science fair. This experience taught me that changing my mind\u2014embracing challenge rather than shying away\u2014can unlock unexpected growth and success.",
+      "rewrite": "In my sophomore year I enrolled in the required AP Biology class, thinking it would be easy and low-effort. Midway through the semester the teacher assigned a genetic-engineering project that demanded extensive research, collaboration and creative problem-solving. I worried the extra load might hurt my GPA, so I initially pushed back. After a conversation with my science-club advisor I saw that the work fit my growing interest in biotechnology and gave a concrete way to apply what we learned in class. I moved from avoiding the task to actively engaging, spending weekends reading scientific papers and coordinating group duties. Our effort earned a top-place award at the regional science fair, showing that tackling hard work can bring unexpected growth and success.",
+      "words": [
+        139,
+        121
+      ],
+      "drift": -0.129,
+      "density": [
+        6.87,
+        2.1
+      ],
+      "score": [
+        9.55,
+        2.54
+      ],
+      "reduction": 0.694,
+      "claims": 19,
+      "check": {
+        "kept": 16,
+        "changed": [
+          "The narrator feared the extra workload would jeopardize their GPA."
+        ],
+        "missing": [
+          "The project culminated in a presentation.",
+          "The experience taught the narrator that changing their mind can unlock unexpected growth and success."
+        ],
+        "added": [
+          "The narrator's effort was a group effort ('Our effort')",
+          "The award was specifically a 'top-place award'"
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more concise and natural, avoiding the slightly stiff and clich\u00e9 phrasing found in Version B (e.g., 'culminated in a presentation,' 'unlock unexpected growth')."
+      },
+      "sentenceCv": [
+        0.284,
+        0.271
+      ],
+      "mattr": [
+        0.842,
+        0.85
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 14294,
+      "seconds": 122,
+      "detector": [
+        0.986,
+        0.981
+      ]
+    },
+    {
+      "id": "g04-product-bottle",
+      "genre": "product copy",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "Stop letting lukewarm water ruin your morning. Our premium stainless steel bottle is engineered with double-wall vacuum insulation to keep your beverages ice-cold for a full twenty-four hours. Whether you are tackling an intense gym session, heading into a long day at the office, or embarking on a weekend hike, your drink stays refreshingly chilled until the last drop. Crafted from high-grade, food-safe stainless steel, this bottle is built to withstand daily wear and tear without compromising taste or durability. The sleek, fingerprint-resistant finish complements any lifestyle, while the leak-proof lid ensures your bag stays dry. At just thirty-four dollars, you are investing in a reliable companion that refuses to compromise on performance. Ditch the single-use plastics and embrace a sustainable, stylish solution that keeps you hydrated and cool all day long.",
+      "rewrite": "Don\u2019t let lukeweak water wreck your morning. Our premium stainless-steel bottle has double-wall vacuum insulation, so your drink stays ice-cold for a full day. Whether you\u2019re powering through a tough workout, heading to a long office day, or heading out on a weekend hike, the beverage stays refreshingly chilled until the last drop. It\u2019s made from high-grade, food-safe steel that handles everyday wear without hurting flavor or strength. The sleek, fingerprint-resistant finish fits any style, and the leak-proof lid keeps your bag dry. At thirty-four dollars you get a reliable bottle that refuses to compromise on performance. Skip the single-use plastics and embrace a sustainable, stylish solution that keeps you hydrated and cool all day.",
+      "words": [
+        132,
+        115
+      ],
+      "drift": -0.129,
+      "density": [
+        1.62,
+        0.76
+      ],
+      "score": [
+        2.14,
+        0.87
+      ],
+      "reduction": 0.531,
+      "claims": 26,
+      "check": {
+        "kept": 17,
+        "changed": [
+          "Lukewarm water can ruin your morning.",
+          "The bottle keeps beverages ice-cold for a full twenty-four hours.",
+          "The bottle is suitable for intense gym sessions.",
+          "The bottle is crafted from food-safe stainless steel.",
+          "The bottle is built to withstand daily wear and tear.",
+          "The bottle does not compromise taste.",
+          "The bottle does not compromise durability.",
+          "The finish complements any lifestyle.",
+          "The bottle is a reliable companion."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A uses contractions and more direct phrasing, which aligns better with the requested casual tone, whereas Version B relies on formal constructions like 'you are' and 'is engineered with' that feel stiff."
+      },
+      "sentenceCv": [
+        0.38,
+        0.4
+      ],
+      "mattr": [
+        0.929,
+        0.882
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 13336,
+      "seconds": 69,
+      "detector": [
+        0.987,
+        0.986
+      ]
+    },
+    {
+      "id": "g05-email-expenses",
+      "genre": "work email",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Dear Team,\n\nI\u2019m writing to let you know about an update to our expense policy that will take effect on March\u202f1. Going forward, any expense exceeding $75 will require a receipt for reimbursement. This change is intended to streamline our accounting processes and ensure greater accuracy in our financial reporting. When you submit a claim, please attach a clear, legible copy of the receipt\u2014whether scanned, photographed, or electronic\u2014and include a brief description of the purpose of the expense. Claims for amounts at or below $75 will continue to be processed without a receipt, as long as they are accompanied by a short justification.\n\nWe understand that this may require a slight adjustment to your routine, and we appreciate your cooperation. If you have any questions or need assistance with the new submission requirements, please reach out to the Finance team at finance@company.com. Thank you for your attention and continued commitment to keeping our operations running smoothly.",
+      "rewrite": "Dear Team,\n\nI\u2019m writing to let you know about an update to our expense policy that will take effect on March 1. Going forward, any expense exceeding $75 will require a receipt for reimbursement. This change is intended to streamline our accounting processes and ensure greater accuracy in our financial reporting. When you submit a claim, please attach a clear, legible copy of the receipt, whether scanned, photographed, or electronic, and include a brief description of the purpose of the expense. Claims for amounts at or below $75 will continue to be processed without a receipt, as long as they are accompanied by a short justification.\n\nWe understand this may require a slight adjustment to your routine, and we appreciate your cooperation. If you have any questions or need assistance with the new submission requirements, please reach out to the Finance team at finance@company.com. Thank you for your attention and continued commitment to keeping our operations running smoothly.",
+      "words": [
+        160,
+        159
+      ],
+      "drift": -0.006,
+      "density": [
+        1.63,
+        0.38
+      ],
+      "score": [
+        2.6,
+        0.6
+      ],
+      "reduction": 0.767,
+      "claims": 13,
+      "check": {
+        "kept": 13,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The versions are nearly identical, with only minor punctuation and word choice differences that do not significantly impact clarity or professionalism."
+      },
+      "sentenceCv": [
+        0.459,
+        0.462
+      ],
+      "mattr": [
+        0.849,
+        0.847
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "Remove details that are not in the source: [\"March 1\"]"
+        ]
+      ],
+      "calls": 8,
+      "tokens": 17477,
+      "seconds": 186,
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "g06-reddit-cooking",
+      "genre": "forum post",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "If you\u2019re a college student looking to learn how to cook, start by treating it like a skill you\u2019re building over time rather than a race to the perfect dish. Pick a few staple ingredients\u2014rice, pasta, a handful of veggies, beans, and a protein source\u2014and learn basic techniques such as saut\u00e9ing, boiling, and seasoning. Use the campus kitchen or a dorm kitchenette; even a single pot or pan can do wonders. Watch short, clear videos on YouTube or follow simple recipe blogs that break steps into bite\u2011sized chunks. Practice makes perfect, so don\u2019t be afraid to mess up\u2014each flop teaches you what not to do. Keep a small spice rack with salt, pepper, garlic powder, and maybe one or two dried herbs; they\u2019ll add instant flavor without clutter. Finally, set aside a consistent block of time, like a 30\u2011minute session on a weekday, to experiment and refine your dishes. With patience and persistence, you\u2019ll soon find cooking becoming a reliable, enjoyable part of your routine.",
+      "rewrite": "If you\u2019re a college student wanting to learn cooking, treat it as a skill you build over time, not a sprint to perfect dishes. Start with a handful of staples, rice, pasta, a few veggies, beans, and a protein source, and get comfortable with basic moves like saut\u00e9ing, boiling and seasoning. Your campus kitchen or dorm kitchenette will do; even a single pot or pan can work wonders. Check out short, clear videos on YouTube or follow simple recipe blogs that break steps into bite-sized pieces. Don\u2019t fear mess-ups: each flop shows you what not to do, and practice really does make perfect. Keep a tiny spice rack with salt, pepper, garlic powder and maybe one or two dried herbs; they add instant flavor without clutter, and you\u2019ll find they keep things simple. Finally, set aside a consistent block of time, like a 30-minute weekday session, to experiment and refine your dishes. With patience and persistence, cooking will soon become a reliable, enjoyable part of your routine.",
+      "words": [
+        170,
+        167
+      ],
+      "drift": -0.018,
+      "density": [
+        3.28,
+        1.9
+      ],
+      "score": [
+        5.57,
+        3.18
+      ],
+      "reduction": 0.421,
+      "claims": 14,
+      "check": {
+        "kept": 14,
+        "changed": [],
+        "missing": [],
+        "added": [
+          "The spice rack keeps things simple"
+        ]
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "loss",
+          "win"
+        ],
+        "reason": "Version B uses em dashes and slightly more natural phrasing (e.g., 'looking to learn how to cook' vs 'wanting to learn cooking') that better suits the casual tone."
+      },
+      "sentenceCv": [
+        0.232,
+        0.26
+      ],
+      "mattr": [
+        0.899,
+        0.904
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 13857,
+      "seconds": 123,
+      "detector": [
+        0.984,
+        0.959
+      ]
+    },
+    {
+      "id": "g07-cover-letter-analyst",
+      "genre": "cover letter",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "I am excited to apply for the Data Analyst position at your hospital, as my passion for healthcare intersects perfectly with my technical skills. With a strong background in leveraging data to drive operational efficiency, I have extensively used SQL to query complex medical databases, ensuring accurate extraction of patient outcomes and resource utilization metrics. I then transformed this raw information into intuitive, actionable insights using Tableau dashboards that helped previous teams identify trends in patient wait times and readmission rates. I am eager to bring this same rigor and clarity to your organization, helping stakeholders make informed decisions that enhance patient care and streamline hospital workflows. My ability to bridge technical data processes with strategic healthcare goals makes me a strong fit for your team, and I look forward to the opportunity to contribute meaningfully to your mission.",
+      "rewrite": "I am excited to apply for the Data Analyst role at your hospital, as my passion for healthcare aligns closely with my technical abilities. I have a solid record of using data to improve operational performance and have worked extensively with SQL to query complex medical databases, extracting patient outcomes and resource utilization metrics accurately. After that, I turned the raw data into clear, actionable insights with Tableau dashboards, which helped former teams spot patterns in patient wait times and readmission rates. I intend to bring the same rigor and clarity to your organization, enabling stakeholders to make informed choices that improve patient care and simplify hospital workflows. My skill in linking technical data work with strategic healthcare objectives makes me a good fit for your team, and I look forward to contributing to your mission.",
+      "words": [
+        139,
+        136
+      ],
+      "drift": -0.022,
+      "density": [
+        5.4,
+        3.46
+      ],
+      "score": [
+        7.5,
+        4.7
+      ],
+      "reduction": 0.359,
+      "claims": 14,
+      "check": {
+        "kept": 4,
+        "changed": [
+          "The applicant's passion for healthcare intersects with their technical skills.",
+          "The applicant has a strong background in leveraging data to drive operational efficiency.",
+          "The applicant transformed raw information into intuitive, actionable insights using Tableau dashboards.",
+          "The Tableau dashboards helped previous teams identify trends in patient wait times.",
+          "The Tableau dashboards helped previous teams identify trends in readmission rates.",
+          "The applicant is eager to bring rigor and clarity to the organization.",
+          "The applicant wants to help stakeholders make informed decisions that enhance patient care.",
+          "The applicant wants to help stakeholders make informed decisions that streamline hospital workflows.",
+          "The applicant believes their ability to bridge technical data processes with strategic healthcare goals makes them a strong fit for the team.",
+          "The applicant looks forward to the opportunity to contribute meaningfully to the hospital's mission."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B uses more precise and professional vocabulary (e.g., 'streamline' instead of 'simplify', 'position' instead of 'role') and maintains a smoother, more confident tone throughout the paragraph."
+      },
+      "sentenceCv": [
+        0.126,
+        0.095
+      ],
+      "mattr": [
+        0.897,
+        0.875
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 14604,
+      "seconds": 123,
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "g08-report-support",
+      "genre": "business report",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "This quarter our support team made notable strides in speed and satisfaction. The median first\u2011response time dropped dramatically, falling from nine hours at the start of the period to just four hours by the end. Faster replies have helped customers get the answers they need more promptly, reducing the time they spend waiting for assistance. In parallel, overall satisfaction climbed to 87\u202fpercent, reflecting the positive impact of quicker, more effective interactions. The improvement in response time was driven by a combination of better staffing schedules, refined routing rules, and the introduction of a new knowledge\u2011base that equips agents with ready\u2011to\u2011use solutions. Meanwhile, the rise in satisfaction scores is tied to consistent follow\u2011through, clearer communication, and a stronger focus on resolving issues on the first contact. These results underscore the value of ongoing process enhancements and reinforce our commitment to delivering responsive, high\u2011quality support to every customer.",
+      "rewrite": "This quarter our support team made notable strides in speed and satisfaction. The median first-response time dropped dramatically, falling from nine hours at the start of the period to just four hours by the end. Faster replies have helped customers get the answers they need more promptly, reducing the time they spend waiting for assistance. In parallel, overall satisfaction climbed to 87 percent, reflecting the positive impact of quicker, more effective interactions. The improvement in response time was driven by a combination of better staffing schedules, refined routing rules, and the introduction of a new knowledge-base that equips agents with ready-to-use solutions. Meanwhile, the rise in satisfaction scores is tied to consistent follow-through, clearer communication, and a stronger focus on resolving issues on the first contact. These results underscore the value of ongoing process enhancements and reinforce our commitment to delivering responsive, high-quality support to every customer.",
+      "words": [
+        153,
+        147
+      ],
+      "drift": -0.039,
+      "density": [
+        3.07,
+        3.84
+      ],
+      "score": [
+        4.7,
+        5.65
+      ],
+      "reduction": -0.251,
+      "claims": 17,
+      "check": {
+        "kept": 17,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical in content and quality, with only negligible typographical differences in hyphenation that do not affect readability or professionalism."
+      },
+      "sentenceCv": [
+        0.303,
+        0.269
+      ],
+      "mattr": [
+        0.846,
+        0.844
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These locked spans are missing or altered; include each exactly: [\"87\u202fpercent\"]",
+          "Remove details that are not in the source: [\"87 percent\"]",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \", reflecting\""
+        ]
+      ],
+      "calls": 4,
+      "tokens": 8513,
+      "seconds": 4060,
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "g09-essay-libraries",
+      "genre": "essay",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "Public libraries today serve as vital community hubs that extend far beyond their traditional role as book repositories. They offer free access to a wide array of digital resources, including e\u2011books, audiobooks, streaming services, and online databases, thereby bridging the digital divide and empowering residents with tools for lifelong learning. Many libraries host workshops and classes on practical topics such as coding, financial literacy, and language learning, which help individuals acquire skills that enhance employability and personal growth. By providing quiet study spaces, collaborative workrooms, and high\u2011speed internet, libraries support students, freelancers, and small business owners alike, fostering a sense of belonging and encouraging intellectual curiosity. Cultural programs\u2014author talks, art exhibits, and community celebrations\u2014turn libraries into inclusive cultural centers that celebrate diversity and promote civic engagement. In times of crisis, libraries often become emergency resource centers, offering shelter, food distribution, and information on relief services. Thus, modern public libraries function as democratic spaces where knowledge, creativity, and community resilience converge, underscoring their indispensable role in building vibrant, connected societies.",
+      "rewrite": "Public libraries now act as community hubs that go well beyond just holding books. They give free access to many digital resources such as e-books, audiobooks, streaming services and online databases, helping close the digital gap and giving residents tools for lifelong learning. Libraries also run workshops and classes on practical subjects like coding, financial literacy and language learning, which help people pick up skills that improve job prospects and personal growth. With quiet study areas, collaborative workrooms and high-speed internet, they support students, freelancers and small business owners, creating a sense of belonging and sparking curiosity. Cultural events like author talks, art exhibits and community celebrations turn libraries into inclusive spaces that celebrate diversity, encourage civic participation and nurture creativity. In crises, libraries often become emergency resource centers that provide shelter, food distribution and information about relief services. Modern public libraries are democratic places where knowledge and community resilience meet, making them essential for building connected societies.",
+      "words": [
+        173,
+        158
+      ],
+      "drift": -0.087,
+      "density": [
+        9.18,
+        2.7
+      ],
+      "score": [
+        15.88,
+        4.26
+      ],
+      "reduction": 0.706,
+      "claims": 11,
+      "check": {
+        "kept": 7,
+        "changed": [
+          "This support fosters a sense of belonging and encourages intellectual curiosity.",
+          "Cultural programs\u2014author talks, art exhibits, and community celebrations\u2014turn libraries into inclusive cultural centers that celebrate diversity and promote civic engagement.",
+          "Modern public libraries function as democratic spaces where knowledge, creativity, and community resilience converge.",
+          "This underscores their indispensable role in building vibrant, connected societies."
+        ],
+        "missing": [],
+        "added": [
+          "Cultural events nurture creativity"
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is better suited to the neutral tone because it uses direct, active language and avoids the flowery, formal phrasing (e.g., 'thereby bridging,' 'underscoring their indispensable role') found in Version B."
+      },
+      "sentenceCv": [
+        0.224,
+        0.254
+      ],
+      "mattr": [
+        0.895,
+        0.902
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 4,
+      "tokens": 9494,
+      "seconds": 2953,
+      "detector": [
+        0.987,
+        0.982
+      ]
+    },
+    {
+      "id": "g10-travel-lisbon",
+      "genre": "travel blog",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "The moment our flight touched down in Lisbon, the city\u2019s unique rhythm began to pull us in. We spent our first evening wandering the steep, cobblestone streets of Alfama, where the warm glow of streetlamps spilled onto centuries-old facades. The air was thick with the scent of fresh pastries and salt from the nearby Tagus River. On Saturday morning, we took the vibrant 28 tram, rattling through the city\u2019s core and stopping at miradouros that offered breathtaking panoramic views. Each viewpoint revealed a new layer of red-tiled roofs cascading down towards the water. We paused in Chiado for espresso and sweet past\u00e9is de nata, their pastry shells shattering perfectly against the creamy custard. Sunday brought a slower pace as we strolled along the LX Factory waterfront, browsing indie bookshops and enjoying casual lunches. The weekend ended not with a rush, but with a lingering sense of peace, leaving us with a heart full of memories and a promise to return before the next season arrives.",
+      "rewrite": "The moment our flight touched down in Lisbon, the city\u2019s unique rhythm began to pull us in. We spent our first evening wandering the steep, cobblestone streets of Alfama, where the warm glow of streetlamps spilled onto centuries-old facades. The air was thick with the scent of fresh pastries and salt from the nearby Tagus River. On Saturday morning, we took the vibrant 28 tram, rattling through the city\u2019s core and stopping at miradouros that offered breathtaking panoramic views. Each viewpoint revealed a new layer of red-tiled roofs cascading down towards the water. We paused in Chiado for espresso and sweet past\u00e9is de nata, their pastry shells shattering perfectly against the creamy custard. Sunday brought a slower pace as we strolled along the LX Factory waterfront, browsing indie bookshops and enjoying casual lunches. The weekend ended not with a rush, but with a lingering sense of peace, leaving us with a heart full of memories and a promise to return before the next season arrives.",
+      "words": [
+        165,
+        165
+      ],
+      "drift": 0,
+      "density": [
+        2.19,
+        2.19
+      ],
+      "score": [
+        3.62,
+        3.62
+      ],
+      "reduction": 0,
+      "claims": 30,
+      "check": {
+        "kept": 30,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical in content and style."
+      },
+      "sentenceCv": [
+        0.264,
+        0.264
+      ],
+      "mattr": [
+        0.876,
+        0.876
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"Flight landed in Lisbon.\"]",
+          "Remove content the source does not say: [\"like a carpet\"]"
+        ]
+      ],
+      "calls": 6,
+      "tokens": 15703,
+      "seconds": 3807,
+      "detector": [
+        0.984,
+        0.984
+      ]
+    },
+    {
+      "id": "g11-release-notes",
+      "genre": "release notes",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "Version 3.2 brings two highly requested features that dramatically improve the way you work with your notes. Offline mode now lets you create, edit, and organize entries without an internet connection, and everything syncs automatically the next time you\u2019re online, ensuring your data is always up\u2011to\u2011date. In addition, a sleek dark mode has been added, offering a low\u2011light friendly interface that reduces eye strain and conserves battery life on OLED screens. Both features are fully integrated across all platforms, so you can switch seamlessly between devices while keeping your workflow consistent. As always, performance optimizations and minor bug fixes accompany the update, delivering a smoother, more reliable experience overall.",
+      "rewrite": "Version 3.2 adds two much-asked-for tools that change how you handle notes. Offline mode now lets you create, edit and organize entries without any internet, and everything syncs automatically once you\u2019re back online, so your data stays current. A sleek dark mode also arrives, giving a low-light-friendly view that cuts eye strain and saves battery on OLED screens. Both tools work on every platform, letting you jump between devices while your workflow stays the same. As usual, the update brings performance tweaks and a handful of bug fixes, making the overall experience smoother and more reliable.",
+      "words": [
+        112,
+        96
+      ],
+      "drift": -0.143,
+      "density": [
+        5.01,
+        2.15
+      ],
+      "score": [
+        5.61,
+        2.06
+      ],
+      "reduction": 0.571,
+      "claims": 18,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "Version 3.2 brings two highly requested features.",
+          "The features in Version 3.2 dramatically improve the way you work with your notes.",
+          "You can switch seamlessly between devices.",
+          "Minor bug fixes accompany the update."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more concise and uses a more natural, active voice, whereas Version B is wordier and relies on passive constructions that make it feel less direct."
+      },
+      "sentenceCv": [
+        0.265,
+        0.269
+      ],
+      "mattr": [
+        0.952,
+        0.901
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 13692,
+      "seconds": 4800,
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "g12-nursing-statement",
+      "genre": "personal statement",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "From a young age, I have been drawn to the compassionate nature of nursing, believing that caring for others is both a privilege and a responsibility. My volunteer experience at [local hospital] exposed me to the profound impact that skilled, empathetic nurses have on patients\u2019 recovery journeys, and it cemented my resolve to pursue this path. I am fascinated by the blend of science, communication, and problem\u2011solving that nursing demands, and I thrive in environments where I can apply evidence\u2011based knowledge while maintaining a human touch. In my role as a caregiver for my [family member], I witnessed first\u2011hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations. I am eager to study nursing at [university], where the curriculum\u2019s emphasis on clinical practice and interprofessional collaboration aligns with my goal of becoming a well\u2011rounded clinician. Ultimately, I want to contribute to a healthcare system that values holistic, patient\u2011centered care, and I am committed to lifelong learning and advocacy for those in need.",
+      "rewrite": "From a young age, I have been drawn to the compassionate nature of nursing, believing that caring for others is both a privilege and a responsibility. My volunteer experience at [local hospital] exposed me to the profound impact that skilled, empathetic nurses have on patients\u2019 recovery journeys, and it cemented my resolve to pursue this path. I am fascinated by the blend of science, communication, and problem-solving that nursing demands, and I thrive in environments where I can apply evidence-based knowledge while maintaining a human touch. In my role as a caregiver for my [family member], I witnessed first-hand the critical importance of clear, compassionate communication and the power of timely interventions, experiences that have shaped my professional aspirations. I am eager to study nursing at [university], where the curriculum\u2019s emphasis on clinical practice and interprofessional collaboration aligns with my goal of becoming a well-rounded clinician. Ultimately, I want to contribute to a healthcare system that values holistic, patient-centered care, and I am committed to lifelong learning and advocacy for those in need.",
+      "words": [
+        178,
+        173
+      ],
+      "drift": -0.028,
+      "density": [
+        6.35,
+        6.53
+      ],
+      "score": [
+        11.3,
+        11.3
+      ],
+      "reduction": -0.028,
+      "claims": 6,
+      "check": {
+        "kept": 6,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical in content and quality, with the only difference being the use of non-breaking hyphens in version B, which does not affect readability or tone."
+      },
+      "sentenceCv": [
+        0.099,
+        0.092
+      ],
+      "mattr": [
+        0.858,
+        0.848
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"From a young age, I have been drawn to the compassionate nature of nursing.\"]",
+          "Remove content the source does not say: [\"I also plan to stay involved in community health projects, applying what I learn to real-world settings and mentoring future nurses.\"]",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"profound impact\", \"science, communication, and problem\", \"of clear, compassionate communication and the power\", \"aligns with\""
+        ]
+      ],
+      "calls": 6,
+      "tokens": 15868,
+      "seconds": 395,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 1,
+        "openai/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3
+      },
+      "detector": [
+        0.986,
+        0.986
+      ]
+    },
+    {
+      "id": "g13-newsletter-garden",
+      "genre": "newsletter",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "The air has finally turned crisp, and the garden is preparing for its rest. October marks the transition from vibrant growth to dormancy, a time to reflect on the season\u2019s bounty and prepare the soil for spring. Now is the perfect moment to tackle those autumn cleanups. Clear away spent annuals to prevent disease overwintering, but leave some seed heads standing for birds and beneficial insects. Be sure to divide overgrown perennials like hostas and daylilies while the soil is still workable. This is also the ideal window for planting spring bulbs. Tuck those tulip and daffodil crows into the earth before the ground freezes, ensuring a spectacular explosion of color when the snow melts. Don\u2019t forget to mulch your beds to protect roots from frost heave. Take a moment to enjoy the rusty hues of the falling leaves; they are the garden\u2019s final, elegant performance before the winter sleep.",
+      "rewrite": "The air has turned crisp, and the garden is winding down. October signals the move from lively growth to a restful dormancy, inviting us to reflect on the season\u2019s bounty and ready the soil for next spring. This is the perfect moment for autumn clean-up. Remove spent annuals to stop disease from overwintering, but keep some seed heads for birds and beneficial insects. Divide overgrown perennials such as hostas and daylilies while the soil remains workable. This is the best time to plant spring bulbs, so tuck tulip and daffodil crowns into the earth before frost sets in and expect a bright display when the snow melts. Mulch the beds to shield roots from frost heave. Take a breath and watch the rust-colored leaves fall; they\u2019re the garden\u2019s final, elegant performance before winter.",
+      "words": [
+        150,
+        133
+      ],
+      "drift": -0.113,
+      "density": [
+        3.47,
+        0
+      ],
+      "score": [
+        5.21,
+        0
+      ],
+      "reduction": 1,
+      "claims": 15,
+      "check": {
+        "kept": 13,
+        "changed": [
+          "Tulip and daffodil crows should be tucked into the earth before the ground freezes.",
+          "Planting tulip and daffodil crows before the ground freezes ensures a spectacular explosion of color when the snow melts."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version B contains a typo ('crows' instead of 'crowns') and uses slightly more generic phrasing, whereas Version A is error-free and maintains a consistent, natural flow."
+      },
+      "sentenceCv": [
+        0.331,
+        0.495
+      ],
+      "mattr": [
+        0.852,
+        0.846
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 4,
+      "tokens": 9400,
+      "seconds": 1618,
+      "detector": [
+        0.978,
+        0.943
+      ]
+    },
+    {
+      "id": "g14-academic-sleep",
+      "genre": "academic",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "academic",
+      "original": "Sleep plays a pivotal role in the consolidation of memories, transforming fragile, newly acquired information into stable, long\u2011term representations. During sleep, especially in the slow\u2011wave and rapid\u2011eye\u2011movement stages, neuronal activity patterns that were established during wakeful learning are reactivated, allowing synaptic connections to be selectively strengthened or weakened. This reactivation facilitates the integration of new memories with existing knowledge networks, enhancing retrieval accuracy and reducing interference. Moreover, the neurochemical environment of sleep\u2014characterized by reduced acetylcholine and elevated noradrenaline\u2014creates optimal conditions for protein synthesis and structural remodeling at the synapse, processes essential for durable memory traces. The temporal sequencing of sleep stages further refines consolidation, with slow\u2011wave sleep predominantly supporting declarative memories and REM sleep contributing to procedural and emotional memory integration. Consequently, disruptions to sleep architecture impair these mechanisms, leading to diminished learning efficiency and poorer recall, underscoring sleep\u2019s indispensable contribution to cognitive performance.",
+      "rewrite": "Sleep is essential for memory consolidation, converting fragile, newly acquired information into stable, long-term representations. During sleep, particularly in slow-wave and rapid-eye-movement (REM) stages, neuronal activity patterns formed during wakeful learning are reactivated, allowing synaptic connections to be selectively strengthened or weakened. This reactivation integrates new memories with existing knowledge networks, improves retrieval accuracy, and reduces interference. The neurochemical environment of sleep, with reduced acetylcholine and increased noradrenaline, supports protein synthesis and structural remodeling at the synapse, processes required for durable memory traces. The timing of sleep stages further refines consolidation; slow-wave sleep primarily supports declarative memories, and REM sleep contributes to procedural and emotional memory integration. Disruptions to sleep architecture impair these mechanisms, leading to lower learning efficiency and poorer recall, highlighting sleep\u2019s indispensable contribution to cognitive performance.",
+      "words": [
+        151,
+        129
+      ],
+      "drift": -0.146,
+      "density": [
+        8.87,
+        3.76
+      ],
+      "score": [
+        13.4,
+        4.85
+      ],
+      "reduction": 0.576,
+      "claims": 21,
+      "check": {
+        "kept": 19,
+        "changed": [
+          "The neurochemical environment of sleep creates optimal conditions for protein synthesis at the synapse.",
+          "The neurochemical environment of sleep creates optimal conditions for structural remodeling at the synapse."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Both versions are high-quality and academically appropriate, but Version A is slightly more concise and direct, avoiding the slightly redundant phrasing found in Version B (e.g., 'plays a pivotal role' vs 'is essential', 'creates optimal conditions' vs 'supports')."
+      },
+      "sentenceCv": [
+        0.23,
+        0.247
+      ],
+      "mattr": [
+        0.889,
+        0.872
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 13578,
+      "seconds": 5926,
+      "detector": [
+        0.945,
+        0.535
+      ]
+    },
+    {
+      "id": "g15-apology-shipping",
+      "genre": "customer email",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Dear Valued Customer,\n\nI sincerely apologize for the delay in shipping your order #48213. We understand how important it is for you to receive your items on time, and we regret that we have fallen short of that expectation.\n\nOur team is currently working to resolve the issue and expedite the delivery. We expect your package to arrive within the next 48 hours. As a token of our appreciation for your patience, we would like to offer you a 10% discount on your next purchase. Please use the code THANKS10 at checkout.\n\nThank you for your understanding and continued support. If you have any further questions, feel free to reply to this email or call our customer service line at 1\u2011800\u2011555\u20111234.\n\nSincerely,\n\n[Your Name]  \nCustomer Service Team",
+      "rewrite": "Dear Valued Customer,\n\nI sincerely apologize for the delay in shipping your order #48213. We understand how important it is for you to receive your items on time, and we regret that we have fallen short of that expectation.\n\nOur team is currently working to resolve the issue and expedite the delivery. We expect your package to arrive within the next 48 hours. As a token of our appreciation for your patience, we would like to offer you a 10% discount on your next purchase. Please use the code THANKS10 at checkout.\n\nThank you for your understanding and continued support. If you have any further questions, feel free to reply to this email or call our customer service line at 1-800-555-1234.\n\nSincerely,\n\n[Your Name] \nCustomer Service Team",
+      "words": [
+        130,
+        127
+      ],
+      "drift": -0.023,
+      "density": [
+        0,
+        0
+      ],
+      "score": [
+        0,
+        0
+      ],
+      "reduction": 1,
+      "claims": 13,
+      "check": {
+        "kept": 13,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical in content and quality, with only negligible differences in whitespace and character encoding for the phone number."
+      },
+      "sentenceCv": [
+        0.799,
+        0.782
+      ],
+      "mattr": [
+        0.803,
+        0.799
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 3
+      },
+      "issues": [
+        [
+          "Remove content the source does not say: [\"taking steps to prevent future delays\"]"
+        ],
+        [
+          "Remove content the source does not say: [\"Thank you again.\"]"
+        ],
+        [
+          "Remove content the source does not say: [\"ongoing support\",\"for further assistance\"]"
+        ]
+      ],
+      "calls": 18,
+      "tokens": 32648,
+      "seconds": 8146,
+      "detector": [
+        0.986,
+        0.986
+      ]
+    },
+    {
+      "id": "g16-graduation-speech",
+      "genre": "speech",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "Four years ago, we sat in these same seats, nervous and eager, wondering if we belonged here. Today, we stand together, not just as students, but as a family forged through late-night study sessions, shared laughter in the cafeteria, and the quiet comfort of knowing someone truly understands your struggles. We have grown in ways we never anticipated, learning that failure is not the end but a necessary step toward wisdom. The world outside these walls is vast and often intimidating, but you do not have to face it alone. Look to your left and right; these are your allies, your friends, and your future partners in navigating life\u2019s complexities. Carry with you the kindness we showed one another and the resilience we built together. As you walk out of these doors, remember that your journey is just beginning. Be brave, be curious, and be kind. We will miss you dearly, but we are even more proud of who you have become. Congratulations, Class of 2024. Go out there and make a difference.",
+      "rewrite": "Four years ago, we sat in these same seats, nervous and eager, wondering if we belonged here. Today, we stand together, not just as students, but as a family forged through late-night study sessions, shared laughter in the cafeteria, and the quiet comfort of knowing someone truly understands your struggles. We have grown in ways we never anticipated, learning that failure is not the end but a necessary step toward wisdom. The world outside these walls is vast and often intimidating, but you do not have to face it alone. Look to your left and right; these are your allies, your friends, and your future partners in navigating life\u2019s complexities. Carry with you the kindness we showed one another and the resilience we built together. As you walk out of these doors, remember that your journey is just beginning. Be brave, be curious, and be kind. We will miss you dearly, but we are even more proud of who you have become. Congratulations, Class of 2024. Go out there and make a difference.",
+      "words": [
+        173,
+        173
+      ],
+      "drift": 0,
+      "density": [
+        2.14,
+        2.14
+      ],
+      "score": [
+        3.7,
+        3.7
+      ],
+      "reduction": 0,
+      "claims": 29,
+      "check": {
+        "kept": 29,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical."
+      },
+      "sentenceCv": [
+        0.513,
+        0.513
+      ],
+      "mattr": [
+        0.817,
+        0.817
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"Today, we stand together, not just as students, but as a family forged through late-night study sessions, shared laughter in the cafeteria, and the quiet comfort of knowing someone truly understands your struggles.\",\"Learning that failure is not the end but a necessary step toward wisdom.\",\"As you walk out of these doors, remember that your journey is just beginning.\"]",
+          "Remove content the source does not say: [\"Remember, the friendships you\u2019ve built will stay with you long after graduation.\"]",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"not just as students, but\""
+        ]
+      ],
+      "calls": 6,
+      "tokens": 16304,
+      "seconds": 228,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 2,
+        "openai/gpt-oss-20b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.986,
+        0.986
+      ]
+    },
+    {
+      "id": "g17-review-ramen",
+      "genre": "review",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "The tiny ramen shop tucked behind the laundromat feels like a secret worth sharing. The moment you step inside, the aroma of simmering pork broth hits you, warm and inviting, while the modest wooden counter and a handful of stools create an intimate, unpretentious vibe. I ordered the shoyu ramen, and the broth was a masterclass in balance\u2014salty, slightly sweet, and layered with a subtle hint of caramelized onions. The noodles were perfectly chewy, holding onto the soup without turning mushy, and the topping of tender chashu, soft\u2011boiled egg, and a sprinkling of fresh scallions added texture and color. Service was swift and friendly; the chef even gave a quick tip on how to sip the broth before slurping. Prices are modest, making it an easy go\u2011to for a comforting bowl after a long day. This modest spot proves that great ramen doesn\u2019t need a flashy setting, just dedication and flavor.",
+      "rewrite": "Tucked behind the laundromat, a tiny ramen shop feels like a secret worth sharing. The moment you step inside, the aroma of simmering pork broth hits you, warm and inviting, while the modest wooden counter and a handful of stools create an intimate, unpretentious vibe. I ordered the shoyu ramen, and the broth was a masterclass in balance: salty, slightly sweet, and layered with a subtle hint of caramelized onions. The noodles were perfectly chewy, holding onto the soup without turning mushy, and the topping of tender chashu, soft-boiled egg, and a sprinkling of fresh scallions added texture and color. Service was swift and friendly; the chef even gave a quick tip on how to sip the broth before slurping. Prices are modest, making it an easy go-to for a comforting bowl after a long day. This modest spot proves great ramen doesn\u2019t need a flashy setting, just dedication and flavor.",
+      "words": [
+        154,
+        151
+      ],
+      "drift": -0.019,
+      "density": [
+        1.84,
+        0.81
+      ],
+      "score": [
+        2.84,
+        1.22
+      ],
+      "reduction": 0.56,
+      "claims": 27,
+      "check": {
+        "kept": 27,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "tie",
+          "win"
+        ],
+        "reason": "The versions are nearly identical, with only minor punctuation and phrasing differences that do not significantly impact the casual tone or readability."
+      },
+      "sentenceCv": [
+        0.321,
+        0.331
+      ],
+      "mattr": [
+        0.819,
+        0.818
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 4,
+      "tokens": 11153,
+      "seconds": 207,
+      "served": {
+        "ovh/gpt-oss-120b": 2,
+        "openai/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "g18-book-review",
+      "genre": "review",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "The suspense in [Title] is a masterclass in subtlety, with [Author] weaving a web of intrigue that keeps readers guessing until the very end. From the opening pages, the protagonist\u2019s seemingly ordinary life is disrupted by a mysterious disappearance, setting the stage for a series of clues that appear both mundane and cryptic. [Author] excels at crafting atmospheric scenes that feel both intimate and expansive, using the setting as a character in its own right. The pacing is deliberate yet relentless, with each chapter revealing just enough to propel the plot forward while leaving ample room for speculation. Dialogue is sharp and purposeful, and the secondary characters are richly drawn, each harboring secrets that deepen the mystery. By the conclusion, the narrative resolves with a twist that is both surprising and inevitable, affirming [Author]\u2019s skill in balancing tension and payoff. This novel is a compelling addition to any mystery enthusiast\u2019s collection.",
+      "rewrite": "The suspense in [Title] is a masterclass in subtlety, with [Author] weaving a web of intrigue that keeps readers guessing until the very end. From the opening pages, the protagonist\u2019s seemingly ordinary life is disrupted by a mysterious disappearance. A series of clues then appear, some mundane, some cryptic. [Author] creates atmospheric scenes that feel both intimate and expansive, letting the setting act like a character. The pacing is deliberate yet relentless, each chapter revealing just enough to push the plot forward while leaving room for speculation. Dialogue is sharp and purposeful, and the secondary characters are richly drawn, each harboring secrets that deepen the mystery. By the conclusion, the narrative resolves with a twist that feels both surprising and inevitable, confirming [Author]\u2019s skill at balancing tension and payoff. This novel makes a compelling addition to any mystery enthusiast\u2019s collection.",
+      "words": [
+        152,
+        141
+      ],
+      "drift": -0.072,
+      "density": [
+        2.45,
+        1.1
+      ],
+      "score": [
+        3.72,
+        1.55
+      ],
+      "reduction": 0.551,
+      "claims": 19,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "The clues appear both mundane and cryptic.",
+          "[Author] excels at crafting atmospheric scenes.",
+          "[Author] uses the setting as a character in its own right.",
+          "Each chapter leaves ample room for speculation.",
+          "The twist is both surprising and inevitable."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "loss",
+          "win"
+        ],
+        "reason": "Version B flows more naturally by combining the initial sentences and using slightly more precise verbs like 'propel' and 'affirming,' making it read more smoothly than Version A."
+      },
+      "sentenceCv": [
+        0.257,
+        0.306
+      ],
+      "mattr": [
+        0.843,
+        0.855
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 2,
+      "tokens": 4534,
+      "seconds": 78,
+      "served": {
+        "ovh/gpt-oss-120b": 1,
+        "ovh/gpt-oss-20b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "g19-explainer-api",
+      "genre": "explainer",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "An API, or Application Programming Interface, acts as a bridge that allows different software programs to communicate with each other. Think of it like a waiter in a restaurant. You, the customer, want specific food items, but you do not go into the kitchen to cook them yourself. Instead, you tell the waiter what you want. The waiter takes your order to the kitchen, where they prepare the meal. Then, the waiter brings the finished dish back to your table. In this scenario, you are one piece of software, the kitchen is another software system, and the waiter is the API. It handles the request, retrieves the data or service you need, and delivers it to you without you needing to know the complex details of how the kitchen operates. This separation keeps systems organized and secure. When you check the weather on your phone, an API fetches that data from a weather service and displays it for you. This seamless interaction happens millions of times daily, powering apps, websites, and smart devices. By standardizing how these requests and responses are handled, APIs make modern digital life possible and efficient for everyone.",
+      "rewrite": "An API, or Application Programming Interface, acts as a bridge that allows different software programs to communicate with each other. Think of it like a waiter in a restaurant. You, the customer, want specific food items, but you do not go into the kitchen to cook them yourself. Instead, you tell the waiter what you want. The waiter takes your order to the kitchen, where they prepare the meal. Then, the waiter brings the finished dish back to your table. In this scenario, you are one piece of software, the kitchen is another software system, and the waiter is the API. It handles the request, retrieves the data or service you need, and delivers it to you without you needing to know the complex details of how the kitchen operates. This separation keeps systems organized and secure. When you check the weather on your phone, an API fetches that data from a weather service and displays it for you. This seamless interaction happens millions of times daily, powering apps, websites, and smart devices. By standardizing how these requests and responses are handled, APIs make modern digital life possible and efficient for everyone.",
+      "words": [
+        192,
+        192
+      ],
+      "drift": 0,
+      "density": [
+        1.56,
+        1.56
+      ],
+      "score": [
+        3,
+        3
+      ],
+      "reduction": 0,
+      "claims": 11,
+      "check": {
+        "kept": 11,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical."
+      },
+      "sentenceCv": [
+        0.42,
+        0.42
+      ],
+      "mattr": [
+        0.757,
+        0.757
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "The draft has 157 words; it must have 178 to 206.",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"acts as a\", \"Think of it like\""
+        ]
+      ],
+      "calls": 5,
+      "tokens": 12031,
+      "seconds": 369,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "openai/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3
+      },
+      "detector": [
+        0.979,
+        0.979
+      ]
+    },
+    {
+      "id": "g20-grant-garden",
+      "genre": "grant proposal",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "The proposed community garden will transform an under\u2011utilized lot in the heart of our neighborhood into a vibrant, sustainable space where residents of all ages can grow fresh produce, learn horticultural skills, and strengthen social ties. Over a twelve\u2011month period we will prepare the soil, install raised beds, a rain\u2011water harvesting system, compost bins, and a small greenhouse to extend the growing season. Workshops on organic gardening, nutrition, and environmental stewardship will be offered monthly, encouraging participation from schools, senior centers, and local nonprofits. The $12,000 request will cover site preparation ($3,200), materials for beds, irrigation, and tools ($4,500), greenhouse construction and compost infrastructure ($2,300), educational program supplies ($1,000), and a part\u2011time garden coordinator ($1,000) to manage volunteers and coordinate events. By creating a resilient, community\u2011owned food source, the garden will improve food security, promote healthy lifestyles, and foster a sense of ownership and pride among residents, laying the groundwork for long\u2011term ecological and social benefits.",
+      "rewrite": "The proposed community garden will transform an under-utilized lot in the heart of our neighborhood into a vibrant, sustainable space where residents of all ages can grow fresh produce, learn horticultural skills, and strengthen social ties. Over a twelve-month period we will prepare the soil, install raised beds, a rain-water harvesting system, compost bins, and a small greenhouse to extend the growing season. Monthly workshops on organic gardening, nutrition, and environmental stewardship will invite schools, senior centers, and local nonprofits to participate. The $12,000 request will fund site preparation ($3,200), materials for beds, irrigation, and tools ($4,500), greenhouse construction and compost infrastructure ($2,300), educational program supplies ($1,000), and a part-time garden coordinator ($1,000) to manage volunteers and coordinate events. By establishing a resilient, community-owned food source, the garden will improve food security, promote healthy lifestyles, and foster a sense of ownership and pride among residents, laying the groundwork for long-term ecological and social benefits.",
+      "words": [
+        168,
+        160
+      ],
+      "drift": -0.048,
+      "density": [
+        2.83,
+        2.38
+      ],
+      "score": [
+        4.75,
+        3.8
+      ],
+      "reduction": 0.159,
+      "claims": 31,
+      "check": {
+        "kept": 31,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "loss",
+          "win"
+        ],
+        "reason": "Version B uses non-breaking hyphens for compound modifiers, which is typographically superior for professional documents, and its sentence structure regarding the workshops is slightly more direct."
+      },
+      "sentenceCv": [
+        0.263,
+        0.288
+      ],
+      "mattr": [
+        0.872,
+        0.855
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 15530,
+      "seconds": 398,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "openai/gpt-oss-20b": 3,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.984,
+        0.982
+      ]
+    },
+    {
+      "id": "g21-hr-hybrid",
+      "genre": "announcement",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "We are excited to announce a new hybrid work schedule that balances in\u2011office collaboration with the flexibility of remote work. Starting next month, each employee will be required to work from the office three days a week. The specific days will be determined by your team lead, but we encourage a consistent schedule that aligns with project milestones and team meetings. On the remaining two days, you may work remotely, provided you are available for virtual communication during core business hours. This hybrid model supports our commitment to teamwork, innovation, and work\u2011life balance. All employees will receive guidance on setting up a productive home workspace and will have access to the necessary technology and support. We will review the schedule after six months and welcome feedback to ensure it meets everyone\u2019s needs. Thank you for your cooperation and dedication as we continue to evolve our workplace culture.",
+      "rewrite": "We are introducing a new hybrid work schedule that combines in-office collaboration with remote flexibility. Beginning next month, every employee must be in the office three days each week. Your team lead will set the specific days, and we ask you to keep the schedule consistent with project milestones and team meetings. The remaining two days can be worked remotely, as long as you remain reachable for virtual communication during core business hours. This model reinforces our commitment to teamwork, innovation, and work-life balance. All staff will receive guidance on creating an effective home workspace and will have access to the required technology and support. After six months we will evaluate the schedule and solicit feedback to confirm it meets everyone's needs. Thank you for your cooperation and dedication as we continue to evolve our ongoing workplace culture.",
+      "words": [
+        149,
+        138
+      ],
+      "drift": -0.074,
+      "density": [
+        2.68,
+        2.17
+      ],
+      "score": [
+        3.99,
+        2.99
+      ],
+      "reduction": 0.19,
+      "claims": 14,
+      "check": {
+        "kept": 11,
+        "changed": [
+          "The company is excited to announce a new hybrid work schedule.",
+          "The company encourages a consistent schedule that aligns with project milestones and team meetings.",
+          "The company welcomes feedback to ensure the schedule meets everyone's needs."
+        ],
+        "missing": [],
+        "added": [
+          "The company asks employees to keep the schedule consistent with project milestones and team meetings.",
+          "The company will solicit feedback to confirm the schedule meets everyone's needs.",
+          "The workplace culture is ongoing."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B uses more natural and professional phrasing, such as 'We are excited to announce' and 'we encourage,' which sounds less rigid and bureaucratic than Version A's 'We are introducing' and 'we ask you to.'"
+      },
+      "sentenceCv": [
+        0.201,
+        0.238
+      ],
+      "mattr": [
+        0.858,
+        0.857
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 15066,
+      "seconds": 287,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 1,
+        "openai/gpt-oss-20b": 2,
+        "ovh/qwen3.8-27b": 2,
+        "qwen/qwen3.8-27b": 2
+      },
+      "detector": [
+        0.986,
+        0.987
+      ]
+    },
+    {
+      "id": "g22-podcast-freelance",
+      "genre": "podcast description",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "Uncertain income is the biggest hurdle for many freelancers, yet it does not have to mean financial chaos. In this episode, we break down practical strategies for managing cash flow when your earnings fluctuate month to month. We discuss how to build a realistic budget that accounts for lean months, the importance of setting aside taxes from day one, and why an emergency fund is your best friend. You will learn how to separate personal and business accounts to keep your finances clear and stress-free. Whether you are just starting your freelance journey or have been independent for years, these actionable tips will help you gain control over your money and build long-term financial security on your own terms. Tune in for straightforward advice that cuts through the noise and focuses on what actually works for self-employed professionals.",
+      "rewrite": "Uncertain income is the biggest hurdle for many freelancers, but it doesn\u2019t have to turn your finances into chaos. In this episode we break down practical ways to manage cash flow when earnings swing month to month. You\u2019ll hear how to build a realistic budget that covers lean periods, why you should set aside taxes from day one, and why an emergency fund becomes your best friend. We\u2019ll show you how to keep personal and business accounts separate so your money stays clear and stress-free. Whether you\u2019re just starting out or have been independent for years, these tips let you take control of your money and build long-term security on your own terms. Tune in for straightforward advice that cuts through the noise and actually works for self-employed pros.",
+      "words": [
+        138,
+        129
+      ],
+      "drift": -0.065,
+      "density": [
+        1.38,
+        1.53
+      ],
+      "score": [
+        1.91,
+        1.97
+      ],
+      "reduction": -0.109,
+      "claims": 13,
+      "check": {
+        "kept": 12,
+        "changed": [
+          "The advice focuses on what actually works for self-employed professionals."
+        ],
+        "missing": [],
+        "added": [
+          "The advice actually works for self-employed professionals."
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A uses contractions and more direct, conversational phrasing that better fits the requested casual tone, whereas Version B sounds more formal and stiff."
+      },
+      "sentenceCv": [
+        0.324,
+        0.276
+      ],
+      "mattr": [
+        0.864,
+        0.882
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 2,
+      "tokens": 5483,
+      "seconds": 98,
+      "served": {
+        "ovh/gpt-oss-120b": 1,
+        "openai/gpt-oss-20b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.986
+      ]
+    },
+    {
+      "id": "g23-marathon-post",
+      "genre": "social post",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "I can\u2019t believe it\u2019s over\u2014I just crossed the finish line of my first marathon! The early morning chill, the steady rhythm of my shoes on the pavement, and the countless miles of training all flashed by in a single surge of adrenaline. When I saw the crowd cheering at mile 20, I felt a mix of exhaustion and pure exhilaration, and the final stretch felt like a dream I didn\u2019t want to end. Crossing that tape was more than a personal triumph; it was a reminder that dedication, patience, and a little bit of stubbornness can turn an impossible goal into a reality. Thank you to everyone who cheered, encouraged, and believed in me\u2014you made every step worth it. On to the next challenge!",
+      "rewrite": "I still can\u2019t believe it\u2019s over; I just crossed the finish line of my first marathon. The early morning was chilly, the steady rhythm of my shoes on the pavement, and countless miles of training flashed by in a single surge of adrenaline. When I reached the crowd cheering at mile 20, I felt a mix of exhaustion and pure exhilaration, and the final stretch felt like a dream I didn\u2019t want to end. Crossing that tape was more than a personal triumph; it reminded me that a little stubbornness, plus dedication and patience, can turn an impossible goal into reality. Thanks to everyone who cheered, encouraged, and believed in me: you made every step worth it. On to the next challenge!",
+      "words": [
+        126,
+        122
+      ],
+      "drift": -0.032,
+      "density": [
+        1.98,
+        1.23
+      ],
+      "score": [
+        2.5,
+        1.5
+      ],
+      "reduction": 0.379,
+      "claims": 13,
+      "check": {
+        "kept": 12,
+        "changed": [
+          "The speaker saw a crowd cheering at mile 20."
+        ],
+        "missing": [],
+        "added": [
+          "The speaker reached the crowd cheering at mile 20."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is better because it uses a more natural and grammatically correct sentence structure in the second sentence, avoiding the awkward phrasing found in Version A."
+      },
+      "sentenceCv": [
+        0.494,
+        0.48
+      ],
+      "mattr": [
+        0.789,
+        0.814
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 4,
+      "tokens": 9683,
+      "seconds": 52,
+      "served": {
+        "ovh/gpt-oss-120b": 2,
+        "openai/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.986,
+        0.986
+      ]
+    },
+    {
+      "id": "g24-history-printing",
+      "genre": "history essay",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "academic",
+      "original": "The invention of the printing press by Johannes Gutenberg in the mid\u2011fourteenth century revolutionized the flow of information and catalyzed profound social, cultural, and political transformations across Europe and beyond. By enabling the mass production of books, pamphlets, and newspapers, the press broke the monopoly of manuscript copying held by monasteries and guilds, dramatically reducing the cost and time required to produce written material. This democratization of knowledge accelerated the spread of literacy, allowing a broader segment of the population to engage with scientific ideas, religious texts, and literary works. The rapid dissemination of the Bible in vernacular languages, for example, not only challenged the Catholic Church\u2019s interpretive authority but also fueled the Reformation, illustrating how printed words could mobilize collective dissent. In the scientific realm, the press facilitated the swift exchange of discoveries, exemplified by the widespread circulation of Copernicus\u2019s *De revolutionibus* and later, Newton\u2019s *Principia*, which helped standardize scientific discourse. Moreover, the press\u2019s role in disseminating political pamphlets and news reports fostered an informed public sphere, laying the groundwork for modern democratic practices. Thus, Gutenberg\u2019s invention did not merely transform printing; it reshaped the very structure of knowledge, power, and society.",
+      "rewrite": "The invention of the printing press by Johannes Gutenberg in the mid-fourteenth century revolutionized the flow of information and catalyzed profound social, cultural, and political transformations across Europe and beyond. By enabling the mass production of books, pamphlets, and newspapers, the press broke the monopoly of manuscript copying held by monasteries and guilds, dramatically reducing the cost and time required to produce written material. This democratization of knowledge accelerated the spread of literacy, allowing a broader segment of the population to engage with scientific ideas, religious texts, and literary works. The rapid dissemination of the Bible in vernacular languages, for example, not only challenged the Catholic Church\u2019s interpretive authority but also fueled the Reformation, illustrating how printed words could mobilize collective dissent. In the scientific realm, the press facilitated the swift exchange of discoveries, exemplified by the widespread circulation of Copernicus\u2019s *De revolutionibus* and later, Newton\u2019s *Principia*, which helped standardize scientific discourse. Moreover, the press\u2019s role in disseminating political pamphlets and news reports fostered an informed public sphere, laying the groundwork for modern democratic practices. Thus, Gutenberg\u2019s invention did not merely transform printing; it reshaped the very structure of knowledge, power, and society.",
+      "words": [
+        194,
+        193
+      ],
+      "drift": -0.005,
+      "density": [
+        7.54,
+        7.6
+      ],
+      "score": [
+        14.63,
+        14.66
+      ],
+      "reduction": -0.008,
+      "claims": 42,
+      "check": {
+        "kept": 42,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical in content and structure, with the only difference being the use of a non-breaking hyphen in Version B, which is a minor typographical variation that does not affect the quality of the writing."
+      },
+      "sentenceCv": [
+        0.205,
+        0.203
+      ],
+      "mattr": [
+        0.827,
+        0.827
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "Remove details that are not in the source: [\"Copernicus\u2019s De\",\"Newton\u2019s Principia\"]",
+          "These items from the source's lists are missing; keep each one: [\"religious texts\",\"literary\"]",
+          "The source says \"could\", \"only\"; keep that qualifier or one that means the same.",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"scientific ideas, religious texts, and literary works\", \"not only challenged the Catholic Church\u2019s interpretive authority but\", \", illustrating\""
+        ]
+      ],
+      "calls": 4,
+      "tokens": 12054,
+      "seconds": 195,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "openai/gpt-oss-20b": 1,
+        "ovh/qwen3.8-27b": 2,
+        "qwen/qwen3.8-27b": 2
+      },
+      "detector": [
+        0.986,
+        0.986
+      ]
+    },
+    {
+      "id": "g25-postmortem-cert",
+      "genre": "internal memo",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "On June 12, our platform experienced a two-hour outage affecting all users. The root cause was an expired TLS certificate that prevented secure connections from being established. Our monitoring systems detected the spike in failed handshakes, and the incident response team immediately investigated. We quickly identified that the certificate had lapsed due to a gap in our automated renewal process.\n\nTo resolve the issue, the infrastructure team issued a new certificate and deployed it across all load balancers. Verification confirmed that services were fully operational within forty-five minutes of the fix being applied. The remaining time was spent monitoring system stability and communicating status updates to our customer base.\n\nWhile the service disruption was brief, it highlighted a critical vulnerability in our certificate management workflow. We have since implemented stricter automated checks and added redundant alerts to ensure any upcoming expiration triggers immediate action. Additionally, we have updated our runbooks to include faster verification steps for certificate deployments. We apologize for the inconvenience and are committed to strengthening our infrastructure to prevent similar issues in the future.",
+      "rewrite": "On June 12, our platform suffered a two-hour outage that impacted every user. An expired TLS certificate blocked secure connections, and our monitoring tools flagged a surge in failed handshakes. The incident response team moved in right away, traced the problem to a lapse in the automated renewal process, and began remediation.\n\nTo resolve the issue, the infrastructure team issued a new certificate and deployed it across all load balancers. Verification confirmed that services were fully operational within forty-five minutes of the fix being applied. The remaining time was spent monitoring system stability and communicating status updates to our customer base.\n\nOur recent service outage, though short, revealed a serious flaw in how we manage certificates. In response, we have deployed tighter automated validations and set up redundant alerts that will fire as soon as a certificate approaches expiration. The runbooks have been updated to include quicker verification procedures for deployments. We regret any inconvenience caused and are dedicated to reinforcing our infrastructure to avoid repeat occurrences.",
+      "words": [
+        177,
+        167
+      ],
+      "drift": -0.056,
+      "density": [
+        3.13,
+        2.62
+      ],
+      "score": [
+        5.54,
+        4.37
+      ],
+      "reduction": 0.163,
+      "claims": 15,
+      "check": {
+        "kept": 15,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is slightly better because it uses more precise and professional language (e.g., 'experienced' vs 'suffered', 'critical vulnerability' vs 'serious flaw') and maintains a more consistent, objective tone throughout the incident report."
+      },
+      "sentenceCv": [
+        0.132,
+        0.211
+      ],
+      "mattr": [
+        0.864,
+        0.865
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"The issue was resolved.\"]"
+        ]
+      ],
+      "calls": 11,
+      "tokens": 19966,
+      "seconds": 205,
+      "served": {
+        "openai/gpt-oss-120b": 1,
+        "openai/gpt-oss-20b": 5,
+        "ovh/gpt-oss-120b": 4,
+        "ovh/gpt-oss-20b": 1,
+        "qwen/qwen3.8-27b": 2,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.986,
+        0.986
+      ]
+    },
+    {
+      "id": "g26-thanks-mentor",
+      "genre": "personal note",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "Thank you for believing in me when I was still figuring out my path. Your guidance, patience, and honest feedback turned countless doubts into confidence, and it was your encouragement that helped me land my first job. I still remember our late\u2011night brainstorming sessions, the r\u00e9sum\u00e9 tweaks, and the mock interviews that made me feel prepared and poised. Your willingness to share your own experiences\u2014and to listen without judgment\u2014made all the difference. I\u2019m grateful for the doors you opened, the lessons you taught, and the example you set as a leader and a friend. I hope to pay it forward and help others the way you helped me.",
+      "rewrite": "Thanks for believing in me when I was still trying to find my way. Your guidance, patience and honest feedback changed a flood of doubts into real confidence, and your encouragement got me that first job. I still picture those late-night brainstorming sessions, the r\u00e9sum\u00e9 tweaks, and the mock interviews that left me feeling ready and poised. You always shared your own stories and listened without judgment, which made all the difference. I\u2019m grateful for the doors you opened, the lessons you taught, and the example you set as both a leader and a friend. I hope one day I can pay it forward and help others the way you helped me.",
+      "words": [
+        111,
+        112
+      ],
+      "drift": 0.009,
+      "density": [
+        5.02,
+        3.51
+      ],
+      "score": [
+        5.57,
+        3.93
+      ],
+      "reduction": 0.301,
+      "claims": 16,
+      "check": {
+        "kept": 13,
+        "changed": [
+          "The recipient's encouragement helped the speaker land their first job.",
+          "The recipient was willing to share their own experiences.",
+          "The recipient's willingness to share experiences and listen without judgment made all the difference."
+        ],
+        "missing": [],
+        "added": [
+          "The recipient's encouragement got the speaker their first job.",
+          "The recipient always shared their own stories.",
+          "The speaker hopes one day they can pay it forward.",
+          "The speaker hopes one day they can help others."
+        ]
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "loss",
+          "win"
+        ],
+        "reason": "Version B is more natural and concise, using smoother phrasing like 'figuring out my path' and 'land my first job' which fits the casual tone better than Version A's slightly clunky 'changed a flood of doubts'."
+      },
+      "sentenceCv": [
+        0.231,
+        0.205
+      ],
+      "mattr": [
+        0.782,
+        0.809
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 13192,
+      "seconds": 273,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 3,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.985,
+        0.982
+      ]
+    },
+    {
+      "id": "g27-fitness-strength",
+      "genre": "article",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "When you hit your forties, many of us start to notice subtle changes\u2014slower recovery, a dip in energy, or that stubborn belly fat that seems to resist every diet. It\u2019s easy to blame hormones or a busy schedule, but the truth is that our bodies still have plenty of potential if we give them the right stimulus. Strength training\u2014lifting weights, using resistance bands, or even body\u2011weight exercises\u2014offers a powerful antidote to the age\u2011related decline in muscle mass and bone density. By challenging the muscles, you not only sculpt a more toned physique but also boost metabolism, improve joint stability, and reduce the risk of chronic conditions. The best part is that you can start with simple movements and gradually increase intensity, making it accessible for anyone over 40. Embracing resistance training isn\u2019t just about looking good; it\u2019s about feeling stronger, healthier, and more confident every day.",
+      "rewrite": "When you reach your forties, many people may notice slower recovery, lower energy, and stubborn belly fat that resists most diets. It\u2019s easy to blame hormones or a hectic schedule, but your body still has plenty of potential if you give it the right stimulus. Strength training, whether you lift weights, use resistance bands, or do body-weight moves, provides a strong counter to age-related loss of muscle and bone, even as metabolism slows. By challenging the muscles, you build a more toned look, raise your metabolism, and improve joint stability, which helps lower and reduce the risk of chronic problems. You can begin with simple movements and slowly add intensity, so it works for anyone over 40. Consistent effort will even improve posture and keep you more active throughout the day. Resistance training isn\u2019t only about appearance; it\u2019s about feeling stronger, healthier, and more confident each day.",
+      "words": [
+        151,
+        147
+      ],
+      "drift": -0.026,
+      "density": [
+        7.68,
+        4.17
+      ],
+      "score": [
+        11.6,
+        6.13
+      ],
+      "reduction": 0.457,
+      "claims": 23,
+      "check": {
+        "kept": 20,
+        "changed": [
+          "When you hit your forties, many of us start to notice subtle changes.",
+          "These changes include stubborn belly fat that seems to resist every diet.",
+          "Challenging the muscles reduces the risk of chronic conditions."
+        ],
+        "missing": [],
+        "added": [
+          "Metabolism slows with age.",
+          "Consistent effort will improve posture.",
+          "Consistent effort will keep you more active throughout the day."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is better written because it uses more precise vocabulary (e.g., 'bone density' vs 'bone', 'antidote' vs 'counter') and smoother sentence structures, making it more engaging and professional while maintaining a neutral tone."
+      },
+      "sentenceCv": [
+        0.175,
+        0.264
+      ],
+      "mattr": [
+        0.909,
+        0.896
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 5,
+      "tokens": 11936,
+      "seconds": 183,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.986,
+        0.98
+      ]
+    },
+    {
+      "id": "g28-scholarship-challenge",
+      "genre": "scholarship essay",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "Navigating the complexities of [specific challenge, e.g., a severe chronic illness or a family financial crisis] initially felt like an insurmountable wall, shifting my perspective on what it means to succeed. Before this experience, I believed that stability was a prerequisite for growth, but living through [brief description of the hardship] forced me to redefine my priorities and resilience. I learned that adversity is not merely an obstacle to be avoided, but a crucible that forges character. During the months of [specific time frame or event], I had to abandon my previous routine and find new ways to manage [specific responsibility, e.g., schoolwork and caregiving]. This required immense discipline and adaptability, pushing me to develop a structured system for balancing my academic goals with my personal duties. I discovered that my ability to remain calm under pressure and communicate effectively with mentors and peers became my greatest assets. This journey did not just survive; it transformed me into a more empathetic and determined individual. Now, I approach every challenge with the confidence that I can adapt, learn, and thrive, regardless of the circumstances. This resilience is not just a personal trait but a tool I hope to use in my future career to support others facing similar hardships, proving that my background is a source of strength rather than a limitation.",
+      "rewrite": "When I first faced [specific challenge, e.g., a severe chronic illness or a family financial crisis], it seemed like an impossible barrier, and it forced me to rethink what success really means. Before that, I believed I needed a stable foundation before I could grow, yet [brief description of the hardship] pushed me to reorder my priorities and test my endurance. During [specific time frame or event] I gave up my previous routine and had to learn how to juggle [specific responsibility, e.g., schoolwork and caregiving] simultaneously. I built a strict yet adaptable system that let me meet academic goals while attending to personal duties. Through that, I found that keeping calm under stress and communicating well with mentors and peers were my most valuable assets. The period didn\u2019t simply let me survive; it turned me into a more compassionate and resolute person. Now I meet each new challenge confident that I can adapt, learn, and keep going, no matter the circumstances. This resilience isn\u2019t just a personal trait: it\u2019s a skill I intend to use in my future career to support others facing comparable hardships, proving that my background serves as a strength rather than a limitation.",
+      "words": [
+        221,
+        198
+      ],
+      "drift": -0.104,
+      "density": [
+        5.67,
+        1.42
+      ],
+      "score": [
+        12.54,
+        2.82
+      ],
+      "reduction": 0.75,
+      "claims": 17,
+      "check": {
+        "kept": 11,
+        "changed": [
+          "Living through the hardship forced the author to redefine priorities and resilience.",
+          "Managing the specific responsibility required immense discipline and adaptability.",
+          "The author now approaches every challenge with the confidence that they can adapt, learn, and thrive regardless of circumstances.",
+          "The author views their resilience as a tool to use in their future career to support others facing similar hardships."
+        ],
+        "missing": [
+          "The author learned that adversity is not merely an obstacle to be avoided.",
+          "The author learned that adversity is a crucible that forges character."
+        ],
+        "added": [
+          "The hardship pushed the author to test their endurance.",
+          "The system the author built was strict.",
+          "The author characterizes their resilience as a skill.",
+          "The author intends to use their resilience in their future career."
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is superior because it avoids the grammatical error in Version B ('This journey did not just survive') and maintains a more natural, less clich\u00e9 tone suitable for a neutral narrative."
+      },
+      "sentenceCv": [
+        0.292,
+        0.286
+      ],
+      "mattr": [
+        0.857,
+        0.854
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 15286,
+      "seconds": 253,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 3,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.986,
+        0.981
+      ]
+    },
+    {
+      "id": "g29-faq-password",
+      "genre": "help article",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "To reset your password on the company portal, start by navigating to the login page and clicking the \u201cForgot Password?\u201d link located beneath the sign\u2011in fields. Enter the email address associated with your account and submit the form. An automated message will be sent to that address containing a secure reset link; open the email and click the link within the allotted time frame, typically fifteen minutes. You will be taken to a page where you can type a new password, confirm it, and optionally answer a security question. After saving the changes, return to the login screen and sign in with your new credentials. If you do not receive the email, check your spam folder or contact IT support for assistance.",
+      "rewrite": "Resetting your password on the company portal begins at the login page; locate the \u201cForgot Password?\u201d link beneath the sign-in fields and click it. Then supply the email address linked to your account and submit. An automated email arrives shortly, containing a secure reset link that must be used within typically fifteen minutes. Follow that link to a page that asks you to type a new password, confirm it, and optionally answer a security question. Save the new password, go back to the login screen, and sign in with the updated credentials. Should the email not show up, first check your spam folder, and if it\u2019s still missing, contact IT support for assistance now.",
+      "words": [
+        123,
+        114
+      ],
+      "drift": -0.073,
+      "density": [
+        1.54,
+        2.04
+      ],
+      "score": [
+        1.9,
+        2.33
+      ],
+      "reduction": -0.325,
+      "claims": 17,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "An automated message will be sent to the entered address.",
+          "If you do not receive the email, contact IT support for assistance."
+        ],
+        "missing": [
+          "Open the email."
+        ],
+        "added": [
+          "The automated email arrives shortly.",
+          "Check the spam folder first.",
+          "Contact IT support only if the email is still missing after checking spam.",
+          "Contact IT support now."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is slightly better because it uses more standard, neutral instructional phrasing (e.g., 'associated with' vs 'linked to', 'allotted time frame' vs 'typically fifteen minutes' in a slightly awkward position) and flows a bit more naturally."
+      },
+      "sentenceCv": [
+        0.325,
+        0.249
+      ],
+      "mattr": [
+        0.786,
+        0.79
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 12198,
+      "seconds": 201,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 3,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.927,
+        0.548
+      ]
+    },
+    {
+      "id": "g30-opinion-remote",
+      "genre": "opinion",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "Remote work offers a level of flexibility that traditional office settings simply cannot match. Employees can structure their days around personal commitments, reduce commuting stress, and often experience a better work\u2011life balance. The ability to work from anywhere also opens up talent pools beyond geographic constraints, allowing companies to hire the best candidates regardless of location. However, the lack of face\u2011to\u2011face interaction can hinder spontaneous collaboration and make it harder to build a cohesive company culture. In an office, the physical proximity encourages quick brainstorming sessions, clearer communication, and stronger team bonds. The shared environment also provides clearer boundaries between work and home life, which can boost focus and productivity for some individuals. Ultimately, the best approach blends the strengths of both models: leveraging remote work\u2019s flexibility while maintaining regular in\u2011person gatherings to preserve connection, collaboration, and a unified organizational identity.",
+      "rewrite": "Remote work gives employees flexibility that a traditional office can't match. People can shape their days around personal commitments, cut out commuting stress, and often enjoy a better work-life balance. Being able to work from anywhere also widens the talent pool, so companies can hire the best candidates regardless of location. The downside is the loss of face-to-face interaction, which can slow spontaneous collaboration and make it tougher to build a cohesive culture. In an office, physical proximity sparks quick brainstorming sessions, clearer communication, and stronger team bonds. A shared space also draws clearer lines between work and home, which can boost focus and productivity for some people. The most effective strategy mixes the two models: it uses remote work\u2019s flexibility while keeping regular in-person meetings to preserve connection, foster collaboration, and maintain a unified identity.",
+      "words": [
+        145,
+        136
+      ],
+      "drift": -0.062,
+      "density": [
+        3.12,
+        2.54
+      ],
+      "score": [
+        4.52,
+        3.45
+      ],
+      "reduction": 0.186,
+      "claims": 20,
+      "check": {
+        "kept": 17,
+        "changed": [
+          "Remote work can reduce commuting stress for employees.",
+          "The lack of face-to-face interaction in remote work can hinder spontaneous collaboration.",
+          "Regular in-person gatherings help preserve collaboration."
+        ],
+        "missing": [],
+        "added": [
+          "Remote work can cut out commuting stress.",
+          "The loss of face-to-face interaction can slow spontaneous collaboration.",
+          "Regular in-person meetings foster collaboration."
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more concise and uses more direct, active language, making it easier to read while maintaining the same level of detail as Version B."
+      },
+      "sentenceCv": [
+        0.243,
+        0.277
+      ],
+      "mattr": [
+        0.877,
+        0.89
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 14868,
+      "seconds": 108,
+      "served": {
+        "ovh/gpt-oss-120b": 2,
+        "ovh/gpt-oss-20b": 3,
+        "openai/gpt-oss-120b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.986
+      ]
+    },
+    {
+      "id": "c01-email-onboarding",
+      "genre": "work email",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "professional",
+      "original": "Hi Jordan,\n\nWelcome to the team! We're thrilled to have you on board and can't wait to see the unique perspective you'll bring to our growing organization. Your first week is designed to help you hit the ground running \u2014 from meeting key stakeholders to getting familiar with our tools and processes.\n\nOn Monday, you'll start with a comprehensive orientation session at 9:30 a.m., followed by lunch with your onboarding buddy, Maria Lopez. Throughout the week, you'll also have the opportunity to shadow team members, explore our documentation, and set up your development environment.\n\nPlease don't hesitate to reach out if you have any questions along the way. We're here to support you every step of the journey. Once again, welcome aboard!\n\nBest regards,\nSam",
+      "rewrite": "Hi Jordan,\n\nWelcome to the team. We are thrilled to have you on board and look forward to the unique perspective you will bring to our growing organization. Your first week is planned to get you up to speed, including meetings with key stakeholders and introductions to our tools and processes.\n\nOn Monday you will begin with a comprehensive orientation session at 9:30 a.m., followed by lunch with your onboarding buddy, Maria Lopez. Throughout the week you will shadow team members, explore our documentation, and set up your development environment.\n\nPlease do not hesitate to contact us with any questions along the way. We are here to support you at every step of the journey. Once again, welcome aboard!\n\nBest regards,\nSam",
+      "words": [
+        125,
+        123
+      ],
+      "drift": -0.016,
+      "density": [
+        1.76,
+        0.98
+      ],
+      "score": [
+        2.2,
+        1.2
+      ],
+      "reduction": 0.443,
+      "claims": 18,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "Jordan's first week includes getting familiar with the organization's tools and processes.",
+          "Throughout the week, Jordan will have the opportunity to shadow team members.",
+          "Throughout the week, Jordan will have the opportunity to explore the organization's documentation.",
+          "Throughout the week, Jordan will have the opportunity to set up a development environment."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B uses contractions and slightly more natural phrasing (e.g., 'hit the ground running') that makes the professional tone feel warmer and more engaging without sacrificing clarity."
+      },
+      "sentenceCv": [
+        0.815,
+        0.805
+      ],
+      "mattr": [
+        0.86,
+        0.839
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 14,
+      "tokens": 23524,
+      "seconds": 276,
+      "served": {
+        "ovh/gpt-oss-120b": 7,
+        "ovh/gpt-oss-20b": 6,
+        "openai/gpt-oss-20b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "c02-essay-social-media",
+      "genre": "essay",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "neutral",
+      "original": "In today's digital age, social media has become an integral part of teenagers' lives, shaping how they communicate, learn, and see themselves. Platforms like Instagram and TikTok offer a powerful space for creativity and connection, allowing young people to share their voices with the world. However, it's important to recognize that these benefits come with significant challenges. Constant exposure to curated images can foster unrealistic expectations, fueling anxiety and low self-esteem. Moreover, the endless scroll is designed to capture attention, often at the expense of sleep and face-to-face relationships. Ultimately, social media is not inherently good or bad \u2014 it is a tool whose impact depends on how it is used. By fostering digital literacy and encouraging healthy boundaries, parents and educators can help teenagers navigate this complex landscape and harness its potential for good.",
+      "rewrite": "Social media now plays a central role in teenagers' lives, shaping how they talk, learn and view themselves. Platforms such as Instagram and TikTok give young people a strong outlet for creativity and connection, letting them share their voices widely. But those advantages come with real challenges. Constant exposure to polished images can create unrealistic expectations and trigger anxiety and low self-esteem. The endless scroll also steals time, often cutting into sleep and face-to-face interaction. Social media itself isn\u2019t good or bad; it\u2019s a tool whose effect depends on how it\u2019s used. Building digital literacy and setting healthy limits lets parents and educators help teens use it responsibly and benefit from its positive side. They also learn to question what they see and to balance online time with offline activities.",
+      "words": [
+        134,
+        130
+      ],
+      "drift": -0.03,
+      "density": [
+        9.13,
+        2.4
+      ],
+      "score": [
+        12.23,
+        3.12
+      ],
+      "reduction": 0.737,
+      "claims": 7,
+      "check": {
+        "kept": 5,
+        "changed": [
+          "These benefits come with significant challenges.",
+          "The endless scroll is designed to capture attention, often at the expense of sleep and face-to-face relationships."
+        ],
+        "missing": [],
+        "added": [
+          "They also learn to question what they see",
+          "They also learn to balance online time with offline activities"
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more direct and avoids the clich\u00e9d phrasing and filler words found in Version B, making it clearer and more natural for a neutral tone."
+      },
+      "sentenceCv": [
+        0.242,
+        0.301
+      ],
+      "mattr": [
+        0.891,
+        0.927
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 14830,
+      "seconds": 498,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 3,
+        "ovh/qwen3.8-27b": 1,
+        "qwen/qwen3.8-27b": 2
+      },
+      "detector": [
+        0.987,
+        0.986
+      ]
+    },
+    {
+      "id": "c03-product-headphones",
+      "genre": "product copy",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "casual",
+      "original": "Elevate your listening experience with the AuraSound X2 wireless headphones. Designed for those who demand more from their music, the X2 delivers rich, immersive sound that brings every note to life. With up to 40 hours of battery life, you can enjoy your favorite playlists from sunrise to sunset and beyond. Advanced noise cancellation lets you escape the chaos of your daily commute, while plush memory-foam ear cushions ensure all-day comfort. Whether you're working, traveling, or simply unwinding, the X2 seamlessly adapts to your lifestyle. It's not just a pair of headphones \u2014 it's your gateway to a world of sound. Experience the difference today.",
+      "rewrite": "Upgrade your listening with the AuraSound X2 wireless headphones. They\u2019re built for folks who expect more from music, and the X2 gives you rich, immersive sound that makes every note pop. The battery lasts up to 40 hours, so you can play your playlists from sunrise to sunset and still have juice. Noise cancellation cuts out the hustle of a commute, and the memory-foam ear cushions keep them comfy all day. Whether you\u2019re working, traveling, or simply unwinding, the X2 fits right into your routine. It\u2019s more than a headphone set; it\u2019s a portal to a whole new world of sound. Try them now.",
+      "words": [
+        104,
+        104
+      ],
+      "drift": 0,
+      "density": [
+        2.51,
+        0
+      ],
+      "score": [
+        2.61,
+        0
+      ],
+      "reduction": 1,
+      "claims": 14,
+      "check": {
+        "kept": 10,
+        "changed": [
+          "The AuraSound X2 features advanced noise cancellation.",
+          "The AuraSound X2 has plush memory-foam ear cushions.",
+          "The AuraSound X2 is a gateway to a world of sound.",
+          "The user should experience the difference today."
+        ],
+        "missing": [],
+        "added": [
+          "The AuraSound X2 is a portal to a whole new world of sound."
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A uses more natural, conversational language (e.g., 'folks,' 'juice,' 'hustle') that aligns better with the requested casual tone, whereas Version B relies on stiff, corporate marketing jargon (e.g., 'elevate,' 'seamlessly adapts')."
+      },
+      "sentenceCv": [
+        0.419,
+        0.462
+      ],
+      "mattr": [
+        0.868,
+        0.881
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 4,
+      "tokens": 9362,
+      "seconds": 200,
+      "served": {
+        "ovh/gpt-oss-120b": 2,
+        "ovh/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "c04-reddit-job-advice",
+      "genre": "forum post",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "casual",
+      "original": "Great question, and congrats on landing your first job! Starting a new role can feel overwhelming, but here are a few things that really helped me navigate those early months.\n\nFirst, don't be afraid to ask questions. Nobody expects you to know everything on day one, and asking thoughtful questions actually shows that you're engaged and eager to learn. Second, take notes religiously. You'll be absorbing a ton of information, and having a reference will save you countless headaches down the road. Third, focus on building genuine relationships with your coworkers. Those connections will be invaluable throughout your career.\n\nUltimately, remember that everyone was new once. Be patient with yourself, stay curious, and embrace the learning process. You've got this!",
+      "rewrite": "Great question, and congrats on landing your first job! Starting a new role can feel overwhelming, but here are a few things that really helped me get through those early months.\n\nFirst, don\u2019t be afraid to ask questions. No one expects you to know everything on day one, and asking thoughtful questions shows you\u2019re engaged and eager to learn. Second, take notes religiously; you\u2019ll soak up a lot of info and a good reference will save you countless headaches later. Third, focus on building genuine relationships with coworkers, because those connections will be extremely useful throughout your career.\n\nRemember, everyone started out new, so be patient with yourself, stay curious, and embrace the learning process. You've got this!",
+      "words": [
+        120,
+        118
+      ],
+      "drift": -0.017,
+      "density": [
+        4,
+        2.2
+      ],
+      "score": [
+        4.8,
+        2.6
+      ],
+      "reduction": 0.45,
+      "claims": 17,
+      "check": {
+        "kept": 16,
+        "changed": [
+          "Having a reference will save you countless headaches down the road."
+        ],
+        "missing": [],
+        "added": [
+          "The reference should be good."
+        ]
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "loss",
+          "win"
+        ],
+        "reason": "Version B uses more natural, conversational phrasing (e.g., 'Nobody' instead of 'No one', 'a ton of information' instead of 'a lot of info') and better sentence structure, making it feel more authentically casual."
+      },
+      "sentenceCv": [
+        0.613,
+        0.498
+      ],
+      "mattr": [
+        0.88,
+        0.887
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 14,
+      "tokens": 22382,
+      "seconds": 333,
+      "served": {
+        "ovh/gpt-oss-120b": 7,
+        "ovh/gpt-oss-20b": 5,
+        "openai/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "c05-report-sales",
+      "genre": "business report",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "professional",
+      "original": "The third quarter marked a pivotal period of growth for the Northeast region. Total revenue reached $4.2 million, representing a 12% increase compared to the same period last year. This impressive performance was driven by several key factors, including the successful launch of our premium subscription tier, enhanced customer retention efforts, and a strategic expansion into two new markets.\n\nNotably, customer churn decreased from 8.1% to 6.4%, underscoring the effectiveness of our renewed focus on customer success. However, it is worth noting that acquisition costs rose by 9%, highlighting the need for more efficient marketing strategies moving forward. Overall, the results demonstrate strong momentum and position the region well for continued success in the fourth quarter.",
+      "rewrite": "The third quarter was a key growth period for the Northeast region. Total revenue hit $4.2 million, a 12% rise over the same quarter last year. This strong result came from the successful launch of our premium subscription tier, improved customer retention efforts, and a strategic expansion into two new markets in the region.\n\nCustomer churn fell from 8.1% to 6.4%, showing the impact of our renewed focus on customer success. At the same time, acquisition costs increased by 9%, indicating a need for more efficient marketing. The results overall reflect strong, clearly significant momentum and place the region well for continued success in the fourth quarter.",
+      "words": [
+        116,
+        107
+      ],
+      "drift": -0.078,
+      "density": [
+        10.09,
+        1.3
+      ],
+      "score": [
+        11.7,
+        1.39
+      ],
+      "reduction": 0.871,
+      "claims": 12,
+      "check": {
+        "kept": 10,
+        "changed": [
+          "The performance was driven by a strategic expansion into two new markets.",
+          "The results demonstrate strong momentum."
+        ],
+        "missing": [],
+        "added": [
+          "The strategic expansion was into two new markets in the region",
+          "The momentum is clearly significant"
+        ]
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "win",
+          "loss"
+        ],
+        "reason": "Version A is more concise and direct, avoiding the redundant phrasing and filler words found in Version B, which makes it more suitable for a professional business update."
+      },
+      "sentenceCv": [
+        0.303,
+        0.318
+      ],
+      "mattr": [
+        0.914,
+        0.873
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 8,
+      "tokens": 15486,
+      "seconds": 601,
+      "served": {
+        "ovh/gpt-oss-120b": 4,
+        "ovh/gpt-oss-20b": 4,
+        "qwen/qwen3.8-27b": 2,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.988,
+        0.987
+      ]
+    },
+    {
+      "id": "c06-college-why-major",
+      "genre": "college short answer",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "neutral",
+      "original": "Ever since I wrote my first line of code in [grade or age], I have been fascinated by the power of technology to transform the world around us. What began as a simple curiosity quickly blossomed into a deep passion for problem-solving and innovation. Through [specific project or class], I discovered that computer science is not just about writing code; it is about creating meaningful solutions that make a real difference in people's lives.\n\nAt [University Name], I am eager to delve deeper into fields like artificial intelligence and human-computer interaction. I am particularly drawn to [specific program or professor], which aligns perfectly with my goal of building accessible technology. Ultimately, I believe that studying computer science will empower me to turn my passion into purpose and contribute to a brighter, more connected future.",
+      "rewrite": "I wrote my first line of code in [grade or age] and have been intrigued by how technology can reshape our world. That early curiosity soon grew into a strong interest in problem-solving and innovation. While working on [specific project or class], I realized that computer science goes beyond writing code; it focuses on building solutions that genuinely improve people\u2019s lives, and in everyday contexts around us today.\n\nAt [University Name] I am eager to explore artificial intelligence and human-computer interaction in depth. I am especially drawn to [specific program or professor], which aligns perfectly with my goal of building accessible technology. Ultimately, I believe that studying computer science will empower me to turn my passion into purpose and help create a brighter, more connected future.",
+      "words": [
+        134,
+        126
+      ],
+      "drift": -0.06,
+      "density": [
+        7.41,
+        5.37
+      ],
+      "score": [
+        9.93,
+        6.76
+      ],
+      "reduction": 0.275,
+      "claims": 11,
+      "check": {
+        "kept": 9,
+        "changed": [
+          "The author has been fascinated by the power of technology to transform the world around us since writing their first line of code.",
+          "The author's initial curiosity quickly blossomed into a deep passion for problem-solving and innovation."
+        ],
+        "missing": [],
+        "added": [
+          "The solutions improve people\u2019s lives in everyday contexts around us today."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is better written because it uses more natural and precise phrasing (e.g., 'blossomed into a deep passion' vs. 'grew into a strong interest') and avoids the awkward, grammatically clunky ending found in Version A ('and in everyday contexts around us today')."
+      },
+      "sentenceCv": [
+        0.264,
+        0.342
+      ],
+      "mattr": [
+        0.896,
+        0.887
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 12,
+      "tokens": 23642,
+      "seconds": 483,
+      "served": {
+        "ovh/gpt-oss-120b": 6,
+        "ovh/gpt-oss-20b": 6,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.986,
+        0.986
+      ]
+    },
+    {
+      "id": "c07-blog-productivity",
+      "genre": "blog post",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "casual",
+      "original": "Have you ever wondered why some people seem to get so much done while others struggle to keep up? The secret isn't working longer hours \u2014 it's working smarter. In this fast-paced world, productivity has become more than just a buzzword; it's an essential skill for success in both our personal and professional lives.\n\nThe good news is that boosting your productivity doesn't require a complete overhaul of your routine. Small, intentional changes can have a profound impact on how you manage your time and energy. From prioritizing your most important tasks to minimizing distractions and building sustainable habits, there are countless strategies you can implement today.\n\nIn this post, we'll explore five proven techniques that can help you unlock your full potential and reclaim control of your day.",
+      "rewrite": "Some people get a lot done while others lag behind. The trick isn\u2019t putting in extra hours, it\u2019s working smarter. In today\u2019s fast paced world, productivity is more than a buzzword; it\u2019s a key skill for success at home and at work, and personal growth. It helps you stay focused and achieve more each day.\n\nThe good news is you don\u2019t need to completely redo your routine to be more productive. Tiny, deliberate tweaks can really change how you handle time and energy. By tackling your most important tasks first, cutting out distractions, and forming habits that stick, you can start seeing results today.\n\nIn this post, we'll explore five proven techniques that can help you unlock your full potential and reclaim control of your day.",
+      "words": [
+        128,
+        126
+      ],
+      "drift": -0.016,
+      "density": [
+        7.13,
+        1.98
+      ],
+      "score": [
+        9.13,
+        2.5
+      ],
+      "reduction": 0.722,
+      "claims": 7,
+      "check": {
+        "kept": 4,
+        "changed": [
+          "Some people seem to get so much done while others struggle to keep up.",
+          "Small, intentional changes can have a profound impact on how you manage your time and energy."
+        ],
+        "missing": [
+          "There are countless strategies you can implement today, such as prioritizing your most important tasks, minimizing distractions, and building sustainable habits."
+        ],
+        "added": [
+          "Productivity is a key skill for personal growth.",
+          "Productivity helps you stay focused and achieve more each day.",
+          "You can start seeing results today by tackling your most important tasks first, cutting out distractions, and forming habits that stick."
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more concise and uses a more direct, conversational tone that fits the casual requirement better than Version B's slightly more formal and wordy phrasing."
+      },
+      "sentenceCv": [
+        0.285,
+        0.391
+      ],
+      "mattr": [
+        0.887,
+        0.851
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"those techniques can help you unlock your full potential\"]",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"unlock your full potential\""
+        ]
+      ],
+      "calls": 10,
+      "tokens": 16389,
+      "seconds": 434,
+      "served": {
+        "openai/gpt-oss-120b": 1,
+        "ovh/gpt-oss-20b": 5,
+        "ovh/gpt-oss-120b": 4,
+        "ovh/qwen3.8-27b": 1,
+        "qwen/qwen3.8-27b": 2
+      },
+      "detector": [
+        0.988,
+        0.987
+      ]
+    },
+    {
+      "id": "c08-history-railroads",
+      "genre": "history essay",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "academic",
+      "original": "The completion of the first transcontinental railroad in 1869 stands as a testament to American ambition and ingenuity. Connecting the eastern rail network to the Pacific coast, the railroad dramatically reduced travel time across the continent from months to roughly a week. This monumental achievement not only facilitated the movement of goods and people but also played a crucial role in shaping the economic landscape of the nation. However, it is essential to acknowledge that this progress came at a profound human cost. Thousands of Chinese immigrants endured grueling conditions and discrimination while building the Central Pacific line, and the railroad accelerated the displacement of Native American communities. Thus, the legacy of the transcontinental railroad is a complex tapestry of innovation, exploitation, and transformation that continues to shape our understanding of the period.",
+      "rewrite": "The first transcontinental railroad was completed in 1869, marking a major expression of American ambition and ingenuity. By linking the eastern rail network to the Pacific coast, the line reduced cross-continent travel time from months to roughly a week. Only the coastal ports experienced the full advantage of the shortened schedule. It moved goods and people more quickly and altered the nation\u2019s economic development. At the same time, the project exacted a heavy human price. Thousands of Chinese immigrants faced harsh labor, discrimination, and danger while constructing the Central Pacific segment, and the railroad hastened the displacement of Native American communities. The legacy of the transwestern railway therefore combines innovation, exploitation, and transformation, and it continues to influence how the era is understood.",
+      "words": [
+        133,
+        123
+      ],
+      "drift": -0.075,
+      "density": [
+        10.78,
+        2.59
+      ],
+      "score": [
+        14.34,
+        3.18
+      ],
+      "reduction": 0.76,
+      "claims": 12,
+      "check": {
+        "kept": 9,
+        "changed": [
+          "The railroad played a crucial role in shaping the economic landscape of the nation.",
+          "The legacy of the transcontinental railroad is a complex tapestry of innovation, exploitation, and transformation.",
+          "The legacy of the transcontinental railroad continues to shape our understanding of the period."
+        ],
+        "missing": [],
+        "added": [
+          "Only the coastal ports experienced the full advantage of the shortened schedule.",
+          "Chinese immigrants faced danger while constructing the Central Pacific segment.",
+          "The railroad is referred to as the transwestern railway."
+        ]
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "win",
+          "loss"
+        ],
+        "reason": "Version A is superior because it avoids the clich\u00e9d and flowery language (e.g., 'monumental achievement,' 'complex tapestry') found in Version B, resulting in a more precise and professional academic tone."
+      },
+      "sentenceCv": [
+        0.205,
+        0.333
+      ],
+      "mattr": [
+        0.827,
+        0.809
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 3,
+      "tokens": 7340,
+      "seconds": 286,
+      "served": {
+        "ovh/gpt-oss-120b": 2,
+        "ovh/gpt-oss-20b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.986
+      ]
+    },
+    {
+      "id": "c09-linkedin-promotion",
+      "genre": "social post",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "professional",
+      "original": "I'm thrilled to share that I've been promoted to Senior Product Manager at Brightline Health!\n\nThis journey has been nothing short of transformative. Over the past three years, I've had the privilege of working alongside an incredibly talented team, tackling complex challenges and delivering products that truly make a difference in patients' lives.\n\nNone of this would have been possible without the unwavering support of my mentors, colleagues, and friends. A special thank you to Dana Whitfield for believing in me and pushing me to grow every single day.\n\nAs I step into this new role, I'm excited to continue driving innovation, fostering collaboration, and building solutions that matter. Here's to the next chapter!\n\n#Leadership #ProductManagement #Growth",
+      "rewrite": "I am thrilled, I am sharing my promotion to Senior Product Manager at Brightline Health.\n\nThis journey has been nothing short of transformative. Over the past three years I have had the privilege of working alongside an incredibly talented team, tackling complex challenges and delivering products that truly make a difference in patients\u2019 lives.\n\nThis achievement would not have happened without the steady support of my mentors, colleagues, and friends. I especially thank Dana Whitfield for believing in me and encouraging my growth continually each single day.\n\nAs I step into this new role, I'm excited to continue driving innovation, fostering collaboration, and building solutions that matter. Here's to the next chapter!\n\n#Leadership #ProductManagement #Growth",
+      "words": [
+        117,
+        115
+      ],
+      "drift": -0.017,
+      "density": [
+        5.64,
+        4.87
+      ],
+      "score": [
+        6.6,
+        5.6
+      ],
+      "reduction": 0.137,
+      "claims": 11,
+      "check": {
+        "kept": 9,
+        "changed": [
+          "The author attributes their success to the support of mentors, colleagues, and friends.",
+          "Dana Whitfield pushed the author to grow every single day."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B uses more natural and professional phrasing (e.g., 'I'm thrilled to share that I've been promoted' and 'pushing me to grow') compared to Version A's slightly awkward and redundant constructions ('I am thrilled, I am sharing' and 'continually each single day')."
+      },
+      "sentenceCv": [
+        0.613,
+        0.631
+      ],
+      "mattr": [
+        0.882,
+        0.905
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"being excited\",\"cheering to the next chapter\"]",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"driving innovation, fostering collaboration, and building solutions\", \", fostering\""
+        ]
+      ],
+      "calls": 19,
+      "tokens": 28632,
+      "seconds": 791,
+      "served": {
+        "ovh/gpt-oss-120b": 9,
+        "ovh/gpt-oss-20b": 8,
+        "openai/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 4
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "c10-explainer-compound",
+      "genre": "explainer",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "neutral",
+      "original": "Compound interest is one of the most powerful concepts in personal finance, and understanding it can transform the way you think about saving. At its core, compound interest means earning interest not only on your original deposit but also on the interest you've already earned. Over time, this creates a snowball effect that can significantly accelerate the growth of your money.\n\nFor example, imagine you invest $1,000 at an annual interest rate of 5%. After the first year, you'll have $1,050. In the second year, you earn 5% on $1,050, not just the original $1,000, bringing your total to $1,102.50. While the difference may seem small at first, it becomes substantial over decades.\n\nThe key takeaway? Start saving early, stay consistent, and let time do the heavy lifting.",
+      "rewrite": "Compound interest is one of the most powerful ideas in personal finance, and getting how it works can change how you think about saving. It means you earn interest on the money you initially put in as well as on the interest that\u2019s already accumulated. Over time this creates a snowball effect that can greatly speed up the growth of your money.\n\nSuppose you invest $1,000 at an annual interest rate of 5%. After the first year the balance is $1,050. In the second year you earn 5% on $1,050, not just the original $1,000, bringing the total to $1,102.50. While the difference may seem small at first, it becomes substantial over decades for investors.\n\nBottom line: start saving early, stay consistent, and let time do the heavy lifting.",
+      "words": [
+        133,
+        134
+      ],
+      "drift": 0.008,
+      "density": [
+        1.5,
+        1.1
+      ],
+      "score": [
+        2,
+        1.47
+      ],
+      "reduction": 0.267,
+      "claims": 15,
+      "check": {
+        "kept": 15,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is slightly better because it uses more precise and natural phrasing (e.g., 'understanding it' instead of 'getting how it works') and includes a clearer transition ('For example') that improves the flow of the text."
+      },
+      "sentenceCv": [
+        0.46,
+        0.312
+      ],
+      "mattr": [
+        0.822,
+        0.784
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 16,
+      "tokens": 27758,
+      "seconds": 481,
+      "served": {
+        "ovh/gpt-oss-120b": 7,
+        "ovh/gpt-oss-20b": 7,
+        "openai/gpt-oss-20b": 1,
+        "openai/gpt-oss-120b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.986
+      ]
+    },
+    {
+      "id": "c11-review-cafe",
+      "genre": "review",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "casual",
+      "original": "Nestled in the heart of downtown, The Daily Grind is a true hidden gem for coffee lovers. From the moment you step inside, you're greeted by the warm aroma of freshly roasted beans and a cozy, inviting atmosphere. The baristas are not only friendly but also genuinely passionate about their craft, taking the time to recommend drinks tailored to your taste.\n\nI ordered the lavender oat latte, and it was nothing short of exceptional \u2014 perfectly balanced, smooth, and subtly sweet. The pastries, baked fresh every morning, are equally impressive. Whether you're looking for a quiet place to work or a spot to catch up with friends, The Daily Grind delivers an experience that keeps you coming back for more.",
+      "rewrite": "Right in downtown, The Daily Grind is a hidden gem for coffee lovers. From the moment you step inside, you are greeted by the warm aroma of freshly roasted beans and a cozy, inviting atmosphere. The baristas are only friendly, and they\u2019re genuinely passionate about their craft. They take the time to recommend drinks tailored to your taste.\n\nThat lavender oat latte I ordered turned out to be exceptional: balanced, smooth, and subtly sweet. Freshly baked pastries arrive each morning and really impress just as much. If you\u2019re after a quiet work nook or a friendly catch-up spot, The Daily Grind serves an experience that still definitely keeps you coming back every time.",
+      "words": [
+        119,
+        113
+      ],
+      "drift": -0.05,
+      "density": [
+        5.09,
+        1.49
+      ],
+      "score": [
+        6.06,
+        1.68
+      ],
+      "reduction": 0.707,
+      "claims": 17,
+      "check": {
+        "kept": 10,
+        "changed": [
+          "The Daily Grind is located in the heart of downtown.",
+          "The baristas at The Daily Grind are friendly.",
+          "The lavender oat latte was nothing short of exceptional.",
+          "The lavender oat latte was perfectly balanced.",
+          "The pastries at The Daily Grind are baked fresh every morning.",
+          "The Daily Grind is a spot to catch up with friends.",
+          "The Daily Grind delivers an experience that keeps you coming back for more."
+        ],
+        "missing": [],
+        "added": [
+          "The baristas are only friendly.",
+          "Freshly baked pastries arrive each morning.",
+          "The Daily Grind is a friendly catch-up spot.",
+          "The experience still definitely keeps you coming back every time."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is significantly better because it corrects the glaring grammatical error in Version A ('only friendly' instead of 'not only friendly') and uses more natural, concise phrasing that fits the casual tone."
+      },
+      "sentenceCv": [
+        0.35,
+        0.378
+      ],
+      "mattr": [
+        0.898,
+        0.9
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 8,
+      "tokens": 15393,
+      "seconds": 480,
+      "served": {
+        "ovh/gpt-oss-120b": 4,
+        "ovh/gpt-oss-20b": 4,
+        "ovh/qwen3.8-27b": 2,
+        "qwen/qwen3.8-27b": 2
+      },
+      "detector": [
+        0.988,
+        0.987
+      ]
+    },
+    {
+      "id": "c12-memo-security",
+      "genre": "internal memo",
+      "generator": "claude-opus-5-5 (written in the build session)",
+      "tone": "professional",
+      "original": "As part of our ongoing commitment to safeguarding our organization, all employees are required to complete the annual cybersecurity awareness training by November 15. In an era where cyber threats are becoming increasingly sophisticated, it is crucial that every team member understands their role in protecting sensitive information.\n\nThe training consists of four short modules covering phishing, password management, data handling, and incident reporting. It takes approximately 45 minutes to complete and can be accessed through the Learning Portal at any time. Employees who complete the training will also receive a certificate for their records.\n\nWe appreciate your cooperation in helping us maintain a secure and resilient workplace. If you have any questions, please feel free to reach out to the IT Security team.",
+      "rewrite": "All employees must complete the annual cybersecurity awareness training by November 15. Because cyber threats are becoming more sophisticated, each team member must understand their role in protecting sensitive information. This requirement reflects our ongoing commitment to safeguarding the organization and ensures we remain prepared against evolving attacks.\n\nThe training consists of four short modules covering phishing, password management, data handling, and incident reporting. It takes approximately 45 minutes and can be accessed at any time through the Learning Portal. Employees who complete the training receive a certificate for their records.\n\nWe appreciate your cooperation in helping us maintain a secure and resilient workplace. If you have any questions, please feel free to reach out to the IT Security team.",
+      "words": [
+        124,
+        120
+      ],
+      "drift": -0.032,
+      "density": [
+        5.44,
+        4.62
+      ],
+      "score": [
+        6.75,
+        5.54
+      ],
+      "reduction": 0.151,
+      "claims": 15,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "It is crucial that every team member understands their role in protecting sensitive information."
+        ],
+        "missing": [],
+        "added": [
+          "The requirement ensures the organization remains prepared against evolving attacks."
+        ]
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A is more direct and concise, avoiding the wordy and slightly clich\u00e9d phrasing found in Version B (e.g., 'In an era where...'), which makes it better suited for a professional internal memo."
+      },
+      "sentenceCv": [
+        0.262,
+        0.178
+      ],
+      "mattr": [
+        0.915,
+        0.926
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"Your cooperation helps us maintain a secure and resilient workplace.\"]",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"feel free to reach out\""
+        ]
+      ],
+      "calls": 17,
+      "tokens": 29385,
+      "seconds": 428,
+      "served": {
+        "ovh/gpt-oss-120b": 9,
+        "ovh/gpt-oss-20b": 7,
+        "openai/gpt-oss-20b": 1,
+        "qwen/qwen3.8-27b": 3,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    }
+  ]
+}
