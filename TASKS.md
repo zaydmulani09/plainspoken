@@ -24,8 +24,8 @@ Single source of truth for the build. Survives context compaction.
 
 ## Open
 - [x] Eval rounds on dev set (4 of max 6), log in eval/ROUNDS.md
-- [ ] Final full eval run (42 texts) with shipped prompts
-- [ ] README with real eval table, limits, scoring, self-host, Vercel, BYOK
+- [x] Final full eval run (42 texts, round 5, 2026-10-31): 2 of 6 targets met (drift, banned chars); host check round 5.1
+- [x] README with real eval table, missed targets named, detector numbers, limits, scoring, self-host, Vercel, BYOK
 - [x] Live e2e incl. 600-word sample (5/5 pass 2026-10-31), streaming + 413; firewall 403 on request 11 (2026-10-31)
 - [ ] CI green on GitHub
 - [ ] Final dash grep, TASKS closed, project memory saved
