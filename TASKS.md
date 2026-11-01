@@ -27,8 +27,9 @@ Single source of truth for the build. Survives context compaction.
 - [x] Final full eval run (42 texts, round 5, 2026-10-31): 2 of 6 targets met (drift, banned chars); host check round 5.1
 - [x] README with real eval table, missed targets named, detector numbers, limits, scoring, self-host, Vercel, BYOK
 - [x] Live e2e incl. 600-word sample (5/5 pass 2026-10-31), streaming + 413; firewall 403 on request 11 (2026-10-31)
-- [ ] CI green on GitHub
-- [ ] Final dash grep, TASKS closed, project memory saved
+- [x] CI green on GitHub (run 41262656818: check + e2e-live, 2026-11-01 UTC)
+- [x] Final dash grep (68 files clean), TASKS closed, project memory saved
+- Note: a live 600-word rerun at 2026-10-31 21:51 kept every paragraph as written because the eval had spent the free Groq quota; the e2e test now fails on that. The quota refills over the day.
 
 ## Done
 - Scaffold, engine (text, freeze, tells.json with sources, lint, guard, diff, voice), providers, pipeline, CLI
