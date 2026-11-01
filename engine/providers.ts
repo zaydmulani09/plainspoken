@@ -90,14 +90,18 @@ function parseReset(v: string | null): number {
   return ms;
 }
 
-// Batch jobs may pass several comma-separated keys from separate Groq accounts,
-// each with its own daily quota. A key whose daily quota is spent for a model
-// is skipped until Groq says it frees.
+// A model whose daily quota is spent is skipped until Groq says it frees.
 const spentUntil = new Map<string, number>();
-const isSpent = (key: string, model: string) => (spentUntil.get(`${key} ${model}`) ?? 0) > Date.now();
+const isSpent = (model: string) => (spentUntil.get(model) ?? 0) > Date.now();
+
+// Batch jobs (the eval) may list "ovh/<model>" after a Groq model: OVHcloud AI
+// Endpoints serves the same open weights without a key, at 2 requests per
+// minute per model and IP, so calls to it are spaced a little over 30s apart.
+const OVH = "ovh/";
+const OVH_GAP = 30500;
+const nextSlot = new Map<string, number>();
 
 export function groqProvider(apiKey: string, source: "server" | "byok", models = GROQ_MODELS): Provider {
-  const keys = apiKey.split(",").map((k) => k.trim()).filter(Boolean);
   return {
     name: "groq",
     source,
@@ -112,18 +116,26 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
       const started = Date.now();
       for (let attempt = 0; attempt < 8; attempt++) {
         const need = Math.ceil((o.system.length + o.user.length) / 3.5) + maxTokens;
-        const waits = list.map((m) => waitFor(m, need));
+        const now = Date.now();
+        const waits = list.map((m) => Math.max((spentUntil.get(m) ?? 0) - now, m.startsWith(OVH) ? (nextSlot.get(m) ?? 0) - now : waitFor(m, need), 0));
         let k = waits[0] <= patience ? 0 : waits.indexOf(Math.min(...waits));
         const model = list[k];
-        if (waits[k] > 0) await sleep(waits[k], o.signal);
-        const key = keys.find((x) => !isSpent(x, model)) ?? keys[0];
+        const ovh = model.startsWith(OVH);
         // Admission needs room for prompt plus max tokens; once the call returns,
         // the window holds what it actually used.
-        const entry = { t: Date.now(), n: need };
-        used(model, entry.t).entries.push(entry);
-        const isOss = model.startsWith("openai/");
+        const entry = { t: 0, n: need };
+        if (ovh) {
+          const slot = Math.max(Date.now(), nextSlot.get(model) ?? 0);
+          nextSlot.set(model, slot + OVH_GAP);
+          await sleep(slot - Date.now(), o.signal);
+        } else {
+          if (waits[k] > 0) await sleep(waits[k], o.signal);
+          entry.t = Date.now();
+          used(model, entry.t).entries.push(entry);
+        }
+        const isOss = model.includes("gpt-oss");
         const body: Record<string, unknown> = {
-          model,
+          model: ovh ? model.slice(OVH.length) : model,
           messages: [
             { role: "system", content: o.system },
             { role: "user", content: o.user },
@@ -133,11 +145,14 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         };
         if (isOss) {
           body.reasoning_effort = o.effort ?? "low";
-          body.include_reasoning = false;
+          if (!ovh) body.include_reasoning = false;
         } else if (o.effort === "medium" || o.effort === "high") {
-          // Qwen has reasoning on or off; keep it out of the reply.
-          body.reasoning_effort = "default";
-          body.reasoning_format = "hidden";
+          // Qwen has reasoning on or off; keep it out of the reply. OVH has it on
+          // by default and returns it apart from the content.
+          if (!ovh) {
+            body.reasoning_effort = "default";
+            body.reasoning_format = "hidden";
+          }
         } else body.reasoning_effort = "none";
         if (o.schema) {
           body.response_format = isOss
@@ -146,9 +161,9 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
         }
         let res: Response;
         try {
-          res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          res = await fetch(ovh ? "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1/chat/completions" : "https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
-            headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+            headers: ovh ? { "Content-Type": "application/json" } : { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
             body: JSON.stringify(body),
             signal: o.signal,
           });
@@ -165,30 +180,23 @@ export function groqProvider(apiKey: string, source: "server" | "byok", models =
           lastErr = new ProviderError(res.status === 429 ? "rate_limit" : "unavailable", `Groq ${res.status}`);
           const errBody = await res.text().catch(() => "");
           if (process.env.PLAINSPOKEN_DEBUG) console.error(model, res.status, errBody.slice(0, 300));
-          // A daily limit will not clear soon: mark the model full for a minute so
-          // the next attempt picks another one.
-          const daily = /per day|TPD|RPD/i.test(errBody);
-          const again = /try again in (?:(\d+)m)?([\d.]+)s/.exec(errBody);
-          const dailyWait = again ? (Number(again[1] ?? 0) * 60 + Number(again[2])) * 1000 + 500 : 60000;
-          if (daily) spentUntil.set(`${key} ${model}`, Date.now() + dailyWait);
-          if (daily && keys.some((x) => !isSpent(x, model))) {
+          // A daily limit will not clear soon: skip the model until Groq says it
+          // frees, so the next attempt picks another one.
+          if (/per day|TPD|RPD/i.test(errBody)) {
+            const again = /try again in (?:(\d+)m)?([\d.]+)s/.exec(errBody);
+            spentUntil.set(model, Date.now() + (again ? (Number(again[1] ?? 0) * 60 + Number(again[2])) * 1000 + 500 : 60000));
+            // The daily quota refills a little at a time. Batch jobs (the eval) can
+            // set GROQ_WAIT_DAILY to wait for it when no other model is free.
+            if (!list.some((m) => !isSpent(m)) && !process.env.GROQ_WAIT_DAILY) throw lastErr;
             attempt--;
             continue;
           }
-          const wait = daily
-            ? 60000
-            : Math.max(parseReset(res.headers.get("retry-after") ? `${res.headers.get("retry-after")}s` : null), parseReset(res.headers.get("x-ratelimit-reset-tokens")), 1000);
-          used(model, Date.now()).entries.push({ t: Date.now() - 60000 + wait, n: TPM });
+          const wait = Math.max(parseReset(res.headers.get("retry-after") ? `${res.headers.get("retry-after")}s` : null), parseReset(res.headers.get("x-ratelimit-reset-tokens")), 1000);
+          if (ovh) nextSlot.set(model, Math.max(nextSlot.get(model) ?? 0, Date.now() + wait));
+          else used(model, Date.now()).entries.push({ t: Date.now() - 60000 + wait, n: TPM });
           // A per-minute limit clears soon, so it does not use up an attempt
           // for the first two minutes of a call.
-          if (res.status === 429 && !daily && Date.now() - started + wait < 120000) attempt--;
-          // The daily quota is a rolling 24 hour window, so it frees a little at a
-          // time. Batch jobs (the eval) can set GROQ_WAIT_DAILY to wait for it.
-          if (daily && process.env.GROQ_WAIT_DAILY) {
-            const soonest = Math.min(...keys.map((x) => spentUntil.get(`${x} ${model}`) ?? 0)) - Date.now();
-            await sleep(Math.min(Math.max(soonest, 1000), 600000), o.signal);
-            attempt--;
-          }
+          if (res.status === 429 && Date.now() - started + wait < 120000) attempt--;
           continue;
         }
         if (!res.ok) {
