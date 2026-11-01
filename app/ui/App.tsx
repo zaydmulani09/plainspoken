@@ -473,7 +473,7 @@ export default function App() {
         </section>
 
         <footer className="mt-12 flex flex-wrap justify-between gap-2 border-t border-[var(--line)] py-6 text-[12px] text-[var(--text-3)]">
-          <span>MIT licensed. Detector scores: not measured.</span>
+          <span>MIT licensed. Not a detector bypass: one AI detector still flagged 41 of 42 eval rewrites.</span>
           <a href={REPO} className="hover:text-[var(--text-2)]">
             Source on GitHub
           </a>
@@ -511,7 +511,8 @@ const HOW: [string, React.ReactNode][] = [
       The report is deterministic and runs in your browser. It counts patterns that guides on AI writing describe, such
       as stock vocabulary, contrast framing, and lists of three, plus rhythm checks like how much sentence length
       varies. The score is weighted matches per 100 words. It measures style habits. It cannot tell who wrote a text,
-      and no AI detector was measured. The patterns and their sources are in{" "}
+      and a lower score does not mean an AI detector will pass it: in the eval, one detector still flagged 41 of 42
+      rewrites. The patterns and their sources are in{" "}
       <a className="text-[var(--accent)] hover:underline" href={`${REPO}/blob/main/engine/tells.json`}>
         tells.json
       </a>
