@@ -182,7 +182,7 @@ async function main() {
   const banned = sum(results.map((r) => r.banned.dashes + r.banned.invisible + r.banned.oddSpaces + r.banned.mixedScript.length));
   const summary = {
     round,
-    date: new Date().toISOString().slice(0, 10),
+    date: new Date().toLocaleDateString("en-CA"),
     set: ids ? `ids:${ids.join(",")}` : set,
     texts: results.length,
     missing: missingIds,
@@ -210,7 +210,17 @@ async function main() {
       note: "Flagged means AI probability above 0.5. See eval/results/detector-sanity.json for its scores on human text.",
     },
     usage: { calls: sum(results.map((r) => r.calls)), tokens: sum(results.map((r) => r.tokens)) },
+    // Texts without a count ran before --ovh existed, on Groq only.
+    served: results.reduce<Record<string, number>>((acc, r) => {
+      for (const [k, v] of Object.entries(r.served ?? {})) acc[k] = (acc[k] ?? 0) + v;
+      return acc;
+    }, {}),
   };
+  const counted = results.filter((r) => r.served).length;
+  const viaOvh = sum(Object.entries(summary.served).filter(([k]) => k.startsWith("ovh/")).map(([, v]) => v));
+  const hosts = viaOvh
+    ? `Groq, and OVHcloud AI Endpoints for ${viaOvh} of the ${sum(Object.values(summary.served))} calls counted in ${counted} texts`
+    : "Groq";
   const targets = [
     ["Tell reduction (pooled)", `${(summary.tellReduction.pooled * 100).toFixed(1)}%`, ">= 80%", summary.tellReduction.pooled >= 0.8],
     ["Claim recall", `${(summary.claims.recall * 100).toFixed(1)}% (${kept}/${totalClaims})`, ">= 98%", summary.claims.recall >= 0.98],
@@ -222,7 +232,7 @@ async function main() {
   const md = [
     `# Eval round ${round} (${summary.date}, ${summary.set}, ${results.length} texts)`,
     "",
-    `Writer ${WRITER}, pipeline judge ${PIPELINE_JUDGE}, eval judge ${EVAL_JUDGE} (Groq). Mode: Standard.`,
+    `Writer ${WRITER}, pipeline judge ${PIPELINE_JUDGE}, eval judge ${EVAL_JUDGE} (${hosts}). Mode: Standard.`,
     "",
     "| Metric | Result | Target | Met |",
     "| --- | --- | --- | --- |",
@@ -231,6 +241,8 @@ async function main() {
     `| Sentence length spread (CV) | ${summary.sentenceCv.before} before, ${summary.sentenceCv.after} after | | |`,
     `| MATTR (window 50) | ${summary.mattr.before} before, ${summary.mattr.after} after | | |`,
     `| Detector: ${DETECTOR.name}, texts flagged AI | ${flaggedBefore}/${results.length} before, ${flaggedAfter}/${results.length} after (mean AI probability ${summary.detector.meanAiProbability[0]} before, ${summary.detector.meanAiProbability[1]} after) | not a target | |`,
+    "",
+    `Fallbacks: ${Object.entries(summary.fallbacks).map(([k, v]) => `${v} ${k}`).join(", ") || "none"}.`,
     "",
     missingIds.length ? `Not finished: ${missingIds.join(", ")}` : "",
   ].join("\n");

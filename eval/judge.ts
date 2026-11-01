@@ -1,5 +1,5 @@
 // Eval-only judge prompts. They run on a model the pipeline does not use
-// (openai/gpt-oss-120b on Groq), with a neutral rubric: the eval judge is not
+// (qwen/qwen3.8-27b), with a neutral rubric: the eval judge is not
 // told about AI tells, so it cannot reward a rewrite just for removing them.
 import { dataNotice, requestId, type Tone } from "../engine/prompts";
 import { parseJson, type Provider } from "../engine/providers";
