@@ -60,11 +60,38 @@ The live site runs on route 3, Groq's free tier.
 
 ## Evaluation
 
-The full 42-text evaluation is running. Tuning rounds on the 8-text dev set, with their numbers, are in [eval/ROUNDS.md](eval/ROUNDS.md).
+42 texts in [eval/corpus.json](eval/corpus.json), across 28 genres and all four tones. 30 were generated for the eval on Groq (10 each by gpt-oss-120b, gpt-oss-20b, and qwen3.8-27b) and 12 were written by Claude Opus 5.5 while building this. Each text ran once in Standard mode on the live site's models (writer gpt-oss-120b, pipeline judge gpt-oss-20b). A separate eval judge, qwen3.8-27b with reasoning on, scored the results. It is never told about AI tells, so it cannot reward a rewrite just for dropping them.
+
+- **Claims.** The judge lists each source's claims ([eval/claims.json](eval/claims.json)), marks each one kept, changed, or missing in the rewrite, and lists any claim the rewrite adds.
+- **Quality.** A blind pairwise comparison of rewrite and original, run in both orders. A verdict that flips with the order counts as a tie.
+- **Tells.** The deterministic linter, pooled over all words.
+
+Final run, 2026-10-31 ([eval/results/round-5.md](eval/results/round-5.md), every output in [round-5.json](eval/results/round-5.json)):
+
+| Metric | Result | Target | Met |
+| --- | --- | --- | --- |
+| Tell reduction (pooled) | 45.2% (4.41 to 2.42 per 100 words) | 80% or more | no |
+| Claim recall | 85.7% (611 of 713 kept; 95 changed, 7 missing) | 98% or more | no |
+| Added claims | 46, in 21 of 42 texts | 0 | no |
+| Win or tie against the original | 73.8% (16 win, 15 tie, 11 loss) | 85% or more | no |
+| Length drift | -4.9% in total; 36 of 42 texts within 10%, the other 6 ran 10% to 15% short | within 10% | in total, yes |
+| Banned characters in the output | 0 | 0 | yes |
+
+**Missed targets: tell reduction, claim recall, added claims, and win or tie.** On these numbers Plainspoken does not reach the bar it was built for. What the outputs show:
+
+- 14 of the 70 paragraphs were kept as written because no draft held the meaning after two repairs. Those keep every tell, which pulls the reduction down.
+- The pipeline's own judge (gpt-oss-20b at low effort) passed every draft that the eval judge later marked as changing a claim. Many of those claims are the source's inflated phrasing, which the writer is told to plain down: "democratic spaces where knowledge, creativity, and community resilience converge" lost "creativity". Others are concrete details: "plush memory-foam ear cushions" lost "plush". The small judge is the weak link, and it is small to fit the free tier's token quota.
+- Two rewrites contain writer errors that no check caught: "lukeweak" for "lukewarm" (g04), and "transwestern railway" for "transcontinental railroad" (c08). There is no spelling check.
+- The 8 dev texts were used for tuning ([eval/ROUNDS.md](eval/ROUNDS.md)). On the other 34 alone: tell reduction 41.6%, recall 86.0%, 38 added claims in 17 texts, win or tie 70.6%.
+- One run per text, so there is no variance estimate. Timings are not reported: most of the run waited on free-tier quotas.
+- Claims for the 8 dev texts were extracted by gpt-oss-120b in round 1; the other 34 by the eval judge.
+- For g12 and from g16 on, calls that Groq's free daily quota refused went to OVHcloud AI Endpoints' keyless tier, which serves the same open weights: 212 of the 322 calls counted in those 28 texts. Those texts scored lower on win or tie than the first 14 (64% against 93%). To check the host, g01 to g06 ran again with OVH serving most calls ([round-5.1.md](eval/results/round-5.1.md)). Recall rose from 80.0% to 90.5% and added claims went from 4 to 5, but win or tie fell from 6 of 6 to 3 of 6. With one run per host, a host effect cannot be told apart from run-to-run variance. The pairwise verdict changed on 4 of the 6 texts.
 
 ## Detector
 
-Not measured yet for the final pipeline. The detector and its sanity check are in [eval/detector.ts](eval/detector.ts) and [eval/results/detector-sanity.json](eval/results/detector-sanity.json).
+Measured on 2026-10-31 with the TMR AI text detector ([Oxidane/tmr-ai-text-detector](https://huggingface.co/Oxidane/tmr-ai-text-detector), ONNX build, run locally) on the same 42 texts. It flagged 42 of 42 originals and 41 of 42 rewrites as AI (probability above 0.5). The mean AI probability went from 0.983 to 0.941. Plainspoken does not get text past this detector.
+
+The detector is not reliable on human text either ([eval/results/detector-sanity.json](eval/results/detector-sanity.json), 2026-10-30): it flagged 2 of 10 human-written Wikipedia passages of 180 words, and 10 of 10 of the short Wikipedia page summaries. Its code is in [eval/detector.ts](eval/detector.ts).
 
 ## API
 
