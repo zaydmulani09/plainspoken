@@ -68,6 +68,9 @@ test("rewrites a 600-word sample end to end in the UI", async ({ page }) => {
   const out = await page.getByRole("region", { name: "Rewrite" }).locator(".prose-edit").innerText();
   expect(out.split(/\s+/).length).toBeGreaterThan(400);
   expect(DASH.test(out)).toBe(false);
+  // Every paragraph kept as written (spent quota, provider errors) is not a pass.
+  const norm = (s: string) => s.replace(/\s+/g, " ").trim();
+  expect(norm(out)).not.toBe(norm(SAMPLE_600));
   await page.screenshot({ path: "test-results/live-600.png", fullPage: true });
   console.log(`badge: ${await badge.innerText()}`);
   console.log(`report: ${await page.getByRole("region", { name: "Report" }).innerText()}`);
