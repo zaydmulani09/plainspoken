@@ -8,7 +8,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { bannedChars } from "../engine/guard";
 import { lint, tellReduction } from "../engine/lint";
 import { humanize } from "../engine/pipeline";
-import { groqProvider } from "../engine/providers";
+import { groqProvider, type Provider } from "../engine/providers";
 import { countWords, mattr } from "../engine/text";
 import { loadCorpus, readJson, writeJson, type Source } from "./corpus";
 import { aiProbability, DETECTOR } from "./detector";
@@ -48,6 +48,8 @@ interface TextResult {
   calls: number;
   tokens: number;
   seconds: number;
+  // Calls per model; "ovh/" models were served by OVHcloud, the rest by Groq.
+  served?: Record<string, number>;
   detector?: [number, number];
 }
 
@@ -62,9 +64,7 @@ const r3 = (x: number) => Math.round(x * 1000) / 1000;
 const cvOf = (t: string) => lint(t).metrics.find((m) => m.id === "rhythm-sentence-cv")?.value ?? 0;
 
 async function main() {
-  // GROQ_EXTRA_KEYS: comma-separated keys from other Groq accounts, used when
-  // the first key's daily quota is spent.
-  const key = [process.env.GROQ_API_KEY, process.env.GROQ_EXTRA_KEYS].filter(Boolean).join(",");
+  const key = process.env.GROQ_API_KEY;
   if (!key) throw new Error("GROQ_API_KEY is not set");
   const round = Number(arg("round", "1"));
   const set = arg("set", "dev");
@@ -80,8 +80,19 @@ async function main() {
   // The live site's models, pinned: no qwen writer fallback (qwen is the eval
   // judge), and no gpt-oss-120b judge fallback, so a full run fits the free
   // tier's daily token quota. Live runs can only get a stronger judge.
-  const pipeline = groqProvider(key, "server", { writer: [WRITER], judge: [PIPELINE_JUDGE] });
-  const judge = groqProvider(key, "server", { writer: [EVAL_JUDGE], judge: [EVAL_JUDGE] });
+  // --ovh: when Groq's daily quota is spent, the same models on OVHcloud's
+  // keyless endpoint take the call (see engine/providers.ts).
+  const alt = (m: string) => (process.argv.includes("--ovh") ? [m, `ovh/${m.split("/").pop()}`] : [m]);
+  const pipeline = groqProvider(key, "server", { writer: alt(WRITER), judge: alt(PIPELINE_JUDGE) });
+  const judgeBase = groqProvider(key, "server", { writer: alt(EVAL_JUDGE), judge: alt(EVAL_JUDGE) });
+  const tally = (p: Provider, served: Record<string, number>): Provider => ({
+    ...p,
+    call: async (o) => {
+      const r = await p.call(o);
+      served[r.model] = (served[r.model] ?? 0) + 1;
+      return r;
+    },
+  });
 
   const runOne = async (s: Source): Promise<TextResult | null> => {
     const cached = new URL(`${s.id}.json`, cacheDir);
@@ -93,21 +104,23 @@ async function main() {
     const rewriteCache = new URL(`${s.id}.rewrite.json`, cacheDir);
     let res: Awaited<ReturnType<typeof humanize>>;
     let seconds: number;
-    if (existsSync(rewriteCache)) ({ res, seconds } = readJson(rewriteCache) as { res: typeof res; seconds: number });
+    let served: Record<string, number> = {};
+    if (existsSync(rewriteCache)) ({ res, seconds, served = {} } = readJson(rewriteCache) as { res: typeof res; seconds: number; served?: Record<string, number> });
     else {
       const t0 = Date.now();
       // Paragraph concurrency matches the live route, and texts run one at a
       // time by default, so the seconds below are close to a live run.
-      res = await humanize(s.text, { mode: "standard", tone: s.tone, provider: pipeline, concurrency: 3 });
+      res = await humanize(s.text, { mode: "standard", tone: s.tone, provider: tally(pipeline, served), concurrency: 3 });
       seconds = Math.round((Date.now() - t0) / 1000);
       if (res.paragraphs.some((p) => p.fallback === "error" || p.fallback === "time")) {
         console.log(`${s.id}: provider error, not cached`);
         return null;
       }
-      writeJson(rewriteCache, { res, seconds });
+      writeJson(rewriteCache, { res, seconds, served });
     }
     const fallbacks: Record<string, number> = {};
     for (const p of res.paragraphs) if (p.fallback) fallbacks[p.fallback] = (fallbacks[p.fallback] ?? 0) + 1;
+    const judge = tally(judgeBase, served);
     if (!claimsCache[s.id]) {
       claimsCache[s.id] = await extractClaims(judge, s.text);
       writeJson(claimsPath, claimsCache);
@@ -125,7 +138,7 @@ async function main() {
       reduction: r3(tellReduction(before, after)), claims: claims.length, check, pair,
       sentenceCv: [r3(cvOf(s.text)), r3(cvOf(res.text))], mattr: [r3(mattr(s.text)), r3(mattr(res.text))],
       banned: bannedChars(res.text), fallbacks, issues: res.paragraphs.filter((p) => p.fallback).map((p) => p.issues), calls: res.usage.calls, tokens: res.usage.inputTokens + res.usage.outputTokens,
-      seconds,
+      seconds, served,
     };
     writeJson(cached, out);
     console.log(
