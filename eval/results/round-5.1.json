@@ -1,0 +1,518 @@
+{
+  "summary": {
+    "round": 5.1,
+    "date": "2026-10-31",
+    "set": "ids:g01-blog-writing-things-down,g02-linkedin-failed-launch,g03-college-changed-mind,g04-product-bottle,g05-email-expenses,g06-reddit-cooking",
+    "texts": 6,
+    "missing": [],
+    "models": {
+      "writer": "openai/gpt-oss-120b",
+      "pipelineJudge": "openai/gpt-oss-20b",
+      "evalJudge": "qwen/qwen3.8-27b"
+    },
+    "tellReduction": {
+      "pooled": 0.5,
+      "meanPerText": 0.515,
+      "densityBefore": 3.502,
+      "densityAfter": 1.751
+    },
+    "claims": {
+      "total": 105,
+      "kept": 95,
+      "changed": 8,
+      "missing": 2,
+      "recall": 0.905,
+      "added": 5,
+      "textsWithAdditions": 3
+    },
+    "quality": {
+      "win": 1,
+      "tie": 2,
+      "loss": 3,
+      "winOrTie": 0.5
+    },
+    "length": {
+      "totalDrift": -0.045,
+      "meanAbsDrift": 0.046,
+      "within10": 6
+    },
+    "sentenceCv": {
+      "before": 0.346,
+      "after": 0.345
+    },
+    "mattr": {
+      "before": 0.889,
+      "after": 0.879
+    },
+    "bannedChars": 0,
+    "fallbacks": {
+      "original": 2
+    },
+    "detector": {
+      "name": "TMR AI text detector (Oxidane/tmr-ai-text-detector)",
+      "build": "onnx-community/tmr-ai-text-detector-ONNX, fp32, transformers.js 4.3.1, CPU",
+      "url": "https://huggingface.co/Oxidane/tmr-ai-text-detector",
+      "meanAiProbability": [
+        0.981,
+        0.972
+      ],
+      "flaggedAi": [
+        6,
+        6
+      ],
+      "note": "Flagged means AI probability above 0.5. See eval/results/detector-sanity.json for its scores on human text."
+    },
+    "usage": {
+      "calls": 30,
+      "tokens": 73693
+    },
+    "served": {
+      "openai/gpt-oss-120b": 1,
+      "ovh/gpt-oss-20b": 13,
+      "ovh/gpt-oss-120b": 15,
+      "qwen/qwen3.8-27b": 11,
+      "ovh/qwen3.8-27b": 7,
+      "openai/gpt-oss-20b": 1
+    }
+  },
+  "results": [
+    {
+      "id": "g02-linkedin-failed-launch",
+      "genre": "social post",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Launching a product that didn\u2019t meet expectations was a humbling experience, but it turned into a powerful learning curve. First, I realized the importance of validating assumptions early; we relied heavily on internal enthusiasm without enough real\u2011world user feedback, which led to misaligned features. Second, cross\u2011functional communication proved critical\u2014siloes between product, engineering, and marketing caused delays and mixed messaging that confused early adopters. Third, we underestimated the need for a phased rollout; a soft launch would have let us iterate based on actual usage data rather than guessing. Finally, we learned that post\u2011launch metrics must be tracked obsessively, not just sales numbers but also engagement, churn, and support tickets, to catch problems before they snowball. While the launch didn\u2019t succeed, the insights gained have reshaped our development process, making us more customer\u2011centric, data\u2011driven, and collaborative. Failure, when dissected honestly, can become the foundation for future success.",
+      "rewrite": "The product launch did not meet expectations, but it taught us valuable lessons. First, I recognized the need to validate assumptions early; we depended on internal enthusiasm without sufficient real-world user feedback, resulting in features that missed the mark. Second, the episode highlighted the importance of cross-functional communication, as silos between product, engineering, and marketing led to delays and mixed messaging that confused early adopters. Third, we underestimated the advantage of a phased rollout; a soft launch would have allowed us to refine the offering based on actual usage data instead of speculation. Finally, we learned that tracking post-launch metrics obsessively, engagement, churn, and support tickets in addition to sales, helps catch issues before they snowball. The failure reshaped our development process, steering it toward a more customer-centric, data-driven, and collaborative approach, turning honest analysis of setbacks into a foundation for future success.",
+      "words": [
+        152,
+        143
+      ],
+      "drift": -0.059,
+      "density": [
+        4.39,
+        3.17
+      ],
+      "score": [
+        6.68,
+        4.54
+      ],
+      "reduction": 0.278,
+      "claims": 17,
+      "check": {
+        "kept": 14,
+        "changed": [
+          "Launching a product that didn\u2019t meet expectations was a humbling experience.",
+          "It turned into a powerful learning curve.",
+          "We underestimated the need for a phased rollout."
+        ],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is slightly better because its sentence structure is more varied and its phrasing (e.g., 'misaligned features' vs 'features that missed the mark') is more concise and professional, while maintaining a natural flow."
+      },
+      "sentenceCv": [
+        0.26,
+        0.233
+      ],
+      "mattr": [
+        0.946,
+        0.897
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 14811,
+      "seconds": 199,
+      "served": {
+        "openai/gpt-oss-120b": 1,
+        "ovh/gpt-oss-20b": 3,
+        "ovh/gpt-oss-120b": 2,
+        "qwen/qwen3.8-27b": 2,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.982,
+        0.972
+      ]
+    },
+    {
+      "id": "g01-blog-writing-things-down",
+      "genre": "blog post",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "There is a persistent myth in the startup world that documentation is the enemy of speed. We are told to move fast, break things, and rely on the implicit knowledge shared over daily standups and casual hallway conversations. For a tiny team, this approach feels natural. You know everyone\u2019s strengths, you remember what was done last quarter, and you assume that if something happens, everyone will just know. But this comfort is dangerous. When information lives only in heads, it is fragile. It disappears when a key person takes a vacation, gets sick, or moves on to their next opportunity. It vanishes when a new hire joins and struggles to contribute because they cannot find the context for recent decisions. Writing things down is not about bureaucracy. It is about building a shared reality that outlasts any single individual. It transforms individual memory into collective institutional memory, ensuring that your company\u2019s trajectory remains clear, consistent, and accessible to everyone who needs it.",
+      "rewrite": "There is a persistent myth in the startup world that documentation is the enemy of speed. We are told to move fast, break things, and rely on the implicit knowledge shared over daily standups and casual hallway conversations. For a tiny team, this approach feels natural. You know everyone\u2019s strengths, you remember what was done last quarter, and you assume that if something happens, everyone will just know. But this comfort is dangerous. When information lives only in heads, it is fragile. It disappears when a key person takes a vacation, gets sick, or moves on to their next opportunity. It vanishes when a new hire joins and struggles to contribute because they cannot find the context for recent decisions. Writing things down is not about bureaucracy. It is about building a shared reality that outlasts any single individual. It transforms individual memory into collective institutional memory, ensuring that your company\u2019s trajectory remains clear, consistent, and accessible to everyone who needs it.",
+      "words": [
+        162,
+        162
+      ],
+      "drift": 0,
+      "density": [
+        3.4,
+        3.4
+      ],
+      "score": [
+        5.5,
+        5.5
+      ],
+      "reduction": 0,
+      "claims": 16,
+      "check": {
+        "kept": 16,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "tie",
+          "tie"
+        ],
+        "reason": "The two versions are identical."
+      },
+      "sentenceCv": [
+        0.458,
+        0.458
+      ],
+      "mattr": [
+        0.871,
+        0.871
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "These claims from the source are missing or changed; restore their meaning in plain words (not the source's wording): [\"When information lives only in heads, it is fragile.\",\"It vanishes when a new hire joins and struggles to contribute because they cannot find the context for recent decisions.\"]",
+          "While fixing, do not reuse these source phrasings, which read as AI-written: \"is not about bureaucracy. It is\", \", ensuring\", \"clear, consistent, and accessible\""
+        ]
+      ],
+      "calls": 6,
+      "tokens": 14856,
+      "seconds": 272,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 3,
+        "ovh/qwen3.8-27b": 2,
+        "qwen/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.962,
+        0.962
+      ]
+    },
+    {
+      "id": "g04-product-bottle",
+      "genre": "product copy",
+      "generator": "qwen/qwen3.8-27b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "Stop letting lukewarm water ruin your morning. Our premium stainless steel bottle is engineered with double-wall vacuum insulation to keep your beverages ice-cold for a full twenty-four hours. Whether you are tackling an intense gym session, heading into a long day at the office, or embarking on a weekend hike, your drink stays refreshingly chilled until the last drop. Crafted from high-grade, food-safe stainless steel, this bottle is built to withstand daily wear and tear without compromising taste or durability. The sleek, fingerprint-resistant finish complements any lifestyle, while the leak-proof lid ensures your bag stays dry. At just thirty-four dollars, you are investing in a reliable companion that refuses to compromise on performance. Ditch the single-use plastics and embrace a sustainable, stylish solution that keeps you hydrated and cool all day long.",
+      "rewrite": "Stop letting lukewarm water ruin your morning. Our premium stainless-steel bottle has double-wall vacuum insulation, so your drink stays ice-cold for a full twenty-four hours. Whether you\u2019re crushing a tough gym workout, heading into a long day at the office, or setting out on a weekend hike, the liquid stays refreshingly chilled right to the last drop. It\u2019s made from high-grade, food-safe stainless steel and can take daily wear and tear without losing taste or durability. The sleek, fingerprint-resistant finish fits any style, and the leak-proof lid keeps your bag dry. At just thirty-four dollars, you get a reliable companion that never sacrifices performance. Skip the single-use plastics and choose a sustainable, stylish solution that keeps you hydrated and cool all day.",
+      "words": [
+        132,
+        122
+      ],
+      "drift": -0.076,
+      "density": [
+        1.62,
+        0.41
+      ],
+      "score": [
+        2.14,
+        0.5
+      ],
+      "reduction": 0.747,
+      "claims": 26,
+      "check": {
+        "kept": 26,
+        "changed": [],
+        "missing": [],
+        "added": []
+      },
+      "pair": {
+        "result": "win",
+        "orders": [
+          "win",
+          "win"
+        ],
+        "reason": "Version A uses more natural, conversational phrasing (e.g., 'crushing a tough gym workout' vs. 'tackling an intense gym session') that better fits the requested casual tone, whereas Version B sounds more formal and stiff."
+      },
+      "sentenceCv": [
+        0.38,
+        0.438
+      ],
+      "mattr": [
+        0.929,
+        0.884
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 2,
+      "tokens": 5781,
+      "seconds": 29,
+      "served": {
+        "ovh/gpt-oss-120b": 1,
+        "openai/gpt-oss-20b": 1,
+        "ovh/qwen3.8-27b": 1,
+        "qwen/qwen3.8-27b": 2
+      },
+      "detector": [
+        0.987,
+        0.986
+      ]
+    },
+    {
+      "id": "g03-college-changed-mind",
+      "genre": "college short answer",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "neutral",
+      "original": "During my sophomore year of high school, I enrolled in a required AP Biology class, convinced it would be a straightforward, low\u2011effort course. Midway through the semester, the teacher introduced a project on genetic engineering that required extensive research, collaboration, and creative problem\u2011solving. I initially resisted the extra workload, fearing it would jeopardize my GPA. However, after a discussion with my science club advisor, I realized the project aligned with my growing interest in biotechnology and offered a tangible way to apply classroom concepts. I shifted my mindset from avoidance to proactive engagement, dedicating weekends to literature reviews and coordinating with peers. The project culminated in a presentation that earned top honors at the regional science fair. This experience taught me that changing my mind\u2014embracing challenge rather than shying away\u2014can unlock unexpected growth and success.",
+      "rewrite": "During my sophomore year I signed up for the required AP Biology class, assuming it would be easy and low-effort. Halfway through the semester the teacher assigned a genetic-engineering project that needed a lot of research and teamwork, plus some creative problem-solving. At first I pushed back, worried the extra work would hurt my GPA. A talk with my science-club advisor made me see that the project matched my growing interest in biotechnology and gave a real way to use what we were learning. I stopped avoiding it and started working on weekends, reading papers and coordinating with classmates. The final presentation won top honors at the regional science fair, among dozens of entries, showing that taking on a challenge can lead to unexpected growth and success for my team.",
+      "words": [
+        139,
+        130
+      ],
+      "drift": -0.065,
+      "density": [
+        6.87,
+        0.89
+      ],
+      "score": [
+        9.55,
+        1.16
+      ],
+      "reduction": 0.871,
+      "claims": 19,
+      "check": {
+        "kept": 15,
+        "changed": [
+          "The narrator was a sophomore in high school.",
+          "The narrator was convinced the AP Biology class would be a straightforward, low-effort course.",
+          "The experience taught the narrator that embracing challenge rather than shying away can unlock unexpected growth and success."
+        ],
+        "missing": [
+          "The experience taught the narrator that changing their mind can unlock unexpected growth and success."
+        ],
+        "added": [
+          "The regional science fair had dozens of entries.",
+          "The unexpected growth and success was for the narrator's team."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is superior because it uses more precise vocabulary (e.g., 'jeopardize,' 'culminated,' 'proactive engagement') and better sentence structure, making it clearer and more professional while maintaining a neutral tone."
+      },
+      "sentenceCv": [
+        0.284,
+        0.335
+      ],
+      "mattr": [
+        0.842,
+        0.876
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 6,
+      "tokens": 14948,
+      "seconds": 228,
+      "served": {
+        "ovh/gpt-oss-120b": 3,
+        "ovh/gpt-oss-20b": 3,
+        "ovh/qwen3.8-27b": 2,
+        "qwen/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.986,
+        0.963
+      ]
+    },
+    {
+      "id": "g05-email-expenses",
+      "genre": "work email",
+      "generator": "openai/gpt-oss-120b (Groq, temperature 0.8)",
+      "tone": "professional",
+      "original": "Dear Team,\n\nI\u2019m writing to let you know about an update to our expense policy that will take effect on March\u202f1. Going forward, any expense exceeding $75 will require a receipt for reimbursement. This change is intended to streamline our accounting processes and ensure greater accuracy in our financial reporting. When you submit a claim, please attach a clear, legible copy of the receipt\u2014whether scanned, photographed, or electronic\u2014and include a brief description of the purpose of the expense. Claims for amounts at or below $75 will continue to be processed without a receipt, as long as they are accompanied by a short justification.\n\nWe understand that this may require a slight adjustment to your routine, and we appreciate your cooperation. If you have any questions or need assistance with the new submission requirements, please reach out to the Finance team at finance@company.com. Thank you for your attention and continued commitment to keeping our operations running smoothly.",
+      "rewrite": "Dear Team,\n\nI\u2019m writing to let you know about an update to our expense policy that will take effect on March 1. Going forward, any expense exceeding $75 will require a receipt for reimbursement. This change is intended to streamline our accounting processes and ensure greater accuracy in our financial reporting. When you submit a claim, please attach a clear, legible copy of the receipt, whether scanned, photographed, or electronic, and include a brief description of the purpose of the expense. Claims for amounts at or below $75 will continue to be processed without a receipt, as long as they are accompanied by a short justification.\n\nWe recognize this may slightly alter your routine in the coming weeks and thank you for cooperating. Should you have questions or need help with the new submission rules, contact the Finance team at finance@company.com. Your attention and ongoing commitment to smooth operations, as we implement these changes, are appreciated.",
+      "words": [
+        160,
+        157
+      ],
+      "drift": -0.019,
+      "density": [
+        1.63,
+        0.38
+      ],
+      "score": [
+        2.6,
+        0.6
+      ],
+      "reduction": 0.767,
+      "claims": 13,
+      "check": {
+        "kept": 13,
+        "changed": [],
+        "missing": [],
+        "added": [
+          "The adjustment to routine will occur in the coming weeks."
+        ]
+      },
+      "pair": {
+        "result": "loss",
+        "orders": [
+          "loss",
+          "loss"
+        ],
+        "reason": "Version B is superior because it uses more professional phrasing (e.g., 'We understand' instead of 'We recognize', 'assistance' instead of 'help') and employs em-dashes for better readability in the sentence about receipt formats."
+      },
+      "sentenceCv": [
+        0.459,
+        0.452
+      ],
+      "mattr": [
+        0.849,
+        0.86
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {
+        "original": 1
+      },
+      "issues": [
+        [
+          "Remove details that are not in the source: [\"Effective March\"]"
+        ]
+      ],
+      "calls": 6,
+      "tokens": 13361,
+      "seconds": 152,
+      "served": {
+        "ovh/gpt-oss-120b": 4,
+        "ovh/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 3
+      },
+      "detector": [
+        0.987,
+        0.987
+      ]
+    },
+    {
+      "id": "g06-reddit-cooking",
+      "genre": "forum post",
+      "generator": "openai/gpt-oss-20b (Groq, temperature 0.8)",
+      "tone": "casual",
+      "original": "If you\u2019re a college student looking to learn how to cook, start by treating it like a skill you\u2019re building over time rather than a race to the perfect dish. Pick a few staple ingredients\u2014rice, pasta, a handful of veggies, beans, and a protein source\u2014and learn basic techniques such as saut\u00e9ing, boiling, and seasoning. Use the campus kitchen or a dorm kitchenette; even a single pot or pan can do wonders. Watch short, clear videos on YouTube or follow simple recipe blogs that break steps into bite\u2011sized chunks. Practice makes perfect, so don\u2019t be afraid to mess up\u2014each flop teaches you what not to do. Keep a small spice rack with salt, pepper, garlic powder, and maybe one or two dried herbs; they\u2019ll add instant flavor without clutter. Finally, set aside a consistent block of time, like a 30\u2011minute session on a weekday, to experiment and refine your dishes. With patience and persistence, you\u2019ll soon find cooking becoming a reliable, enjoyable part of your routine.",
+      "rewrite": "Start by treating cooking like any other skill you develop over time, not a race to nail the perfect meal. As a college student, gather a small set of staples: rice or pasta, a handful of veggies, beans, and a protein you enjoy. Master the basics: saut\u00e9, boil, and season, using just one pot or pan in your dorm kitchenette or the campus kitchen. Find short, clear videos on YouTube and browse recipe blogs that break each step into bite-sized instructions, making it easy to follow. Expect a few failures; every flop teaches you what to avoid and pushes you toward improvement. Assemble a minimal spice rack with salt, pepper, garlic powder, and maybe one or two dried herbs so you can add flavor without clutter. Finally, set aside a consistent 30-minute block on a weekday to experiment and refine your dishes. Keep practicing, stay patient, and soon cooking will feel like a reliable, enjoyable part of your daily routine.",
+      "words": [
+        170,
+        160
+      ],
+      "drift": -0.059,
+      "density": [
+        3.28,
+        1.88
+      ],
+      "score": [
+        5.57,
+        3
+      ],
+      "reduction": 0.427,
+      "claims": 14,
+      "check": {
+        "kept": 11,
+        "changed": [
+          "A single pot or pan can do wonders for cooking.",
+          "College students should not be afraid to mess up."
+        ],
+        "missing": [
+          "Practice makes perfect."
+        ],
+        "added": [
+          "Pushes you toward improvement",
+          "Making it easy to follow"
+        ]
+      },
+      "pair": {
+        "result": "tie",
+        "orders": [
+          "loss",
+          "win"
+        ],
+        "reason": "Version B feels more natural and conversational, using contractions and a direct address that better fits the requested casual tone."
+      },
+      "sentenceCv": [
+        0.232,
+        0.154
+      ],
+      "mattr": [
+        0.899,
+        0.886
+      ],
+      "banned": {
+        "ok": true,
+        "dashes": 0,
+        "invisible": 0,
+        "oddSpaces": 0,
+        "mixedScript": []
+      },
+      "fallbacks": {},
+      "issues": [],
+      "calls": 4,
+      "tokens": 9936,
+      "seconds": 204,
+      "served": {
+        "ovh/gpt-oss-120b": 2,
+        "ovh/gpt-oss-20b": 2,
+        "qwen/qwen3.8-27b": 2,
+        "ovh/qwen3.8-27b": 1
+      },
+      "detector": [
+        0.984,
+        0.963
+      ]
+    }
+  ]
+}
