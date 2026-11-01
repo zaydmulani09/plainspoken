@@ -100,3 +100,29 @@ Changes:
 - When the source orders its points with First, Second, Finally, the writer is told to keep those markers. "In addition" joins the banned sentence openers.
 - Per-minute rate limits retry for up to two minutes, honoring Groq's reset headers.
 - Eval pins the pipeline judge to gpt-oss-20b (no 120b fallback) and runs the pairwise judge without reasoning, to fit the free tier's daily token quota. Rewrites are cached apart from judgments, so a run can resume when the quota frees.
+- Repairs name only multi-word source tells as phrasings to avoid. A single-word note such as a repeated opener ("It") made no sense there.
+
+Changes during the run:
+- g01 to g11 ran with round 4's writer budgets, and about 40% of writer calls hit the cap and were retried. From g13 on, writer calls get 3.4 tokens per source word plus 1,000 (repairs: 2 per word plus 800), and two texts run at a time. The prompts did not change.
+- Groq's free daily quota refills at about 8,300 tokens an hour per model, not once a day. From g08 on, the run waited on it and finished about one text an hour.
+- From 2026-10-31 20:19 on (g16 to c12, plus g12, still unfinished when the run restarted), a call that Groq's daily quota refuses goes to OVHcloud AI Endpoints' keyless tier, which serves the same open weights (gpt-oss-120b, gpt-oss-20b, Qwen3.8-27B) at 2 requests per minute per model. Three texts run at a time. Each text's `served` field counts its calls per provider. The per-text seconds from g08 on are mostly quota waits.
+
+Results (all 42 texts, 2026-10-31; [round-5.md](results/round-5.md)):
+
+| Metric | Result | Target |
+| --- | --- | --- |
+| Tell reduction | 45.2% | >= 80% |
+| Claim recall | 85.7% (611/713) | >= 98% |
+| Added claims | 46 in 21 texts | 0 |
+| Win or tie | 73.8% (16 win, 15 tie, 11 loss) | >= 85% |
+| Length drift | -4.9% (36/42 texts within 10%) | within 10% |
+| Banned characters | 0 | 0 |
+
+Findings:
+- 14 of 70 paragraphs fell back to the original, in 12 texts. Every rewrite that shipped had passed the pipeline judge; the eval judge still marked 95 claims changed and 7 missing in them.
+- Two rewrites contain writer errors no check caught: "lukeweak" (g04) and "transwestern railway" for "transcontinental railroad" (c08).
+- The 28 texts with OVH-served calls scored lower on win or tie (64%) than the first 14 (93%).
+
+## Round 5.1 (host check)
+
+g01 to g06 again, unchanged pipeline, with OVHcloud serving most calls (35 of 48), to see whether the host explains round 5's drop ([round-5.1.md](results/round-5.1.md)). Against the same six texts in round 5, all on Groq: recall 90.5% against 80.0%, added claims 5 against 4, tell reduction 50.0% against 60.1%, win or tie 3/6 against 6/6. The pairwise verdict changed on 4 of 6 texts. One run per host cannot separate a host effect from run-to-run variance.
